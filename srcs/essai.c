@@ -12,12 +12,7 @@
 
 #include <unistd.h>
 
-int		ft_strlen(char *str)
+/*t_env		*init_env()
 {
-	int i;
 
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
-}
+}*/

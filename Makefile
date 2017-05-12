@@ -21,7 +21,7 @@ LIBFT_INC_PATH = libft
 LIBFT_INC_FILES = libft.h
 INC_PATH = include
 INC_FILES = RTV1.h
-INCS = -I include -I framework/SDL2/include
+INCS = -I include -I framework/SDL2/include -I ./libft/libft.h
 HEADERS =  $(LIBFT_INC_FILES:%.h=$(LIBFT_INC_PATH)/%.h)
 HEADERS += $(INC_FILES:%.h=$(INC_PATH)/%.h)
 CFLAGS += $(addprefix -I, $(INC_PATH) $(LIBFT_INC_PATH) $(MLX_INC_PATH))
@@ -37,7 +37,7 @@ SRCS = $(addprefix srcs/, $(SOURCES))
 LIBFT_PATH = libft
 LIBFT = $(LIBFT_PATH)/libft.a
 
-LIB = -framework SDL2
+LIB = -framework SDL2 -framework OpenGL -framework AppKit
 LIB_PATH = -F framework
 
 
@@ -50,11 +50,11 @@ OBJECT = $(addprefix $(DIR_OBJ)/, $(SOURCES:%.c=%.o));
 all: $(NAME)
 
 $(NAME): $(OBJECTS)
-	make -C libft
+	make -C ./libft
 	$(CC) $(CFLAGS) $(SRCS) $(INCS)
 	mkdir objs
 	mv essai.o main.o $(DIR_OBJ)
-	$(CC) $(LIB_PATH) $(LIB) -o $(NAME) $(OBJECT)
+	$(CC) $(LIB_PATH) $(LIB) $(LIBFT) -o $(NAME) $(OBJECT)
 
 	@echo "\n-----------------------------------------"
 	@echo "|\033[32;1m\t$(NAME) has been created !\t\t\033[0m|"
