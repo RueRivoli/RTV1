@@ -1,14 +1,31 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_env.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fgallois <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/05/15 14:10:26 by fgallois          #+#    #+#             */
+/*   Updated: 2017/05/15 14:10:30 by fgallois         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include "rtv1.h"
+#include "../include/rtv1.h"
 
 
 void        render(t_env *env)            
 {
     SDL_Event event;
 
-	SDL_RenderClear(env->win->rend);
+	
+
+    SDL_Delay(20000);
 	//raytrace(e);
-	SDL_RenderPresent(env->win->rend);
+	
+	/*SDL_RenderPresent(env->win->rend);*/
+
+	//SDL_SetRenderDrawColor(env->win->rend,0,255,0,255);
+
 	while (1)
 	{
 		while (SDL_PollEvent(&event))
@@ -16,12 +33,17 @@ void        render(t_env *env)
 			if (event.type == SDL_WINDOWEVENT_RESIZED)
 			{
 				//raytrace(e);
-				SDL_RenderClear(env->win->rend);
+				SDL_SetRenderDrawColor(env->win->rend, 255,  255, 255, 255);
+	SDL_RenderClear(env->win->rend);
+	 SDL_RenderPresent(env->win->rend);
+
 				return ;
 			}
 			else if (event.type == SDL_WINDOWEVENT_SIZE_CHANGED)
 			{
-				SDL_RenderClear(env->win->rend);
+				SDL_SetRenderDrawColor(env->win->rend, 255,  255, 255, 255);
+	SDL_RenderClear(env->win->rend);
+	 SDL_RenderPresent(env->win->rend);
 				return ;
 			}
 			else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE) {

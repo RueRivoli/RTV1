@@ -13,13 +13,18 @@
 #ifndef RTV1_H
 # define RTV1_H
 
-#include <SDL.h>
-#include "vector.h"
-#include "../framework/SDL2/include/SDL.h"
-#include "../libft/libft.h"
-#include <stdlib.h>
-#include <stdio.h>
+# include "vector.h"
+# include "../framework/SDL2/include/SDL.h"
 
+
+# include "../libft/libft.h"
+
+# include <GLUT/GLUT.h>
+# include <OpenGL/OpenGL.h>
+# include <stdlib.h>
+#include <stdio.h>
+# include <math.h>      
+# include <unistd.h>
 
 typedef struct s_ray 
 {   
