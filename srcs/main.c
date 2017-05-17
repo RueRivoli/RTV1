@@ -54,10 +54,10 @@ void        trace(t_env *env)
     t_ray *r;
     t_sphere *sp;
     t_vect *v1;
-    SDL_SetRenderDrawColor(env->win->rend, 250, 250, 250, 0);
+    //SDL_SetRenderDrawColor(env->win->rend, 255, 0, 0, 0);
     if (!(v1 = new_vect(600.0, 450.0, 180.0)))
         return;
-    if (!(sp = new_sphere(v1, 100.0)))
+    if (!(sp = new_sphere(v1, 200.0)))
         return;
    
         x = 0;
@@ -67,14 +67,14 @@ void        trace(t_env *env)
             while (y < 900)
             {
                 v = new_vect(x, y, 0.0);
-                r = new_ray(env->cam->pos, minus_vect(v, env->cam->pos));     
+                r = new_ray(env->cam->pos, normed_vector(minus_vect(v, env->cam->pos)));  
                 if (hit_sphere(sp, r) == 1)
-                    SDL_RenderDrawPoint(env->win->rend, x, y);
+                        SDL_RenderDrawPoint(env->win->rend, x, y);
                 y++;
             }
             x++;
         }
-        SDL_RenderPresent(env->win->rend);
+        //SDL_RenderPresent(env->win->rend);
         //SDL_UpdateWindowSurface(env->win->handle);
 }
 
@@ -85,31 +85,39 @@ int main(GLvoid)
     if (!(env = init_env()))
         return (0);
     
-         //SDL_SetRenderDrawColor(env->win->rend, 255, 255, 255, 0);
-    //SDL_RenderDrawPoint(env->win->rend, 150, 150); 
-      SDL_SetRenderDrawColor(env->win->rend, 0, 0, 0, 0);
-    SDL_RenderDrawPoint(env->win->rend, 10, 150);
-     SDL_RenderPresent(env->win->rend);
-    //trace(env);
-  
+   
+    
+ 
+    
      while(!env->boucle)
     {
-    //On met le fond en couleur
         SDL_SetRenderDrawColor(env->win->rend, 160, 160, 160, 0);
         SDL_RenderClear(env->win->rend);
+    //On met le fond en couleur
+       
     //Couleur de dessin :
-        SDL_SetRenderDrawColor(env->win->rend, 50, 50, 50, 255);
+        //SDL_SetRenderDrawColor(env->win->rend, 50, 50, 50, 255);
 
         //SDL_GetWindowSize(env->win->handle, size_x, size_y);
        //SDL_GetWindowPosition(env->win->handle, pos_x, pos_y);
-       trace(env);
-        SDL_RenderDrawPoint(env->win->rend, 10, 150);
+       
+       //SDL_SetRenderDrawColor(env->win->rend, 255, 0, 0, 0);
+      //SDL_RenderDrawPoint(env->win->rend, 150, 150);
+       
+        //SDL_RenderDrawPoint(env->win->rend, 10, 150);
+         SDL_SetRenderDrawColor(env->win->rend, 255, 0, 0, 0);
+
+        SDL_RenderDrawPoint(env->win->rend, 200, 200);
+       
+        trace(env);
         SDL_RenderPresent(env->win->rend);
+        //SDL_UpdateWindowSurface(env->win->handle);
 
         if (event(env) == 0)
             env->boucle = 1;
-        
     }
+    
+    
     quit_SDL(env);
     return (0); 
 }

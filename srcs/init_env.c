@@ -34,16 +34,16 @@ void        render(t_env *env)
 			{
 				//raytrace(e);
 				SDL_SetRenderDrawColor(env->win->rend, 255,  255, 255, 255);
-	SDL_RenderClear(env->win->rend);
-	 SDL_RenderPresent(env->win->rend);
+				SDL_RenderClear(env->win->rend);
+	 			SDL_RenderPresent(env->win->rend);
 
 				return ;
 			}
 			else if (event.type == SDL_WINDOWEVENT_SIZE_CHANGED)
 			{
 				SDL_SetRenderDrawColor(env->win->rend, 255,  255, 255, 255);
-	SDL_RenderClear(env->win->rend);
-	 SDL_RenderPresent(env->win->rend);
+				SDL_RenderClear(env->win->rend);
+				 SDL_RenderPresent(env->win->rend);
 				return ;
 			}
 			else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE) {

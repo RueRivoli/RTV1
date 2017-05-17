@@ -42,10 +42,10 @@ int         belong(t_sphere *sp, t_vect *v)
 
 int         hit_sphere(t_sphere *sp, t_ray *r)
 {
-    float t;
-    t_vect *v;
-    t_vect *w;
-    t = 0.0;
+    //float t;
+    //t_vect *v;
+    //t_vect *w;
+    /*t = 0.0;
     while (t < 1000.0)
     {
         v = new_vect(r->direction->x * t,r->direction->y * t, r->direction->z * t);
@@ -53,6 +53,29 @@ int         hit_sphere(t_sphere *sp, t_ray *r)
         if (belong(sp, w) == 1)
             return (1);
         t = t + 15.0;
-    }
+    }*/
+    /*float born_inf;
+    float born_sup;
+    born_inf = max((sp->origin->x - r->origin->x - sp->radius)/ r->direction->x,  max((sp->origin->y - r->origin->y - sp->radius)/ r->direction->y, \
+    (sp->origin->z - r->origin->z - sp->radius)/ r->direction->z));
+    born_sup = min((sp->origin->x - r->origin->x + sp->radius)/ r->direction->x,  min((sp->origin->y - r->origin->y + sp->radius)/ r->direction->y, \
+    (sp->origin->z - r->origin->z + sp->radius)/ r->direction->z));
+    if (born_sup - born_inf >= 0.0)
+        return (1);*/
+
+    float delta;
+    float a;
+    delta = 2 * (r->origin->x * r->direction->x + r->origin->y * r->direction->y + r->origin->z * r->direction->z - (r->direction->x * sp->origin->x +\
+    r->direction->y * sp->origin->y + r->direction->z * sp->origin->z));
+    delta = pow(delta, 2);
+    a = pow(r->direction->x, 2) + pow(r->direction->y, 2) + pow(r->direction->z, 2);
+    
+    a *= pow(r->origin->x, 2) + pow(r->origin->y, 2) + pow(r->origin->z, 2) + pow(sp->origin->x, 2) + pow(sp->origin->y, 2) + pow(sp->origin->z, 2) - 2 * (sp->origin->x * r->origin->x + sp->origin->y  * r->origin->y + sp->origin->z * r->origin->z) - pow(sp->radius, 2);
+    delta = delta - 4 * a;
+     
+    if (delta >= 0)
+    {
+        return (1);
+    } 
     return (0);
 }
