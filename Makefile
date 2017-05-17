@@ -20,7 +20,7 @@ CFLAGS = -c -Wall -Werror -Wextra -pedantic $(OPTI)
 LIBFT_INC_PATH = libft
 LIBFT_INC_FILES = libft.h
 INC_PATH = include
-INC_FILES = rtv1.h vector.h
+INC_FILES = rtv1.h vector.h object.h
 INCS = -I include -I framework/SDL2/include -I ./libft/libft.h
 HEADERS =  $(LIBFT_INC_FILES:%.h=$(LIBFT_INC_PATH)/%.h)
 HEADERS += $(INC_FILES:%.h=$(INC_PATH)/%.h)
@@ -30,7 +30,7 @@ CFLAGS += $(addprefix -I, $(INC_PATH) $(LIBFT_INC_PATH) $(MLX_INC_PATH))
 SRC_PATH = srcs/
 vpath %.c $(SRC_PATH)
 
-SOURCES = main.c essai.c init_env.c
+SOURCES = main.c essai.c init_env.c vector.c object.c
 SRCS = $(addprefix srcs/, $(SOURCES))
 
 # Libft
@@ -54,7 +54,7 @@ $(NAME): $(OBJECTS)
 	make -C ./libft
 	$(CC) $(CFLAGS) $(SRCS) $(INCS)
 	mkdir objs
-	mv init_env.o main.o essai.o $(DIR_OBJ)
+	mv init_env.o main.o essai.o vector.o object.o $(DIR_OBJ)
 	$(CC) $(LIB_PATH) $(LIB) $(LIBFT) -o $(NAME) $(OBJECT)
 
 	@echo "\n-----------------------------------------"

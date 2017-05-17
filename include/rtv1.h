@@ -14,6 +14,7 @@
 # define RTV1_H
 
 # include "vector.h"
+# include "object.h"
 # include "../framework/SDL2/include/SDL.h"
 
 
@@ -30,13 +31,11 @@ typedef struct s_ray
 {   
     t_vect      *origin;
     t_vect      *direction;
-
 }               t_ray;
 
 typedef struct s_cam
 {
     t_vect      *pos;
-
 }               t_cam;
 
 typedef struct s_screen 
@@ -51,7 +50,7 @@ typedef struct s_light
     t_vect          *direction;
     float           red;
     float           green;
-    float           blue;
+     float           blue;
 }               t_light;
 
 typedef struct s_light_list
@@ -70,7 +69,8 @@ typedef struct s_win
 
 typedef struct s_obj
 {
-    int     x;
+    t_vect  *vect;
+    int     type;
 }           t_obj;
 
 typedef struct s_env
@@ -80,10 +80,18 @@ typedef struct s_env
     t_cam           *cam;
     t_ray            *ray;
     t_obj            *obj;
+    int             boucle;
     SDL_Surface     *background;
 }               t_env;
 
 
-t_env   *init_env(void);
+t_env       *init_env(void);
 void        render(t_env *env);
+int        event(t_env *env);
+t_cam       *new_cam(t_vect *v1);
+t_ray   *new_ray(t_vect *orig, t_vect *dir);
+int         belong(t_sphere *sp, t_vect *v);
+void        quit_SDL(t_env *env);
+int         hit_sphere(t_sphere *sp, t_ray *r);
+void        trace(t_env *env);
 #endif

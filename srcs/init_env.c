@@ -64,20 +64,17 @@ t_env   *init_env(void)
         return (NULL);
     if (!(env->win = malloc(sizeof(t_win))))
         return (NULL);
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) != 0)
+	if (!(env->cam = malloc(sizeof(t_cam))))
+        return (NULL);	
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS) != 0)
         return (NULL);
     win = env->win;
-    win->width = 800;
-    win->height = 500;
-    /*if (!(win->handle = SDL_CreateWindow("Ma fenêtre RTV1", 
-                          SDL_WINDOWPOS_UNDEFINED, 
-                          SDL_WINDOWPOS_UNDEFINED, 640, 480, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE)))
-	{
-			ft_putstr("Impossible de charger le mode video : %s\n");
-			return (NULL);
-    }*/
+    win->width = 1200;
+    win->height = 900;
+	env->boucle = 0;
+	env->cam->pos = new_vect(600.0, 450.0, -100.0);
     SDL_CreateWindowAndRenderer(win->width, win->height, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE, &win->handle, &win->rend);
-	SDL_SetWindowTitle(win->handle, "fenetre principale");
-    
+	SDL_SetWindowTitle(win->handle, "RTV1");
+ 
     return (env);
 }
