@@ -52,14 +52,18 @@ void        trace(t_env *env)
     int y;
     t_vect *v;
     t_ray *r;
-    t_sphere *sp;
+    t_plan *p;
     t_vect *v1;
+    t_vect *norm;
     //SDL_SetRenderDrawColor(env->win->rend, 255, 0, 0, 0);
-    if (!(v1 = new_vect(600.0, 450.0, 180.0)))
+    if (!(v1 = new_vect(600.0, 450.0, 100.0)))
         return;
-    if (!(sp = new_sphere(v1, 200.0)))
+    if (!(norm = new_vect(0.0, 40.0, 5.0)))
         return;
-   
+    /*if (!(sp = new_sphere(v1, 200.0)))
+        return;*/
+   if (!(p = new_plan(v1, norm)))
+        return;
         x = 0;
         while (x < 1200)
         {
@@ -68,7 +72,9 @@ void        trace(t_env *env)
             {
                 v = new_vect(x, y, 0.0);
                 r = new_ray(env->cam->pos, normed_vector(minus_vect(v, env->cam->pos)));  
-                if (hit_sphere(sp, r) == 1)
+                /*if (hit_sphere(sp, r) == 1)
+                        SDL_RenderDrawPoint(env->win->rend, x, y);*/
+                if (hit_plan(p, r) == 1)
                         SDL_RenderDrawPoint(env->win->rend, x, y);
                 y++;
             }

@@ -90,8 +90,10 @@ void        render(t_env *env);
 int        event(t_env *env);
 t_cam       *new_cam(t_vect *v1);
 t_ray   *new_ray(t_vect *orig, t_vect *dir);
-int         belong(t_sphere *sp, t_vect *v);
+int         belong_to_plan(t_plan *p, t_vect *v);
+int         belong_to_sphere(t_sphere *sp, t_vect *v);
 void        quit_SDL(t_env *env);
 int         hit_sphere(t_sphere *sp, t_ray *r);
+int         hit_plan(t_plan *p, t_ray *r);
 void        trace(t_env *env);
 #endif

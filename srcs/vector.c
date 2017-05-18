@@ -45,6 +45,21 @@ t_vect  *normed_vector(t_vect *v1)
     return new_vect(v1->x / norm, v1->y / norm, v1->z / norm);
 }
 
+float   distance(t_vect *v1, t_vect *v2)
+{
+    return (sqrt(pow(v1->x - v2->x, 2) + pow(v1->y - v2->y, 2) + pow(v1->z - v2->z, 2)));
+}
+
+t_vect      *multiply_scalar(t_vect *v, float k)
+{
+    return new_vect(k * v->x, k * v->y, k * v->z);
+}
+
+t_vect  *product_vectorial(t_vect *u, t_vect *v)
+{
+    return (new_vect(u->y * v->z - u->z * v->y, u->z * v->x - u->x * v->z, u->x * v->y - u->y * v->x));
+}
+
 float       min(float r, float s)
 {
     if (r < s)
