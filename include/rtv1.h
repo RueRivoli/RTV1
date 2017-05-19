@@ -96,4 +96,13 @@ void        quit_SDL(t_env *env);
 int         hit_sphere(t_sphere *sp, t_ray *r);
 int         hit_plan(t_plan *p, t_ray *r);
 void        trace(t_env *env);
+float       sec_deg_eq(float n, float dir);
+float       fst_deg_eq(float n, float dir, float a, float o);
+float       zer_deg_eq(float n, float a, float o);
+
+float       sec_deg_eq2(float expr, float n, float dir);
+float       fst_deg_eq2(float n, float dir, float a, float o, float expr, float expr2);
+float       zer_deg_eq2(float n, float expr2, float o, float a);
+int         hit_cylinder2(t_cylinder *cyl, t_ray *r);
+int         hit_cylinder3(t_cylinder *cyl, t_ray *r);
 #endif

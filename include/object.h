@@ -35,6 +35,13 @@ typedef struct s_cylinder
     float       radius;
 }       t_cylinder;
 
+typedef struct s_cone
+{
+    t_vect *summit;
+    t_vect  *axis;
+    float   angle;
+}       t_cone;
+
 t_sphere    *new_sphere(t_vect *v1, float rad);
 t_plan      *new_plan(t_vect *origin, t_vect *normal);
 t_cylinder  *new_cylinder(t_vect *origin, t_vect *normal, float radius);

@@ -47,7 +47,7 @@ t_cylinder  *new_cylinder(t_vect *origin, t_vect *normal, float radius)
     if (!(cyl = (t_cylinder *)malloc(sizeof(t_cylinder))))
         return (NULL);
     cyl->origin = origin;
-    cyl->normal = normal, 
+    cyl->normal = normed_vector(normal); 
     cyl->radius = radius;
     return (cyl);
 }
@@ -82,7 +82,84 @@ int         belong_to_sphere(t_sphere *sp, t_vect *v)
     return (0);
 }
 
-int         hit_cylinder(t_cylinder *cyl, t_ray *r)
+float       sec_deg_eq(float n, float dir)
+{
+    return (pow(n - 1.0, 2) * pow(dir, 2));
+}
+
+float       sec_deg_eq2(float expr, float n, float dir)
+{
+    return (pow(n * expr - dir, 2));
+}
+float       fst_deg_eq(float n, float dir, float a, float o)
+{
+    return (2 * n * dir * (a - o) * (n - 1.0) + 2 * a * dir * pow(n - 1, 2));
+}
+
+float       fst_deg_eq2(float n, float dir, float a, float o, float expr, float expr2)
+{
+    return (2 * (n * expr - dir) * ((o - a) + expr2 * n));
+}
+float       zer_deg_eq(float n, float a, float o)
+{
+    return (pow(a - o, 2) * pow(n, 2) + 2 * n * (a - o) * (n - 1.0) * a + pow(a, 2) * pow(n - 1.0, 2));
+}
+
+float       zer_deg_eq2(float n, float expr2, float o, float a)
+{
+    return (pow( (o - a) + expr2 * n, 2));
+}
+
+int         hit_cylinder3(t_cylinder *cyl, t_ray *r)
+{
+    float a;
+    float b;
+    float c;
+    float expr;
+    float expr2;
+    float delta;
+
+    expr = cyl->normal->x * r->direction->x + cyl->normal->y * r->direction->y + cyl->normal->z * r->direction->z;
+    //printf("expr : %f\n", expr);
+    expr2 = (r->origin->x - cyl->origin->x) * cyl->normal->x + (r->origin->y - cyl->origin->y) * cyl->normal->y +\
+    (r->origin->z - cyl->origin->z) * cyl->normal->z;
+    //printf("expr2 : %f\n",expr2);
+    a =  sec_deg_eq2(expr, cyl->normal->x, r->direction->x) + sec_deg_eq2(expr, cyl->normal->y, r->direction->y) +\
+    sec_deg_eq2(expr, cyl->normal->z, r->direction->z);
+    //printf("a : %f\n",a);
+    b = fst_deg_eq2(cyl->normal->x, r->direction->x, r->origin->x, cyl->origin->x, expr, expr2) +\
+    fst_deg_eq2(cyl->normal->y, r->direction->y, r->origin->y, cyl->origin->y, expr, expr2) +\
+    fst_deg_eq2(cyl->normal->z, r->direction->z, r->origin->z, cyl->origin->z, expr, expr2);
+    //printf("b : %f\n",b);
+    c = zer_deg_eq2(cyl->normal->x, expr2, cyl->origin->x, r->origin->x) +\
+    zer_deg_eq2(cyl->normal->y, expr2, cyl->origin->y, r->origin->y) +\
+    zer_deg_eq2(cyl->normal->z, expr2, cyl->origin->z, r->origin->z) - pow(cyl->radius, 2);
+    //printf("c : %f\n",c);
+    delta = pow(b, 2) - 4 * a * c;
+        //printf("%f\n", delta);
+    if (delta >= 0)
+        return (1);
+    return (0);
+}
+
+int         hit_cylinder2(t_cylinder *cyl, t_ray *r)
+{
+    float a;
+    float b;
+    float c;
+    float delta;
+    a =  sec_deg_eq(cyl->normal->x, r->direction->x) + sec_deg_eq(cyl->normal->y, r->direction->y) + sec_deg_eq(cyl->normal->z, r->direction->z);
+    b = fst_deg_eq(cyl->normal->x, r->direction->x, r->origin->x, cyl->origin->x) + fst_deg_eq(cyl->normal->y, \
+    r->direction->y, r->origin->y, cyl->origin->y) + fst_deg_eq(cyl->normal->z, \
+    r->direction->z, r->origin->z, cyl->origin->z);
+    c = zer_deg_eq(cyl->normal->x, r->origin->x, cyl->origin->x) + zer_deg_eq(cyl->normal->y, \
+    r->origin->y, cyl->origin->y) + zer_deg_eq(cyl->normal->z, r->origin->z, cyl->origin->z) - pow(cyl->radius, 2);
+    delta = pow(b, 2) - 4 * a * c;
+    if (delta >= 0)
+        return (1);
+    return (0);
+}
+/*int         hit_cylinder(t_cylinder *cyl, t_ray *r)
 {
     t_vect *l;
     t_vect *w;
@@ -115,7 +192,7 @@ int         hit_cylinder(t_cylinder *cyl, t_ray *r)
         else 
         {
             E = product_vectorial(l, normed_vect(v));
-            t = multiply_scalar(scalar_product(E, normed_vector(w)), -1);
+            t = -1 * scalar_product(E, normed_vector(w));
             F = product_vectorial(w, cyl->normal);
             s = sqrt(power(cyl->radius, 2) - power(R, 2)) / scalar_product(normed_vector(r->direction), \
             normed_vect(F));
@@ -123,9 +200,7 @@ int         hit_cylinder(t_cylinder *cyl, t_ray *r)
         }
     }
 
-
-        }
-}
+}*/
 
 int         hit_plan(t_plan *p, t_ray *r)
 {
