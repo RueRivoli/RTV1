@@ -75,12 +75,14 @@ void        trace(t_env *env)
             {
                 v = new_vect(x, y, 0.0);
                 r = new_ray(env->cam->pos, normed_vector(minus_vect(v, env->cam->pos)));  
+                if (pow(x, 2) == pow(y, 2) * pow(tan(45), 2))
+                    SDL_RenderDrawPoint(env->win->rend, x, y);
                 /*if (hit_sphere(sp, r) == 1)
                         SDL_RenderDrawPoint(env->win->rend, x, y);*/
                 /*if (hit_plan(p, r) == 1)
                         SDL_RenderDrawPoint(env->win->rend, x, y);*/
-                if (hit_cylinder3(cyl, r) == 1)
-                    SDL_RenderDrawPoint(env->win->rend, x, y);
+                /*if (hit_cylinder3(cyl, r) == 1)
+                    SDL_RenderDrawPoint(env->win->rend, x, y);*/
                 y++;
             }
             x++;

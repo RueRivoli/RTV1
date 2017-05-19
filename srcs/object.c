@@ -52,6 +52,18 @@ t_cylinder  *new_cylinder(t_vect *origin, t_vect *normal, float radius)
     return (cyl);
 }
 
+t_cone      *new_cone(t_vect *summit, t_vect *axis, float angle)
+{
+    t_cone      *c;
+
+    if (!(c = (t_cone *)malloc(sizeof(t_cone))))
+        return (NULL);
+    c->summit = summit;
+    c->axis = normed_vector(axis); 
+    c->angle = angle;
+    return (c);
+}
+
 int         belong_to_plan(t_plan *p, t_vect *v)
 {
     t_vect  *v1;
@@ -91,6 +103,12 @@ float       sec_deg_eq2(float expr, float n, float dir)
 {
     return (pow(n * expr - dir, 2));
 }
+
+float       sec_deg_eq3(float expr, float n, float dir, float angle)
+{
+    return (pow(n * expr - dir - tan(angle) * expr, 2));
+}
+
 float       fst_deg_eq(float n, float dir, float a, float o)
 {
     return (2 * n * dir * (a - o) * (n - 1.0) + 2 * a * dir * pow(n - 1, 2));
@@ -108,6 +126,11 @@ float       zer_deg_eq(float n, float a, float o)
 float       zer_deg_eq2(float n, float expr2, float o, float a)
 {
     return (pow( (o - a) + expr2 * n, 2));
+}
+
+float       zer_deg_eq3(float n, float expr2, float o, float a, t_vect *v, t_vect *n1)
+{
+    return (pow( (o - a) + expr2 * n + expr2 * n + (o - a) * n + scalar_product(v, n1), 2));
 }
 
 int         hit_cylinder3(t_cylinder *cyl, t_ray *r)
@@ -142,6 +165,38 @@ int         hit_cylinder3(t_cylinder *cyl, t_ray *r)
     return (0);
 }
 
+
+int         hit_cone(t_cylinder *c, t_ray *r)
+{
+    float a;
+    float b;
+    float c;
+    float expr;
+    float expr2;
+    float delta;
+
+    expr = c->normal->x * r->direction->x + c->normal->y * r->direction->y + c->normal->z * r->direction->z;
+    //printf("expr : %f\n", expr);
+    expr2 = (r->origin->x - c->origin->x) * c->normal->x + (r->origin->y - c->origin->y) * c->normal->y +\
+    (r->origin->z - c->origin->z) * c->normal->z;
+    //printf("expr2 : %f\n",expr2);
+    a =  sec_deg_eq2(expr, c->normal->x, r->direction->x) + sec_deg_eq2(expr, c->normal->y, r->direction->y) +\
+    sec_deg_eq2(expr, c->normal->z, r->direction->z);
+    //printf("a : %f\n",a);
+    b = fst_deg_eq2(c->normal->x, r->direction->x, r->origin->x, c->origin->x, expr, expr2) +\
+    fst_deg_eq2(c->normal->y, r->direction->y, r->origin->y, c->origin->y, expr, expr2) +\
+    fst_deg_eq2(c->normal->z, r->direction->z, r->origin->z, c->origin->z, expr, expr2);
+    //printf("b : %f\n",b);
+    c = zer_deg_eq2(c->normal->x, expr2, c->origin->x, r->origin->x) +\
+    zer_deg_eq2(c->normal->y, expr2, c->origin->y, r->origin->y) +\
+    zer_deg_eq2(c->normal->z, expr2, c->origin->z, r->origin->z) - pow(tan(c->angle) * expr2, 2);
+    //printf("c : %f\n",c);
+    delta = pow(b, 2) - 4 * a * c;
+        //printf("%f\n", delta);
+    if (delta >= 0)
+        return (1);
+    return (0);
+}
 int         hit_cylinder2(t_cylinder *cyl, t_ray *r)
 {
     float a;
