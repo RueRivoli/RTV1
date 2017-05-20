@@ -19,7 +19,7 @@ void        render(t_env *env)
 
 	
 
-    SDL_Delay(20000);
+    
 	//raytrace(e);
 	
 	/*SDL_RenderPresent(env->win->rend);*/
@@ -69,10 +69,10 @@ t_env   *init_env(void)
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS) != 0)
         return (NULL);
     win = env->win;
-    win->width = 1200;
-    win->height = 900;
+    win->width = 900;//1200
+    win->height = 700;//900
 	env->boucle = 0;
-	env->cam->pos = new_vect(600.0, 450.0, -400.0);
+	env->cam->pos = new_vect(450.0, 350.0, -400.0);//new_vect(600.0, 450.0, -400.0);
     SDL_CreateWindowAndRenderer(win->width, win->height, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE, &win->handle, &win->rend);
 	SDL_SetWindowTitle(win->handle, "RTV1");
  

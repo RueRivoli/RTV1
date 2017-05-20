@@ -23,19 +23,17 @@ int        event(t_env *env)
     SDL_WaitEvent(&evenements);
     if (evenements.type == SDL_KEYDOWN && evenements.key.keysym.sym == SDLK_ESCAPE)
                 return (0);
-		else if (evenements.type == SDL_QUIT)
+	else if (evenements.type == SDL_QUIT)
                 return (0);
-        else if (evenements.type == SDL_WINDOWEVENT){
-            if(evenements.window.event == SDL_WINDOWEVENT_RESIZED) {
+    else if (evenements.type == SDL_WINDOWEVENT)
+    {
+        if(evenements.window.event == SDL_WINDOWEVENT_RESIZED)
                 printf("Fenêtre redimensionnée\n"); /* Fenêtre redimensionnée */
-            }
-            if(evenements.window.event == SDL_WINDOWEVENT_CLOSE)
+        if(evenements.window.event == SDL_WINDOWEVENT_CLOSE)
                 return (0);
-        }
-		else if (evenements.type == SDL_WINDOWEVENT_SIZE_CHANGED)
-			{
-				SDL_RenderClear(env->win->rend);
-			}
+    }
+	else if (evenements.type == SDL_WINDOWEVENT_SIZE_CHANGED)
+			SDL_RenderClear(env->win->rend);
         return (1);
 }
 
@@ -46,43 +44,31 @@ void        quit_SDL(t_env *env)
     SDL_Quit();
 }
 
-void        trace(t_env *env)
+void        trace(t_env *env, t_cone *cone)
 {
     int x;
     int y;
     t_vect *v;
     t_ray *r;
-    //t_plan *p;
-    t_vect *v1;
-    t_vect *norm;
-    t_cylinder *cyl;
-    //SDL_SetRenderDrawColor(env->win->rend, 255, 0, 0, 0);
-    if (!(v1 = new_vect(600.0, 450.0, 100.0)))
-        return;
-    if (!(norm = new_vect(0.0, 10.0, 0.0)))
-        return;
-    if (!(cyl = new_cylinder(v1, norm, 195.0)))
-        return;
-    /*if (!(sp = new_sphere(v1, 200.0)))
-        return;*/
-   /*if (!(p = new_plan(v1, norm)))
-        return;*/
+
         x = 0;
-        while (x < 1200)
+        while (x < 900)
         {
             y = 0;
-            while (y < 900)
+            while (y < 700)
             {
                 v = new_vect(x, y, 0.0);
                 r = new_ray(env->cam->pos, normed_vector(minus_vect(v, env->cam->pos)));  
-                if (pow(x, 2) == pow(y, 2) * pow(tan(45), 2))
-                    SDL_RenderDrawPoint(env->win->rend, x, y);
                 /*if (hit_sphere(sp, r) == 1)
                         SDL_RenderDrawPoint(env->win->rend, x, y);*/
                 /*if (hit_plan(p, r) == 1)
                         SDL_RenderDrawPoint(env->win->rend, x, y);*/
-                /*if (hit_cylinder3(cyl, r) == 1)
-                    SDL_RenderDrawPoint(env->win->rend, x, y);*/
+                /*if (x == 100 && y == 100)
+                {*/
+                         if (hit_cone(cone, r) == 1)
+                        SDL_RenderDrawPoint(env->win->rend, x, y);
+                    
+                /*}*/
                 y++;
             }
             x++;
@@ -97,10 +83,18 @@ int main(GLvoid)
     
     if (!(env = init_env()))
         return (0);
-    
+      
+    t_vect *v1;
+    t_vect *norm;
+    t_cone *c;
+
+    if (!(v1 = new_vect(450.0, 350.0, 200.0)))
+        return (0);
    
-    
- 
+    if (!(norm = new_vect(10.0, 10.0, 10.0)))
+        return (0);
+    if (!(c = new_cone(v1, norm, 10.0)))
+        return (0);
     
      while(!env->boucle)
     {
@@ -114,15 +108,8 @@ int main(GLvoid)
         //SDL_GetWindowSize(env->win->handle, size_x, size_y);
        //SDL_GetWindowPosition(env->win->handle, pos_x, pos_y);
        
-       //SDL_SetRenderDrawColor(env->win->rend, 255, 0, 0, 0);
-      //SDL_RenderDrawPoint(env->win->rend, 150, 150);
-       
-        //SDL_RenderDrawPoint(env->win->rend, 10, 150);
-         SDL_SetRenderDrawColor(env->win->rend, 255, 0, 0, 0);
-
-        SDL_RenderDrawPoint(env->win->rend, 200, 200);
-       
-        trace(env);
+       SDL_SetRenderDrawColor(env->win->rend, 255, 0, 0, 0);
+        trace(env, c);
         SDL_RenderPresent(env->win->rend);
         //SDL_UpdateWindowSurface(env->win->handle);
 
