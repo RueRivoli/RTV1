@@ -14,5 +14,5 @@
 
 void		error_param()
 {
-    ft_putstr("Paramètre non conforme")
+    ft_putstr("Paramètre non conforme");
 }

@@ -1,0 +1,29 @@
+# Scene
+name Scene_1
+camera origin 450.0 350.0 0.0
+render size 900 700
+
+
+# Objects
+
+name sphere
+vect 450.0 350.0 200.0 
+radius 200.0
+color 0xFF00 0x0000 0x0000
+
+name plan
+origin 750.0 450.0 200.0
+normal 0.0 0.0 1.0
+color 0x0000 0xFF00 0x0000
+
+name cylinder
+origin 750.0 450.0 200.0
+normal 0.0 0.0 1.0
+radius 50.0
+color 0x0000 0xFF00 0x0000en
+
+name cone
+origin 750.0 450.0 200.0
+axis 0.0 0.0 1.0
+angle 20.0
+color 0x0000 0xFF00 0x0000

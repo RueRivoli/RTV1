@@ -80,16 +80,21 @@ void        trace(t_env *env, t_cone *cone)
 int main(int argc, char **argv)
 {
     t_env *env;
+    int fd;
+    (void)env;
     
-    if (argc != 2)
-    {
-        error();
-        return (0);
-    }
     if (!(env = init_env()))
         return (0);
       
-    t_vect *v1;
+    if (argc != 2)
+    {
+        error_param();
+        return (0);
+    }
+    fd = open(argv[1], O_RDONLY);
+    lecture(fd, env);
+    
+    /*t_vect *v1;
     t_vect *norm;
     t_cone *c;
 
@@ -123,6 +128,6 @@ int main(int argc, char **argv)
     }
     
     
-    quit_SDL(env);
+    quit_SDL(env);*/
     return (0); 
 }

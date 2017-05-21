@@ -28,18 +28,6 @@
 # include <unistd.h>
 
 
-typedef struct s_hit_point
-{
-    t_vect  *vect;
-    float   distance_to_cam;
-}
-
-typedef struct s_ray 
-{   
-    t_vect      *origin;
-    t_vect      *direction;
-    t_hit_point  *hit_point;
-}               t_ray;
 
 
 typedef struct s_cam
@@ -97,15 +85,17 @@ typedef struct s_env
 }               t_env;
 
 
-t_env       *init_env(void);
-void        render(t_env *env);
-int          event(t_env *env);
-t_cam       *new_cam(t_vect *v1);
-t_ray       *new_ray(t_vect *orig, t_vect *dir);
-void        quit_SDL(t_env *env);
-void        trace(t_env *env, t_cone *cone);
-float       term(float alpha, float beta);
-void        error_param();
+t_env           *init_env(void);
+void            render(t_env *env);
+int             event(t_env *env);
+t_cam           *new_cam(t_vect *v1);
+t_ray           *new_ray(t_vect *orig, t_vect *dir);
+void            quit_SDL(t_env *env);
+void            trace(t_env *env, t_cone *cone);
+float           term(float alpha, float beta);
+void             error_param();
+int              read_scene(int fd, char *line, t_env *env);
+int            lecture(int fd, t_env *env);
 t_hit_point     *new_hit_point(t_vect *vect, float dist_to_cam);
 
 

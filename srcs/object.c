@@ -9,7 +9,7 @@ t_cam   *new_cam(t_vect *v1)
     return (c);
 }
 
-t_obj   *add_obj(t_obj *obj, t_vect *vect, int type)
+/*t_obj   *add_obj(t_obj *obj, t_vect *vect, int type)
 {
     t_obj *tmp;
     t_obj *new;
@@ -32,7 +32,7 @@ t_obj   *add_obj(t_obj *obj, t_vect *vect, int type)
         
     }
 
-}
+}*/
 
 t_hit_point     *new_hit_point(t_vect *vect, float dist_to_cam)
 {
@@ -41,6 +41,7 @@ t_hit_point     *new_hit_point(t_vect *vect, float dist_to_cam)
         return (NULL);
     ht->vect = vect;
     ht->distance_to_cam = dist_to_cam; 
+    return (ht);
 }
 
 t_ray   *new_ray(t_vect *orig, t_vect *dir)
