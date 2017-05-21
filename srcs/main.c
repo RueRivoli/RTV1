@@ -77,10 +77,15 @@ void        trace(t_env *env, t_cone *cone)
         //SDL_UpdateWindowSurface(env->win->handle);
 }
 
-int main(GLvoid)
+int main(int argc, char **argv)
 {
     t_env *env;
     
+    if (argc != 2)
+    {
+        error();
+        return (0);
+    }
     if (!(env = init_env()))
         return (0);
       

@@ -27,10 +27,18 @@
 # include <math.h>      
 # include <unistd.h>
 
+
+typedef struct s_hit_point
+{
+    t_vect  *vect;
+    float   distance_to_cam;
+}
+
 typedef struct s_ray 
 {   
     t_vect      *origin;
     t_vect      *direction;
+    t_hit_point  *hit_point;
 }               t_ray;
 
 
@@ -83,6 +91,9 @@ typedef struct s_env
     t_obj            *obj;
     int             boucle;
     SDL_Surface     *background;
+    char            *title;
+    int             size_x;
+    int             size_y;
 }               t_env;
 
 
@@ -94,8 +105,8 @@ t_ray       *new_ray(t_vect *orig, t_vect *dir);
 void        quit_SDL(t_env *env);
 void        trace(t_env *env, t_cone *cone);
 float       term(float alpha, float beta);
-
-
+void        error_param();
+t_hit_point     *new_hit_point(t_vect *vect, float dist_to_cam);
 
 
 #endif

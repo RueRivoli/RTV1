@@ -12,7 +12,7 @@
 
 #include "rtv1.h"
 
-/*t_env		*init_env()
+void		error_param()
 {
-
-}*/
+    ft_putstr("Paramètre non conforme")
+}

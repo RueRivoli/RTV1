@@ -30,7 +30,7 @@ CFLAGS += $(addprefix -I, $(INC_PATH) $(LIBFT_INC_PATH) $(MLX_INC_PATH))
 SRC_PATH = srcs/
 vpath %.c $(SRC_PATH)
 
-SOURCES = cone.c cylinder.c main.c essai.c init_env.c object.c plan.c sphere.c vector.c
+SOURCES = cone.c cylinder.c main.c essai.c init_env.c object.c parser.c plan.c sphere.c vector.c
 SRCS = $(addprefix srcs/, $(SOURCES))
 
 # Libft
@@ -54,7 +54,7 @@ $(NAME): $(OBJECTS)
 	make -C ./libft
 	$(CC) $(CFLAGS) $(SRCS) $(INCS)
 	mkdir objs
-	mv init_env.o main.o essai.o sphere.o plan.o cylinder.o cone.o vector.o object.o $(DIR_OBJ)
+	mv init_env.o main.o essai.o sphere.o parser.o plan.o cylinder.o cone.o vector.o object.o $(DIR_OBJ)
 	$(CC) $(LIB_PATH) $(LIB) $(LIBFT) -o $(NAME) $(OBJECT)
 
 	@echo "\n-----------------------------------------"
