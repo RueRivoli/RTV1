@@ -32,7 +32,7 @@ float       beta2cone(float expr2, float n, float angle)
     return (expr2 * n * tan(angle));
 }
 
-int         hit_cone(t_cone *cone, t_ray *r)
+t_hit_point         *hit_cone(void *o, t_ray *r)
 {
     float a;
     float b;
@@ -40,7 +40,10 @@ int         hit_cone(t_cone *cone, t_ray *r)
     float expr;
     float expr2;
     float delta;
-
+    t_cone *c;
+    t_cone = (t_cone *)o;
+    t_vect *v;
+    float res;
     expr = cone->axis->x * r->direction->x + cone->axis->y * r->direction->y + cone->axis->z * r->direction->z;
     expr2 = (r->origin->x - cone->summit->x) * cone->axis->x + (r->origin->y - cone->summit->y) * cone->axis->y +\
     (r->origin->z - cone->summit->z) * cone->axis->z;
@@ -58,6 +61,10 @@ int         hit_cone(t_cone *cone, t_ray *r)
     pow(beta2cone(expr2, cone->axis->y, cone->angle), 2) - pow(beta2cone(expr2, cone->axis->z, cone->angle), 2);
     delta = pow(b, 2) - 4.0 * a * c;
     if (delta >= 0)
-        return (1);
-    return (0);
+    {
+        res = (- b - sqrt(delta)) / 2 * a;
+          v = new_vect(r->origin->x + res * r->direction->x, r->origin->y + res * r->direction->y, r->origin->z + res * r->origin->z);
+          return (new_hit_point(v, 0.0));
+    }
+    return (NULL);
 }

@@ -20,17 +20,20 @@ int         belong_to_plan(t_plan *p, t_vect *v)
     return (0);
 }
 
-int         hit_plan(t_plan *p, t_ray *r)
+t_hit_point         *hit_plan(void *o, t_ray *r)
 {
-    float num;
     float den;
-
-    num = scalar_product(p->normal, minus_vect(p->origin, r->origin));
+    float res;
+    t_vect *v;
+    t_plan *p;
+    p = (t_plan *)o;
+    res = scalar_product(p->normal, minus_vect(p->origin, r->origin));
     den = scalar_product(p->normal, r->direction);
-    num /= den;
-    if (num > 0)
+    res /= den;
+    if (res >= 0)
     {
-        return (1);
+        v = new_vect(r->origin->x + res * r->direction->x, r->origin->y + res * r->direction->y, r->origin->z + res * r->direction->z);
+        return (new_hit_point(v, 0.0));
     } 
-    return (0);
+    return (NULL);
 }

@@ -9,16 +9,43 @@ t_cam   *new_cam(t_vect *v1)
     return (c);
 }
 
-/*t_obj   *add_obj(t_obj *obj, t_vect *vect, int type)
+t_mater   *new_mater(float f, int r, int g, int b)
+{
+    t_mater *mat;
+    if (!(mat = (t_mater*)malloc(sizeof(t_mater))))
+        return (NULL);
+    mat->alpha = f;
+    mat->ir = r;
+    mat->ig = g;
+    mat->ib = b;
+    return (mat);
+}
+
+t_hit_point         *(*get_obj_collider(int id))(void *o, t_ray *r)
+{
+    if (id == 1)
+        return (*hit_sphere);
+    if (id == 2)
+        return (*hit_plan);
+    if (id == 3)
+        return (*hit_cylinder);
+    if (id == 4)
+        return (*hit_cone);
+    return (NULL);
+}
+
+t_obj       *add_obj(t_obj *obj, int obj_type, t_mater *mater, void *type)
 {
     t_obj *tmp;
-    t_obj *new;
+    t_obj  *new;
     if (!obj)
     {
-        if (!(obj = (t_obj*)malloc(sizeof(obj))))
+        if (!(obj = (t_obj*)malloc(sizeof(t_obj))))
             return (NULL);
-        obj->vect = vect;
+        obj->is_hit = get_obj_collider(obj_type);
         obj->type = type;
+        obj->mater = mater;
+        obj->next = NULL;
     }
     else 
     {
@@ -27,9 +54,38 @@ t_cam   *new_cam(t_vect *v1)
         {
             tmp = tmp->next;
         }
-        if (!(new = (t_obj*)malloc(sizeof(t_obj))))
+        new = (t_obj*)malloc(sizeof(t_obj));
+        new->is_hit = get_obj_collider(obj_type);
+        new->type = type;
+        new->mater = mater;
+        new->next = NULL;
+        tmp->next = new;
+    }
+    return (obj);
+}
+/*t_obj       add_obj(t_obj **obj, int obj_type, t_vect *mater, void *type)
+{
+    t_obj *tmp;
+    if (!*obj)
+    {
+        if (!(*obj = (t_obj*)malloc(sizeof(t_obj))))
             return (NULL);
-        
+        (*obj)->is_hit = get_obj_collider(obj_type);
+        (*obj)->type = type;
+        (*obj)->mater = mater;
+        (*obj)->next = NULL;
+    }
+    else 
+    {
+        tmp = *obj;
+        while (tmp->next)
+        {
+            tmp = tmp->next;
+        }
+        tmp = malloc(sizeof(t_geo));
+        tmp->type = type;
+        tmp->mater = mater;
+        tmp->next = NULL;
     }
 
 }*/

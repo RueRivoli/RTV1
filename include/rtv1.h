@@ -64,11 +64,6 @@ typedef struct s_win
     int         height;
 }               t_win;
 
-typedef struct s_obj
-{
-    t_vect  *vect;
-    int     type;
-}           t_obj;
 
 typedef struct s_env
 {
@@ -94,9 +89,13 @@ void            quit_SDL(t_env *env);
 void            trace(t_env *env, t_cone *cone);
 float           term(float alpha, float beta);
 void             error_param();
-int              read_scene(int fd, char *line, t_env *env);
-int            lecture(int fd, t_env *env);
 t_hit_point     *new_hit_point(t_vect *vect, float dist_to_cam);
 
+int             type_objects(char *str);
+int             register_sphere(char *line, t_env *env, int fd);
+int           register(int to, char *line, t_env *env);
+int              read_scene(int fd, char *line, t_env *env);
+int              lecture(int fd, t_env *env);
+int             read_objects(int fd, char *line, t_env *env);
 
 #endif

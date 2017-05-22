@@ -32,7 +32,7 @@ float       beta_cylinder(float expr2, float n, float a, float o)
     return (n * expr2 + o - a);
 }
 
-int         hit_cylinder(t_cylinder *cyl, t_ray *r)
+t_hit_point         *hit_cylinder(void *o, t_ray *r)
 {
     float a;
     float b;
@@ -40,6 +40,11 @@ int         hit_cylinder(t_cylinder *cyl, t_ray *r)
     float expr;
     float expr2;
     float delta;
+    float res;
+    t_vect *v;
+    t_cylinder *cyl;
+
+    cyl = (t_cylinder*)o;
 
     expr = cyl->normal->x * r->direction->x + cyl->normal->y * r->direction->y + cyl->normal->z * r->direction->z;
     expr2 = (r->origin->x - cyl->origin->x) * cyl->normal->x + (r->origin->y - cyl->origin->y) * cyl->normal->y +\
@@ -54,6 +59,11 @@ int         hit_cylinder(t_cylinder *cyl, t_ray *r)
     pow(beta_cylinder(expr2, cyl->normal->z, r->origin->z, cyl->origin->z), 2) - pow(cyl->radius, 2);
     delta = pow(b, 2) - 4 * a * c;
     if (delta >= 0)
+    {
+        res = (- b - sqrt(delta)) / 2 * a;
+        v = new_vect(r->origin->x + res * r->direction->x, r->origin->y + res * r->direction->y, r->origin->z + res * r->direction->z);
+        return (new_hit_point(v, 0.0));
+    }
         return (1);
     return (0);
 }
