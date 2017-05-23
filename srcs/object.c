@@ -44,6 +44,7 @@ t_obj       *add_obj(t_obj *obj, int obj_type, t_mater *mater, void *type)
             return (NULL);
         obj->is_hit = get_obj_collider(obj_type);
         obj->type = type;
+        obj->form = obj_type;
         obj->mater = mater;
         obj->next = NULL;
     }
@@ -58,6 +59,7 @@ t_obj       *add_obj(t_obj *obj, int obj_type, t_mater *mater, void *type)
         new->is_hit = get_obj_collider(obj_type);
         new->type = type;
         new->mater = mater;
+        new->form = obj_type;
         new->next = NULL;
         tmp->next = new;
     }

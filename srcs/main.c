@@ -65,7 +65,7 @@ void        trace(t_env *env, t_cone *cone)
                         SDL_RenderDrawPoint(env->win->rend, x, y);*/
                 /*if (x == 100 && y == 100)
                 {*/
-                         if (hit_cone(cone, r) == 1)
+                         if (hit_cone(cone, r))
                         SDL_RenderDrawPoint(env->win->rend, x, y);
                     
                 /*}*/
@@ -92,8 +92,8 @@ int main(int argc, char **argv)
         return (0);
     }
     fd = open(argv[1], O_RDONLY);
-    lecture(fd, env);
-    
+    if (lecture(fd, env) != 0)
+        display_scene(env);
     /*t_vect *v1;
     t_vect *norm;
     t_cone *c;

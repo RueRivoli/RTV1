@@ -67,6 +67,7 @@ typedef struct s_obj
 {
   	t_hit_point		*(*is_hit)(void *ob, t_ray *r);
 	void			*type;
+    int             form;
 	t_mater			*mater;
 	struct s_obj			*next;
 }               t_obj;

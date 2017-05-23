@@ -29,6 +29,8 @@ static int			ft_find(const char *str, int i)
 		j = 10 * p + ind;
 		p = j;
 	}
+	if (i != (int)ft_strlen(str) && str[i] != '.')
+		return (-1);
 	return (p);
 }
 

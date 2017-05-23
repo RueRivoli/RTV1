@@ -40,8 +40,8 @@ t_hit_point         *hit_cone(void *o, t_ray *r)
     float expr;
     float expr2;
     float delta;
-    t_cone *c;
-    t_cone = (t_cone *)o;
+    t_cone *cone;
+    cone = (t_cone *)o;
     t_vect *v;
     float res;
     expr = cone->axis->x * r->direction->x + cone->axis->y * r->direction->y + cone->axis->z * r->direction->z;

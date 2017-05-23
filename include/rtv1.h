@@ -93,9 +93,10 @@ t_hit_point     *new_hit_point(t_vect *vect, float dist_to_cam);
 
 int             type_objects(char *str);
 int             register_sphere(char *line, t_env *env, int fd);
-int           register(int to, char *line, t_env *env);
+int             registering(int to, char *line, t_env *env, int fd);
 int              read_scene(int fd, char *line, t_env *env);
 int              lecture(int fd, t_env *env);
+void            display_scene(t_env *env);
 int             read_objects(int fd, char *line, t_env *env);
 
 #endif
