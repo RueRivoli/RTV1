@@ -195,7 +195,6 @@ void        display_scene(t_env *env)
         obj = obj->next;
         ft_putchar('\n');
     }
-
 }
 t_vect      *read_origin(char *line, int fd, char *str)
 {
@@ -206,13 +205,10 @@ t_vect      *read_origin(char *line, int fd, char *str)
     if (get_next_line(fd, &line) && (str1 = ft_strstr(line, str)))
     {
         tab = ft_strsplit(line, ' ');
-        ft_putstr("allew");
-        if (tab[1] && tab[2] && tab[3] && ft_atoi(tab[1]) > -1 && ft_atoi(tab[2]) > -1 && ft_atoi(tab[3]) > -1)
+        if (tab[1] && tab[2] && tab[3])
             vect = new_vect(ft_atoi(tab[1]), ft_atoi(tab[2]), ft_atoi(tab[3]));
         else
             return (NULL);
-            
-            
     }
     else
         return (NULL);
@@ -369,7 +365,6 @@ int         read_objects(int fd, char *line, t_env *env)
     to = 0;
     while (get_next_line(fd, &line) && ret)
     {
-        
         if (ft_strstr(line, "name") && (str = ft_strsplit(line, ' ')[1]))
         {
             to = type_objects(str);
@@ -418,6 +413,8 @@ int        read_scene(int fd, char *line, t_env *env)
           {
                env->size_x = ft_atoi(tab[2]);
                 env->size_y = ft_atoi(tab[3]);
+                env->win->height = ft_atoi(tab[2]);
+                env->win->width = ft_atoi(tab[3]);
                 ret++;
           }
     }
@@ -457,11 +454,13 @@ int        lecture(int fd, t_env *env)
         {
                 index++;
                 get_next_line(fd, &line);
+                
                if (index != 2 || read_objects(fd, line,env) == 0)
                 {
                     error_param();
                     return (0);
                 }
+                
                 
         }
     }

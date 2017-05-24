@@ -110,12 +110,18 @@ void        trace2(t_env *env)
              + q * env->screen->w->y;
              z1 = env->screen->center->z - (env->size_x / 2) * env->screen->v->z - (env->size_y / 2) * env->screen->w->z + p * env->screen->v->z \
               + q * env->screen->w->z;
+              
                 v = new_vect(x1, y1, z1);
                 r = new_ray(env->cam->pos, normed_vector(minus_vect(v, env->cam->pos)));
                 while (tmp)
-                {
-                    hp = tmp->is_hit(tmp->type, r);
+                {   
+                    
+                    if (!(hp = tmp->is_hit(tmp->type, r)))
+                        tmp = tmp->next;
+                    else 
+                    {
                     hp->distance_to_cam = distance_with_cam(env, hp);
+                    
                     if (hp->distance_to_cam < min)
                     {
                         min = hp->distance_to_cam;
@@ -123,6 +129,7 @@ void        trace2(t_env *env)
                         SDL_SetRenderDrawColor(env->win->rend, colore->mater->ir, colore->mater->ig, colore->mater->ib, 0);
                     } 
                     tmp = tmp->next;
+                    }
                 }
                 if (min < INFINI)
                         SDL_RenderDrawPoint(env->win->rend, p, q);
@@ -140,12 +147,14 @@ void        trace2(t_env *env)
 int main(int argc, char **argv)
 {
     t_env *env;
+    t_win *win;
+
+ 
     int fd;
-    (void)env;
     
     if (!(env = init_env()))
         return (0);
-      
+         win = env->win;
     if (argc != 2)
     {
         error_param();
@@ -156,7 +165,7 @@ int main(int argc, char **argv)
     /*Lecture et affichage de la scene*/
     if (lecture(fd, env) != 0)
         display_scene(env);
-
+        //ft_putstr("repas");
     /*Placement de l'ecran virtuel*/
     
     set_virtual_screen(env);
@@ -172,7 +181,10 @@ int main(int argc, char **argv)
         return (0);
     if (!(c = new_cone(v1, norm, 10.0)))
         return (0);*/
-    
+       
+     SDL_CreateWindowAndRenderer(win->width, win->height, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE, &win->handle, &win->rend);
+	 SDL_SetWindowTitle(win->handle, "RTV1");
+     
      while(!env->boucle)
     {
         SDL_SetRenderDrawColor(env->win->rend, 255, 255, 255, 0);
@@ -186,8 +198,9 @@ int main(int argc, char **argv)
        //SDL_GetWindowPosition(env->win->handle, pos_x, pos_y);
        
        //SDL_SetRenderDrawColor(env->win->rend, 255, 0, 0, 0);
+       
         trace2(env);
-        SDL_RenderPresent(env->win->rend);
+        //SDL_RenderPresent(env->win->rend);
         //SDL_UpdateWindowSurface(env->win->handle);
 
         if (event(env) == 0)

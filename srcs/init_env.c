@@ -72,12 +72,9 @@ t_env   *init_env(void)
 	env->light = NULL;
 	env->screen = NULL;
     win = env->win;
-    win->width = 900;//1200
-    win->height = 700;//900
+    win->width = 0;//1200
+    win->height = 0;//900
 	env->boucle = 0;
 	env->cam = NULL;//new_vect(600.0, 450.0, -400.0);
-    //SDL_CreateWindowAndRenderer(win->width, win->height, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE, &win->handle, &win->rend);
-	//SDL_SetWindowTitle(win->handle, "RTV1");
- 
     return (env);
 }

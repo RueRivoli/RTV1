@@ -196,7 +196,7 @@ float       distance_with_cam(t_env *env, t_hit_point *hp)
     t_vect *pos;
     t_vect *diff;
     pos = env->cam->pos;
-    if (hp == NULL)
+    if (!hp)
         return (INFINI); 
     diff = minus_vect(pos, hp->vect);
     return (sqrt(pow(diff->x, 2) + pow(diff->y, 2) + pow(diff->z, 2)));
