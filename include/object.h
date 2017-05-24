@@ -73,6 +73,8 @@ typedef struct s_obj
 }               t_obj;
 
 
+
+
 t_sphere    *new_sphere(t_vect *v1, float rad);
 int         belong_to_sphere(t_sphere *sp, t_vect *v);
 t_hit_point         *hit_sphere(void *o, t_ray *r);
@@ -96,7 +98,8 @@ float       beta2cone(float expr2, float n, float angle);
 t_hit_point         *hit_cone(void *o, t_ray *r);
 
 t_mater       *new_mater(float f, int r, int g, int b);
-
+t_vect      *vectv(t_vect *n);
+t_vect      *vectw(t_vect *n);
 t_obj       *add_obj(t_obj *obj, int obj_type, t_mater *mater, void *type);
 
 #endif

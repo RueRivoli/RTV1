@@ -77,6 +77,66 @@ void        trace(t_env *env, t_cone *cone)
         //SDL_UpdateWindowSurface(env->win->handle);
 }
 
+
+void        trace2(t_env *env)
+{
+    int p;
+    int q;
+    int x1;/*abscisse du pixel dans l'ecran virtuel*/
+    int y1;/*ordonnee du pixel dans l'ecran virtuel*/
+    int z1;/*altitude du pixel dans l'ecran virtuel*/
+    float min;
+
+    t_vect *v;
+    t_ray *r;
+
+    t_obj *tmp;
+    t_obj *colore;
+    t_hit_point *hp;
+    
+    tmp = env->obj;
+    
+    p = 0;
+        while (p < env->size_x)
+        {
+            q = 0;
+            
+            while (q < env->size_y)
+            {   
+                min = INFINI;
+                x1 = env->screen->center->x - (env->size_x / 2) * env->screen->v->x - (env->size_y / 2) * env->screen->w->x + p * env->screen->v->x + \
+            q * env->screen->w->x;
+            y1 = env->screen->center->y - (env->size_x / 2) * env->screen->v->y - (env->size_y / 2) * env->screen->w->y + p * env->screen->v->y \
+             + q * env->screen->w->y;
+             z1 = env->screen->center->z - (env->size_x / 2) * env->screen->v->z - (env->size_y / 2) * env->screen->w->z + p * env->screen->v->z \
+              + q * env->screen->w->z;
+                v = new_vect(x1, y1, z1);
+                r = new_ray(env->cam->pos, normed_vector(minus_vect(v, env->cam->pos)));
+                while (tmp)
+                {
+                    hp = tmp->is_hit(tmp->type, r);
+                    hp->distance_to_cam = distance_with_cam(env, hp);
+                    if (hp->distance_to_cam < min)
+                    {
+                        min = hp->distance_to_cam;
+                        colore = tmp;
+                        SDL_SetRenderDrawColor(env->win->rend, colore->mater->ir, colore->mater->ig, colore->mater->ib, 0);
+                    } 
+                    tmp = tmp->next;
+                }
+                if (min < INFINI)
+                        SDL_RenderDrawPoint(env->win->rend, p, q);
+                    
+             }
+                q++;
+            }
+            p++;
+        
+        //SDL_RenderPresent(env->win->rend);
+        //SDL_UpdateWindowSurface(env->win->handle);
+}
+
+
 int main(int argc, char **argv)
 {
     t_env *env;
@@ -92,8 +152,15 @@ int main(int argc, char **argv)
         return (0);
     }
     fd = open(argv[1], O_RDONLY);
+
+    /*Lecture et affichage de la scene*/
     if (lecture(fd, env) != 0)
         display_scene(env);
+
+    /*Placement de l'ecran virtuel*/
+    
+    set_virtual_screen(env);
+
     /*t_vect *v1;
     t_vect *norm;
     t_cone *c;
@@ -104,11 +171,11 @@ int main(int argc, char **argv)
     if (!(norm = new_vect(10.0, 10.0, 10.0)))
         return (0);
     if (!(c = new_cone(v1, norm, 10.0)))
-        return (0);
+        return (0);*/
     
      while(!env->boucle)
     {
-        SDL_SetRenderDrawColor(env->win->rend, 160, 160, 160, 0);
+        SDL_SetRenderDrawColor(env->win->rend, 255, 255, 255, 0);
         SDL_RenderClear(env->win->rend);
     //On met le fond en couleur
        
@@ -118,8 +185,8 @@ int main(int argc, char **argv)
         //SDL_GetWindowSize(env->win->handle, size_x, size_y);
        //SDL_GetWindowPosition(env->win->handle, pos_x, pos_y);
        
-       SDL_SetRenderDrawColor(env->win->rend, 255, 0, 0, 0);
-        trace(env, c);
+       //SDL_SetRenderDrawColor(env->win->rend, 255, 0, 0, 0);
+        trace2(env);
         SDL_RenderPresent(env->win->rend);
         //SDL_UpdateWindowSurface(env->win->handle);
 
@@ -128,6 +195,6 @@ int main(int argc, char **argv)
     }
     
     
-    quit_SDL(env);*/
+    quit_SDL(env);
     return (0); 
 }

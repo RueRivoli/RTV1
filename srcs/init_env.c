@@ -69,6 +69,8 @@ t_env   *init_env(void)
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS) != 0)
         return (NULL);
 	env->obj = NULL;
+	env->light = NULL;
+	env->screen = NULL;
     win = env->win;
     win->width = 900;//1200
     win->height = 700;//900

@@ -32,8 +32,10 @@ void        display_scene(t_env *env)
     t_plan *p;
     t_cone *c;
     t_mater *mat;
+    t_light *light;
     t_cylinder *cyl;
     obj = env->obj;
+    light = env->light;
     t_vect *camera;
 
     camera = env->cam->pos;
@@ -51,6 +53,19 @@ void        display_scene(t_env *env)
     ft_putnbr(env->size_x);
     ft_putstr(" ");
     ft_putnbr(env->size_y);
+    ft_putstr("\n");
+    
+    ft_putstr("Light : ");
+    while (light)
+    {
+        ft_putnbr(light->pos->x);
+         ft_putstr(", ");
+          ft_putnbr(light->pos->y);
+           ft_putstr(", ");
+        ft_putnbr(light->pos->z);
+        ft_putstr("\n");
+        light = light->next;
+    }
     ft_putstr("\n\n");
 
     //print_obj(obj);
@@ -191,10 +206,13 @@ t_vect      *read_origin(char *line, int fd, char *str)
     if (get_next_line(fd, &line) && (str1 = ft_strstr(line, str)))
     {
         tab = ft_strsplit(line, ' ');
+        ft_putstr("allew");
         if (tab[1] && tab[2] && tab[3] && ft_atoi(tab[1]) > -1 && ft_atoi(tab[2]) > -1 && ft_atoi(tab[3]) > -1)
             vect = new_vect(ft_atoi(tab[1]), ft_atoi(tab[2]), ft_atoi(tab[3]));
         else
             return (NULL);
+            
+            
     }
     else
         return (NULL);
@@ -260,6 +278,7 @@ int         register_sphere(char *line, t_env *env, int fd)
         return (0);
     if (!(mat = read_mater(line, fd, "color")))
         return (0);
+      
     sp = new_sphere(vect, rad);
     env->obj = add_obj(env->obj, 1, mat, (void*)sp);
     return (1);
@@ -328,7 +347,10 @@ int         register_cone(char *line, t_env *env, int fd)
 int         registering(int to, char *line, t_env *env, int fd)
 {
     if (to == 1)
+    {
+        
         return (register_sphere(line, env, fd));
+    }
     if (to == 2)
         return (register_plan(line, env, fd));
     if (to == 3)
@@ -347,6 +369,7 @@ int         read_objects(int fd, char *line, t_env *env)
     to = 0;
     while (get_next_line(fd, &line) && ret)
     {
+        
         if (ft_strstr(line, "name") && (str = ft_strsplit(line, ' ')[1]))
         {
             to = type_objects(str);
@@ -379,7 +402,6 @@ int        read_scene(int fd, char *line, t_env *env)
     }
     if (get_next_line(fd, &line) && ft_strstr(line, "camera"))
     {
-        //ft_putstr(line);
         tab = ft_strsplit(line, ' ');
        
         if (tab[2] != NULL && tab[3]!= NULL && tab[4] != NULL)
@@ -391,12 +413,21 @@ int        read_scene(int fd, char *line, t_env *env)
     }
     if (get_next_line(fd, &line) && ft_strstr(line, "render"))
     {
-        //ft_putstr(line);
         tab = ft_strsplit(line, ' ');
         if (tab[2] != NULL && tab[3] != NULL)
           {
                env->size_x = ft_atoi(tab[2]);
                 env->size_y = ft_atoi(tab[3]);
+                ret++;
+          }
+    }
+    while (get_next_line(fd, &line) && ft_strstr(line, "spot"))
+    {
+        tab = ft_strsplit(line, ' ');
+        if (tab[1] && tab[2] && tab[3] && ft_atoi(tab[1]) > -1 && ft_atoi(tab[2]) > -1 && ft_atoi(tab[3]) > -1)
+          {
+               v = new_vect(ft_atoi(tab[1]), ft_atoi(tab[2]), ft_atoi(tab[3]));
+               env->light = add_light(env->light, v);            
                 ret++;
           }
     }
@@ -411,18 +442,17 @@ int        lecture(int fd, t_env *env)
     index = 0;
     while (get_next_line(fd, &line))
     {
-        //ft_putstr(line);
         if ((st1 = ft_strstr(line, "# Scene")) != NULL)
         {
                 index++;
                 get_next_line(fd, &line);
-               if (index != 1 || read_scene(fd, line,env) != 3)
+               if (index != 1 || read_scene(fd, line,env) < 3)
                 {
                     error_param();
                     return (0);
                 }
         }
-        //ft_putstr("manuel");
+        
         if ((st1 = ft_strstr(line, "# Objects")) != NULL)
         {
                 index++;
@@ -432,7 +462,7 @@ int        lecture(int fd, t_env *env)
                     error_param();
                     return (0);
                 }
-                //ft_putstr("jose");
+                
         }
     }
     if (index < 2)
