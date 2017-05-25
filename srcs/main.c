@@ -44,31 +44,30 @@ void        quit_SDL(t_env *env)
     SDL_Quit();
 }
 
-void        trace(t_env *env, t_cone *cone)
+void        trace(t_env *env)
 {
     int x;
     int y;
     t_vect *v;
     t_ray *r;
-
+    t_obj *tmp;
+    t_sphere *sp;
+    tmp = env->obj;
         x = 0;
-        while (x < 900)
+        while (x < env->size_x)
         {
             y = 0;
-            while (y < 700)
+            while (y < env->size_y)
             {
                 v = new_vect(x, y, 0.0);
                 r = new_ray(env->cam->pos, normed_vector(minus_vect(v, env->cam->pos)));  
-                /*if (hit_sphere(sp, r) == 1)
-                        SDL_RenderDrawPoint(env->win->rend, x, y);*/
-                /*if (hit_plan(p, r) == 1)
-                        SDL_RenderDrawPoint(env->win->rend, x, y);*/
-                /*if (x == 100 && y == 100)
-                {*/
-                         if (hit_cone(cone, r))
-                        SDL_RenderDrawPoint(env->win->rend, x, y);
-                    
-                /*}*/
+                    if (tmp->form == 1)
+                    {
+                        sp = (t_sphere *)tmp->type;
+                         if (hit_sphere(sp, r))
+                            SDL_RenderDrawPoint(env->win->rend, x, y);
+                    }
+                }
                 y++;
             }
             x++;

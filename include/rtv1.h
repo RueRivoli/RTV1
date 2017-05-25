@@ -88,7 +88,7 @@ int             event(t_env *env);
 t_cam           *new_cam(t_vect *v1);
 t_ray           *new_ray(t_vect *orig, t_vect *dir);
 void            quit_SDL(t_env *env);
-void            trace(t_env *env, t_cone *cone);
+void            trace(t_env *env);
 void             trace2(t_env *env);
 float           term(float alpha, float beta);
 void             error_param();
