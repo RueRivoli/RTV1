@@ -305,7 +305,6 @@ int         register_cylinder(char *line, t_env *env, int fd)
     float rad;
     t_mater *mat;
     t_cylinder *cyl;
-
    if (!(vect = read_origin(line, fd, "origin")))
         return (0);
      if (!(norm = read_origin(line, fd, "normal")))
@@ -326,7 +325,6 @@ int         register_cone(char *line, t_env *env, int fd)
      float angle;
     t_mater *mat;
     t_cone *cone;
-   
     if (!(vect = read_origin(line, fd, "summit")))
         return (0);
      if (!(axis = read_origin(line, fd, "axis")))
@@ -368,7 +366,6 @@ int         read_objects(int fd, char *line, t_env *env)
         if (ft_strstr(line, "name") && (str = ft_strsplit(line, ' ')[1]))
         {
             to = type_objects(str);
-           //ft_putnbr(to);
             if (to < 1 || to > 4)
                 return (0);
             ret = registering(to, line, env, fd);
@@ -413,8 +410,8 @@ int        read_scene(int fd, char *line, t_env *env)
           {
                env->size_x = ft_atoi(tab[2]);
                 env->size_y = ft_atoi(tab[3]);
-                env->win->height = ft_atoi(tab[2]);
-                env->win->width = ft_atoi(tab[3]);
+                env->win->height = ft_atoi(tab[3]);
+                env->win->width = ft_atoi(tab[2]);
                 ret++;
           }
     }

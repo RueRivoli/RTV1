@@ -30,7 +30,7 @@ t_hit_point         *hit_plan(void *o, t_ray *r)
     res = scalar_product(p->normal, minus_vect(p->origin, r->origin));
     den = scalar_product(p->normal, r->direction);
     res /= den;
-    if (res >= 0)
+    if (res >= 0.0)
     {
         v = new_vect(r->origin->x + res * r->direction->x, r->origin->y + res * r->direction->y, r->origin->z + res * r->direction->z);
         return (new_hit_point(v, 0.0));

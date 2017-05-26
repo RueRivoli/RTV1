@@ -104,7 +104,7 @@ void    set_virtual_screen(t_env *env)
 
     v = minus_vect(center_average(env), env->cam->pos);
     n = normed_vector(v);
-    v = multiply_scalar(v, 1/5);
+    v = multiply_scalar(n, 100);
     v = add_vect(env->cam->pos, v);
     if (!(env->screen = (t_screen*)malloc(sizeof(t_screen))))
         return ;

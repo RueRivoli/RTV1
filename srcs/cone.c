@@ -60,11 +60,11 @@ t_hit_point         *hit_cone(void *o, t_ray *r)
     pow(beta_cone(expr2, cone->axis->z, r->origin->z, cone->summit->z), 2) - pow(beta2cone(expr2, cone->axis->x, cone->angle), 2) -\
     pow(beta2cone(expr2, cone->axis->y, cone->angle), 2) - pow(beta2cone(expr2, cone->axis->z, cone->angle), 2);
     delta = pow(b, 2) - 4.0 * a * c;
-    if (delta >= 0)
+    if (delta >= 0.0)
     {
-        res = (- b - sqrt(delta)) / 2 * a;
+        res = min((- b - sqrt(delta)) / 2 * a, (- b + sqrt(delta)) / 2 * a);
           v = new_vect(r->origin->x + res * r->direction->x, r->origin->y + res * r->direction->y, r->origin->z + res * r->origin->z);
-          return (new_hit_point(v, 0.0));
+          return (new_hit_point(v, INFINI));
     }
     return (NULL);
 }

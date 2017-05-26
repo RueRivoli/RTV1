@@ -62,7 +62,7 @@ t_hit_point         *hit_sphere(void *o, t_ray *r)
     delta = pow(b, 2) - 4 * a * c;
     if (delta >= 0.0)
     {
-        res = (- b - sqrt(delta)) / 2 * a;
+        res = min((- b - sqrt(delta)) / 2 * a, (- b + sqrt(delta)) / 2 * a);
         vect = new_vect(r->origin->x + res * r->direction->x, r->origin->y + res * r->direction->y, r->origin->z + res * r->direction->z);
         return (new_hit_point(vect, 0.0));
     }

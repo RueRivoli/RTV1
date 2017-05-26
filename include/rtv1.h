@@ -104,4 +104,5 @@ int             read_objects(int fd, char *line, t_env *env);
 t_vect          *center_average(t_env *env);
 float           distance_with_cam(t_env *env, t_hit_point *hp);
 void            set_virtual_screen(t_env *env);
+void            trace3(t_env *env);
 #endif
