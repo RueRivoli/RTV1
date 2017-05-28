@@ -44,6 +44,7 @@ t_hit_point         *hit_cone(void *o, t_ray *r)
     cone = (t_cone *)o;
     t_vect *v;
     float res;
+    t_vect *traj;
     expr = cone->axis->x * r->direction->x + cone->axis->y * r->direction->y + cone->axis->z * r->direction->z;
     expr2 = (r->origin->x - cone->summit->x) * cone->axis->x + (r->origin->y - cone->summit->y) * cone->axis->y +\
     (r->origin->z - cone->summit->z) * cone->axis->z;
@@ -62,9 +63,13 @@ t_hit_point         *hit_cone(void *o, t_ray *r)
     delta = pow(b, 2) - 4.0 * a * c;
     if (delta >= 0.0)
     {
-        res = min((- b - sqrt(delta)) / 2 * a, (- b + sqrt(delta)) / 2 * a);
-          v = new_vect(r->origin->x + res * r->direction->x, r->origin->y + res * r->direction->y, r->origin->z + res * r->origin->z);
-          return (new_hit_point(v, INFINI));
+        res = max((- b - sqrt(delta)) / (2 * a), (- b + sqrt(delta)) / (2 * a));
+        traj = multiply_scalar(r->direction, res);
+          if (res >= 0 /*&& norm(traj) >= r->dist_to_screen*/)
+          {
+            v = new_vect(r->origin->x + res * r->direction->x, r->origin->y + res * r->direction->y, r->origin->z + res * r->origin->z);
+            return (new_hit_point(v, INFINI));
+          }
     }
     return (NULL);
 }

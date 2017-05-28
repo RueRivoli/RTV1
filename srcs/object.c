@@ -202,7 +202,7 @@ float       distance_with_cam(t_env *env, t_hit_point *hp)
     return (sqrt(pow(diff->x, 2) + pow(diff->y, 2) + pow(diff->z, 2)));
 }
 
-t_ray   *new_ray(t_vect *orig, t_vect *dir)
+t_ray   *new_ray(t_vect *orig, t_vect *dir, float fl)
 {
     t_ray *r;
     if (!(r = (t_ray*)malloc(sizeof(t_ray))))
@@ -210,6 +210,7 @@ t_ray   *new_ray(t_vect *orig, t_vect *dir)
     r->origin = orig;
     r->direction = dir;
     r->hit_point = NULL;
+    r->dist_to_screen = fl;
     return (r);
 }
 

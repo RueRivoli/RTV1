@@ -75,6 +75,9 @@ t_env   *init_env(void)
     win->width = 0;//1200
     win->height = 0;//900
 	env->boucle = 0;
+	env->x = 0;
+	env->y = 0;
+	env->z = 0;
 	env->cam = NULL;//new_vect(600.0, 450.0, -400.0);
     return (env);
 }

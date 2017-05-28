@@ -51,6 +51,7 @@ void        trace(t_env *env)
     t_vect *v;
     t_ray *r;
     t_obj *tmp;
+    t_hit_point *hp;
     t_cylinder *cyl;
     tmp = env->obj;
         x = 0;
@@ -59,14 +60,29 @@ void        trace(t_env *env)
             y = 0;
             while (y < env->size_y)
             {
+                env->x = x;
+                env->y = y;
                 v = new_vect(x, y, 0.0);
-                r = new_ray(env->cam->pos, normed_vector(minus_vect(v, env->cam->pos)));  
+
+                r = new_ray(env->cam->pos, normed_vector(minus_vect(v, env->cam->pos)), norm(minus_vect(env->cam->pos, v)));
                     if (tmp->form == 3)
                     {
                         cyl = (t_cylinder *)tmp->type;
-                         if (hit_cylinder(cyl, r))
+                        /*if ((x == 300 && y == 250))
+                        {*/
+                            //ft_putnbr(minus_vect(v, env->cam->pos)->x);
+                            //ft_putnbr( 10 * normed_vector(minus_vect(v, env->cam->pos))->y);
+                            //ft_putchar('\n');
+                            //ft_putnbr((int)norm(minus_vect(v, env->cam->pos)));
+                            //ft_putchar('\n');
+                         if ((hp = hit_cylinder(cyl, r)))
                             SDL_RenderDrawPoint(env->win->rend, x, y);
+                            if (x == 500 && y == 380 && !hp)
+                                 ft_putstr("ffe");
+                           
+                    /* }*/
                     }
+                    free(r);
                 y++;
             }
             x++;
@@ -104,7 +120,7 @@ void        trace3(t_env *env)
             
               
                 v = new_vect(p, q, 0);
-                r = new_ray(env->cam->pos, normed_vector(minus_vect(v, env->cam->pos)));
+                r = new_ray(env->cam->pos, normed_vector(minus_vect(v, env->cam->pos)), norm(minus_vect(env->cam->pos, v)));
                 while (tmp)
                 {   
                     //ft_putstr("RENTREE    ");
@@ -113,15 +129,19 @@ void        trace3(t_env *env)
                     {
                         //ft_putstr("PAS DE TMP   ");
                             tmp = tmp->next;
+                            
                     }
                     else 
                     {
                          //ft_putstr("TROUVE MIN   ");
                           hp->distance_to_cam = distance_with_cam(env, hp);
+                         if (p == 450 && q == 650)
+                                ft_putnbr(hp->distance_to_cam);
                           if (hp->distance_to_cam < min)
                           {
                             min = hp->distance_to_cam;
                             colore = tmp;
+                             
                             SDL_SetRenderDrawColor(env->win->rend, colore->mater->ir, colore->mater->ig, colore->mater->ib, 0);
                           } 
                          tmp = tmp->next;
@@ -174,7 +194,7 @@ void        trace2(t_env *env)
               + q * env->screen->w->z;
               
                 v = new_vect(x1, y1, z1);
-                r = new_ray(env->cam->pos, normed_vector(minus_vect(v, env->cam->pos)));
+                r = new_ray(env->cam->pos, normed_vector(minus_vect(v, env->cam->pos)), norm(minus_vect(env->cam->pos, v)));
                 while (tmp)
                 {   
                     
@@ -250,10 +270,11 @@ int main(int argc, char **argv)
         return (0);*/
        
      SDL_CreateWindowAndRenderer(win->width, win->height, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE, &win->handle, &win->rend);
-      SDL_SetRenderDrawColor(env->win->rend, 0, 0, 0, 0);
+      SDL_SetRenderDrawColor(env->win->rend, 255, 0, 0, 0);
         SDL_RenderClear(env->win->rend);
 	 SDL_SetWindowTitle(win->handle, "RTV1");
-     trace(env);
+     //SDL_SetRenderDrawColor(env->win->rend, 0, 0, 255, 0);
+     trace3(env);
      SDL_RenderPresent(env->win->rend);
      while(!env->boucle)
     {

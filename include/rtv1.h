@@ -28,7 +28,7 @@
 # include <unistd.h>
 
 
-#define INFINI 100000.0
+#define INFINI 100000000.0
 
 typedef struct s_cam
 {
@@ -78,6 +78,9 @@ typedef struct s_env
     char            *title;
     int             size_x;
     int             size_y;
+    int             x;
+    int             y;
+    int             z;
 }               t_env;
 
 t_light       *add_light(t_light *light, t_vect *pos);
@@ -86,7 +89,7 @@ t_env           *init_env(void);
 void            render(t_env *env);
 int             event(t_env *env);
 t_cam           *new_cam(t_vect *v1);
-t_ray           *new_ray(t_vect *orig, t_vect *dir);
+t_ray           *new_ray(t_vect *orig, t_vect *dir, float fl);
 void            quit_SDL(t_env *env);
 void            trace(t_env *env);
 void             trace2(t_env *env);
@@ -105,4 +108,6 @@ t_vect          *center_average(t_env *env);
 float           distance_with_cam(t_env *env, t_hit_point *hp);
 void            set_virtual_screen(t_env *env);
 void            trace3(t_env *env);
+float           norm(t_vect *v);
+int             colin(t_vect *v, t_vect *w);
 #endif

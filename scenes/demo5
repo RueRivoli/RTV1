@@ -7,8 +7,8 @@ spot 600.0 450.0 450.0
 
 # Objects
 
-name cylinder
-origin 300.0 250.0 100.0
-normal 1.0 0.0 0.0
-radius 50.0
-color 0 0 255 0
+name cone
+summit 160.0 250.0 200.0
+axis 1.0 0.0 0.0
+angle 20.0
+color 0 0 0 255

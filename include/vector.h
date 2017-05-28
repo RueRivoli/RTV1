@@ -23,4 +23,5 @@ t_vect      *multiply_scalar(t_vect *v, float k);
 float       distance(t_vect *v1, t_vect *v2);
 float       min(float r, float s);
 float       max(float r, float s);
+float       norm(t_vect *v);
 #endif
