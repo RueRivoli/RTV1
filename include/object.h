@@ -52,7 +52,6 @@ typedef struct s_ray
 {   
     t_vect      *origin;
     t_vect      *direction;
-    t_hit_point  *hit_point;
     float       dist_to_screen;
 }               t_ray;
 

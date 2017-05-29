@@ -24,4 +24,5 @@ float       distance(t_vect *v1, t_vect *v2);
 float       min(float r, float s);
 float       max(float r, float s);
 float       norm(t_vect *v);
+float       min_positiv(float r, float s);
 #endif

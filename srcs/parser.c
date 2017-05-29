@@ -334,6 +334,7 @@ int         register_cone(char *line, t_env *env, int fd)
     if (!(mat = read_mater(line, fd, "color")))
         return (0);
     cone = new_cone(vect, axis, angle);
+    cone->angle = cone->angle * M_PI / 180;
     env->obj = add_obj(env->obj, 4, mat, (void*)cone);
     return (1);
 }
@@ -418,10 +419,11 @@ int        read_scene(int fd, char *line, t_env *env)
     while (get_next_line(fd, &line) && ft_strstr(line, "spot"))
     {
         tab = ft_strsplit(line, ' ');
-        if (tab[1] && tab[2] && tab[3] && ft_atoi(tab[1]) > -1 && ft_atoi(tab[2]) > -1 && ft_atoi(tab[3]) > -1)
+        ft_putnbr(ft_atoi(tab[3])); 
+        if (tab[1] && tab[2] && tab[3])
           {
                v = new_vect(ft_atoi(tab[1]), ft_atoi(tab[2]), ft_atoi(tab[3]));
-               env->light = add_light(env->light, v);            
+               env->light = add_light(env->light, v);
                 ret++;
           }
     }

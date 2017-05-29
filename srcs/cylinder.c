@@ -46,6 +46,8 @@ t_hit_point         *hit_cylinder(void *o, t_ray *r)
     float oh;
     float oa;
     t_cylinder *cyl;
+    t_vect *w;
+
     //t_vect      *dist_sc;
     cyl = (t_cylinder*)o;
     expr = cyl->normal->x * r->direction->x + cyl->normal->y * r->direction->y + cyl->normal->z * r->direction->z;
@@ -65,12 +67,17 @@ t_hit_point         *hit_cylinder(void *o, t_ray *r)
 
      if (colin(r->direction, cyl->normal) == 1)
     {
-        //ft_putstr("alors");
+    
         oh = scalar_product(minus_vect(r->origin, cyl->origin), cyl->normal);
         oa = norm(minus_vect(r->origin, cyl->origin));
+        
         v = new_vect(INFINI, INFINI, INFINI);
+        
         if (sqrt(pow(oa, 2) - pow(oh, 2)) <= cyl->radius)
-             return (new_hit_point(NULL, INFINI));
+        {
+            w = new_vect(INFINI - 1, INFINI - 1, INFINI - 1);
+             return (new_hit_point(w, -1.0));
+        }
     }
      else if (delta >= 0.0)
     {
@@ -93,7 +100,7 @@ t_hit_point         *hit_cylinder(void *o, t_ray *r)
             //ft_putnbr(r->dist_to_screen);
             ///ft_putchar('\n');
             //dist_sc = new_vect(env->x - r->origin->x, env->y - r->origin->y, - r->origin->z));
-            if (res > 0 /*&& norm(traj) >= r->dist_to_screen*/)
+            if (res > 0 && norm(traj) >= r->dist_to_screen)
             {
                 v = new_vect(r->origin->x + res * r->direction->x, r->origin->y + res * r->direction->y, r->origin->z + res * r->direction->z);
                 return (new_hit_point(v, INFINI));

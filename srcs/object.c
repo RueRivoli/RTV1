@@ -198,6 +198,8 @@ float       distance_with_cam(t_env *env, t_hit_point *hp)
     pos = env->cam->pos;
     if (!hp)
         return (INFINI); 
+    if (hp->distance_to_cam == -1.0)
+        return (0.0);
     diff = minus_vect(pos, hp->vect);
     return (sqrt(pow(diff->x, 2) + pow(diff->y, 2) + pow(diff->z, 2)));
 }
@@ -209,7 +211,6 @@ t_ray   *new_ray(t_vect *orig, t_vect *dir, float fl)
         return (NULL);
     r->origin = orig;
     r->direction = dir;
-    r->hit_point = NULL;
     r->dist_to_screen = fl;
     return (r);
 }

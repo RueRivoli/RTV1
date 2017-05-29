@@ -86,3 +86,13 @@ float       max(float r, float s)
     else 
         return (r);
 }
+
+float       min_positiv(float r, float s)
+{
+    if (r < s && r > 0)
+        return (r);
+    else if (s > 0)
+        return (s);
+    else
+        return (r);
+}

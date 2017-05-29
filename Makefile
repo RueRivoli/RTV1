@@ -37,7 +37,7 @@ SRCS = $(addprefix srcs/, $(SOURCES))
 LIBFT_PATH = libft
 LIBFT = $(LIBFT_PATH)/libft.a
 
-LIB = -framework SDL2 -framework OpenGL -framework AppKit
+LIB = -framework SDL2 -framework OpenGL -framework AppKit -lm
 LIB_PATH = -F framework
 
 
