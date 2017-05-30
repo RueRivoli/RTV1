@@ -177,6 +177,13 @@ void        trace3(t_env *env)
                     }
                     if (!meet_object)
                         SDL_RenderDrawPoint(env->win->rend, p, q);
+                     else
+                     {
+                         //SDL_SetRenderDrawColor(env->win->rend, colore->mater->ir/4, colore->mater->ig/4, colore->mater->ib/4, 0);
+                         SDL_SetRenderDrawColor(env->win->rend, 160, 160, 160, 0);
+                         SDL_RenderDrawPoint(env->win->rend, p, q);
+                     }
+
                     
                     tmp = env->obj;
                 }
