@@ -101,8 +101,13 @@ void        trace3(t_env *env)
 
     t_vect *v;
     t_ray *r;
-    t_vect *color;
 
+
+    float sum;
+    int nb;
+    sum = 900.0;
+    nb = 0;
+    t_vect *color;
     t_obj *tmp;
     t_obj *colore;
     t_hit_point *hp;
@@ -111,7 +116,6 @@ void        trace3(t_env *env)
     int meet_object;
    
     tmp = env->obj;
-    
      //SDL_SetRenderDrawColor(env->win->rend, 255, 0, 0, 0);
     //SDL_RenderDrawPoint(env->win->rend, 100, 100);
         p = 0;
@@ -158,9 +162,8 @@ void        trace3(t_env *env)
                     
                     meet_object = 0;
                     //ft_putstr("Chouette");
-                    
                     r = new_ray(mem->vect, normed_vect(minus_vect(env->light->pos, mem->vect)), 0.0, new_vect(0.0, 0.0, 0.0));
-                    
+    
                     while (tmp && !meet_object)
                     {   
                          
@@ -173,21 +176,37 @@ void        trace3(t_env *env)
                             meet_object = 1;
                          }  
                     }
-                    
-                    if (!meet_object)
+                    if (p == 555 && q == 350 && hr)
                     {
-                        
-                        color = find_color(env, mem, colore->mater);
-                        //SDL_SetRenderDrawColor(env->win->rend, 255, 255, 255, 0);
-                        SDL_SetRenderDrawColor(env->win->rend, (int)color->x, (int)color->y, (int)color->z, 0);
-                         SDL_RenderDrawPoint(env->win->rend, p, q);
+                        printf("%f\n", norm(minus_vect(mem->vect, hr->vect)));
                     }
-                     else
+                           // sum = norm(minus_vect(mem->vect, hr->vect));
+                    if (!meet_object && mem)
+                        nb++;
+                    if (hr && sum > norm(minus_vect(mem->vect, hr->vect)))
+                            sum = norm(minus_vect(mem->vect, hr->vect));
+                    if (meet_object && (norm(minus_vect(mem->vect, hr->vect)) > 0.0003))
                      {
                          //SDL_SetRenderDrawColor(env->win->rend, colore->mater->ir/4, colore->mater->ig/4, colore->mater->ib/4, 0);
-                         SDL_SetRenderDrawColor(env->win->rend, 100, 100, 100, 0);
+                         SDL_SetRenderDrawColor(env->win->rend, 0, 255, 0, 0);
                          SDL_RenderDrawPoint(env->win->rend, p, q);
                      }
+                    else
+                    {
+                        if (meet_object)
+                             printf("BORDEL");
+                        color = find_color(env, mem, colore->mater);
+                        //SDL_SetRenderDrawColor(env->win->rend, 255, 255, 255, 0);
+                        //SDL_SetRenderDrawColor(env->win->rend, (int)color->x, (int)color->y, (int)color->z, 0);
+                        SDL_SetRenderDrawColor(env->win->rend, 0, 0, 255, 0);
+                         SDL_RenderDrawPoint(env->win->rend, p, q);
+                    }
+                     /*else
+                     {
+                         //SDL_SetRenderDrawColor(env->win->rend, colore->mater->ir/4, colore->mater->ig/4, colore->mater->ib/4, 0);
+                         SDL_SetRenderDrawColor(env->win->rend, 255, 255, 100, 0);
+                         SDL_RenderDrawPoint(env->win->rend, p, q);
+                     }*/
 
                     
                     tmp = env->obj;
@@ -196,7 +215,8 @@ void        trace3(t_env *env)
              }
                p++;    
             }
-             
+            printf("%.10f\n", sum);
+           // printf("%d", nb);
         
         //SDL_UpdateWindowSurface(env->win->handle);
 }
