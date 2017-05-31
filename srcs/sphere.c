@@ -76,8 +76,9 @@ t_hit_point         *hit_sphere(void *o, t_ray *r)
         {
             vect = new_vect(r->origin->x + res * r->direction->x, r->origin->y + res * r->direction->y, r->origin->z + res * r->direction->z);
             normal = normal_sphere(sp, vect);
-            return (new_hit_point(vect, 0.0, normal));
-        }
+            return (new_hit_point(vect, INFINI, normal));
+        
+         }
     }
     return (NULL);
 }

@@ -101,10 +101,12 @@ void        trace3(t_env *env)
 
     t_vect *v;
     t_ray *r;
+    t_vect *color;
 
     t_obj *tmp;
     t_obj *colore;
     t_hit_point *hp;
+    t_hit_point *hr;
     t_hit_point *mem;
     int meet_object;
    
@@ -145,13 +147,13 @@ void        trace3(t_env *env)
                                 colore = tmp;
                                 mem = hp;
                                
-                            SDL_SetRenderDrawColor(env->win->rend, colore->mater->ir, colore->mater->ig, colore->mater->ib, 0);
+                            //SDL_SetRenderDrawColor(env->win->rend, colore->mater->ir, colore->mater->ig, colore->mater->ib, 0);
                           }
                          tmp = tmp->next;
                       }
                 }
                 tmp = env->obj;
-                if (min < INFINI)
+                if (min < INFINI && mem)
                 {
                     
                     meet_object = 0;
@@ -162,7 +164,7 @@ void        trace3(t_env *env)
                     while (tmp && !meet_object)
                     {   
                          
-                         if (!(hp = tmp->is_hit(tmp->type, r)))
+                         if (!(hr = tmp->is_hit(tmp->type, r)))
                          {
                               tmp = tmp->next;
                          }
@@ -171,12 +173,19 @@ void        trace3(t_env *env)
                             meet_object = 1;
                          }  
                     }
+                    
                     if (!meet_object)
-                        SDL_RenderDrawPoint(env->win->rend, p, q);
+                    {
+                        
+                        color = find_color(env, mem, colore->mater);
+                        //SDL_SetRenderDrawColor(env->win->rend, 255, 255, 255, 0);
+                        SDL_SetRenderDrawColor(env->win->rend, (int)color->x, (int)color->y, (int)color->z, 0);
+                         SDL_RenderDrawPoint(env->win->rend, p, q);
+                    }
                      else
                      {
                          //SDL_SetRenderDrawColor(env->win->rend, colore->mater->ir/4, colore->mater->ig/4, colore->mater->ib/4, 0);
-                         SDL_SetRenderDrawColor(env->win->rend, 160, 160, 160, 0);
+                         SDL_SetRenderDrawColor(env->win->rend, 100, 100, 100, 0);
                          SDL_RenderDrawPoint(env->win->rend, p, q);
                      }
 
@@ -302,7 +311,7 @@ int main(int argc, char **argv)
         return (0);*/
        
     SDL_CreateWindowAndRenderer(win->width, win->height, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE, &win->handle, &win->rend);
-    SDL_SetRenderDrawColor(env->win->rend, 0, 0, 0, 0);
+    SDL_SetRenderDrawColor(env->win->rend, 255, 0, 0, 0);
     SDL_RenderClear(env->win->rend);
 	 SDL_SetWindowTitle(win->handle, "RTV1");
      //SDL_SetRenderDrawColor(env->win->rend, 0, 0, 255, 0);

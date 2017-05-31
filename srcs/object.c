@@ -136,6 +136,9 @@ t_light       *add_light(t_light *light, t_vect *pos)
         if (!(light = (t_light*)malloc(sizeof(t_light))))
             return (NULL);
         light->pos = pos;
+        light->red = 255;
+        light->green = 255;
+        light->blue = 255;
         light->next = NULL;
     }
     else 
@@ -145,6 +148,9 @@ t_light       *add_light(t_light *light, t_vect *pos)
             tmp = tmp->next;
         new = (t_light*)malloc(sizeof(t_light));
         new->pos = pos;
+        new->red = 255;
+        new->green = 255;
+        new->blue = 255;
         new->next = NULL;
         tmp->next = new;
     }

@@ -50,9 +50,9 @@ typedef struct s_light
 {
     t_vect          *pos;
     //t_vect          *direction;
-    /*float           red;
+    float           red;
     float           green;
-     float           blue;*/
+     float           blue;
      struct s_light *next;
 }               t_light;
 
@@ -85,7 +85,8 @@ typedef struct s_env
 }               t_env;
 
 t_light       *add_light(t_light *light, t_vect *pos);
-
+float       coef_lambert(t_env *env, t_hit_point *h);
+t_vect      *find_color(t_env *env, t_hit_point *hp, t_mater *mat);
 t_env           *init_env(void);
 void            render(t_env *env);
 int             event(t_env *env);
