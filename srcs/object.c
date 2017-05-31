@@ -82,7 +82,7 @@ t_vect      *vectv(t_vect *n)
     y = -n->x /n->y;
     z = 0.0;
 
-    return (normed_vector(new_vect(x, y, z)));
+    return (normed_vect(new_vect(x, y, z)));
 }
 
 t_vect      *vectw(t_vect *n)
@@ -94,7 +94,7 @@ t_vect      *vectw(t_vect *n)
     y = -0.5 * n->z / (n->y + pow(n->x, 2)/ n->y);
     x = (n->x / n->z) * y;
     z = 0.5;
-    return (normed_vector(new_vect(x, y, z)));
+    return (normed_vect(new_vect(x, y, z)));
 }
 
 void    set_virtual_screen(t_env *env)
@@ -103,7 +103,7 @@ void    set_virtual_screen(t_env *env)
     t_vect *n;
 
     v = minus_vect(center_average(env), env->cam->pos);
-    n = normed_vector(v);
+    n = normed_vect(v);
     v = multiply_scalar(n, 100);
     v = add_vect(env->cam->pos, v);
     if (!(env->screen = (t_screen*)malloc(sizeof(t_screen))))
@@ -181,13 +181,14 @@ t_obj       *add_obj(t_obj *obj, int obj_type, t_mater *mater, void *type)
     return (obj);
 }
 
-t_hit_point     *new_hit_point(t_vect *vect, float dist_to_cam)
+t_hit_point     *new_hit_point(t_vect *vect, float dist_to_cam, t_vect *normal)
 {
     t_hit_point *ht;
     if (!(ht = (t_hit_point*)malloc(sizeof(t_hit_point))))
         return (NULL);
     ht->vect = vect;
-    ht->distance_to_cam = dist_to_cam; 
+    ht->distance_to_cam = dist_to_cam;
+    ht->normal = normal;
     return (ht);
 }
 
@@ -204,7 +205,7 @@ float       distance_with_cam(t_env *env, t_hit_point *hp)
     return (sqrt(pow(diff->x, 2) + pow(diff->y, 2) + pow(diff->z, 2)));
 }
 
-t_ray   *new_ray(t_vect *orig, t_vect *dir, float fl)
+t_ray   *new_ray(t_vect *orig, t_vect *dir, float fl, t_vect *color)
 {
     t_ray *r;
     if (!(r = (t_ray*)malloc(sizeof(t_ray))))
@@ -212,6 +213,7 @@ t_ray   *new_ray(t_vect *orig, t_vect *dir, float fl)
     r->origin = orig;
     r->direction = dir;
     r->dist_to_screen = fl;
+    r->color = color;
     return (r);
 }
 

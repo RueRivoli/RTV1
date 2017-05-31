@@ -46,6 +46,8 @@ typedef struct s_hit_point
 {
     t_vect  *vect;
     float   distance_to_cam;
+    t_vect  *normal;
+
 }               t_hit_point;
 
 typedef struct s_ray 
@@ -53,6 +55,7 @@ typedef struct s_ray
     t_vect      *origin;
     t_vect      *direction;
     float       dist_to_screen;
+    t_vect      *color; 
 }               t_ray;
 
 typedef struct s_mater
@@ -77,6 +80,7 @@ typedef struct s_obj
 
 t_sphere    *new_sphere(t_vect *v1, float rad);
 int         belong_to_sphere(t_sphere *sp, t_vect *v);
+t_vect              *normal_sphere(t_sphere *sp, t_vect *p);
 t_hit_point         *hit_sphere(void *o, t_ray *r);
 
 t_plan      *new_plan(t_vect *origin, t_vect *normal);
@@ -88,9 +92,11 @@ t_hit_point         *hit_plan(void *o, t_ray *r);
 t_cylinder  *new_cylinder(t_vect *origin, t_vect *normal, float radius);
 float       alpha_cylinder(float expr, float n, float dir);
 float       beta_cylinder(float expr2, float n, float a, float o);
+t_vect              *normal_cylinder(t_cylinder *cyl, t_vect *p);
 t_hit_point         *hit_cylinder(void *o, t_ray *r);
 
 t_cone      *new_cone(t_vect *summit, t_vect *axis, float angle);
+t_vect              *normal_cone(t_cone *cone, t_vect *p);
 float       alpha_cone(float expr, float n, float dir);
 float       beta_cone(float expr2, float n, float a, float o);
 float       alpha2cone(float expr, float n, float angle);

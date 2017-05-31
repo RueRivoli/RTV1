@@ -7,7 +7,7 @@ t_cylinder  *new_cylinder(t_vect *origin, t_vect *normal, float radius)
     if (!(cyl = (t_cylinder *)malloc(sizeof(t_cylinder))))
         return (NULL);
     cyl->origin = origin;
-    cyl->normal = normed_vector(normal); 
+    cyl->normal = normed_vect(normal); 
     cyl->radius = radius;
     return (cyl);
 }
@@ -17,7 +17,7 @@ int         belong_to_cylinder(t_cylinder *c, t_vect *v)
     t_vect  *v1;
 
     v1 = minus_vect(v, c->origin);
-    if (distance(v, add_vect(c->origin, multiply_scalar(normed_vector(c->normal), scalar_product(v, normed_vector(c->normal))))) <= c->radius)
+    if (distance(v, add_vect(c->origin, multiply_scalar(normed_vect(c->normal), scalar_product(v, normed_vect(c->normal))))) <= c->radius)
         return (1);
     return (0);
 }
@@ -30,6 +30,16 @@ float       alpha_cylinder(float expr, float n, float dir)
 float       beta_cylinder(float expr2, float n, float a, float o)
 {
     return (n * expr2 + o - a);
+}
+
+t_vect              *normal_cylinder(t_cylinder *cyl, t_vect *p)
+{
+    t_vect *h;
+    t_vect *v;
+    h = multiply_scalar(normed_vect(cyl->normal), scalar_product(minus_vect(p, cyl->origin), normed_vect(cyl->normal)));
+    v = minus_vect(p, h);
+    v = normed_vect(v);
+    return (v);
 }
 
 t_hit_point         *hit_cylinder(void *o, t_ray *r)
@@ -76,7 +86,7 @@ t_hit_point         *hit_cylinder(void *o, t_ray *r)
         if (sqrt(pow(oa, 2) - pow(oh, 2)) <= cyl->radius)
         {
             w = new_vect(INFINI - 1, INFINI - 1, INFINI - 1);
-             return (new_hit_point(w, -1.0));
+             return (new_hit_point(w, -1.0, new_vect(0,0,0)));
         }
     }
      else if (delta >= 0.0)
@@ -103,7 +113,7 @@ t_hit_point         *hit_cylinder(void *o, t_ray *r)
             if (res > 0 && norm(traj) >= r->dist_to_screen)
             {
                 v = new_vect(r->origin->x + res * r->direction->x, r->origin->y + res * r->direction->y, r->origin->z + res * r->direction->z);
-                return (new_hit_point(v, INFINI));
+                return (new_hit_point(v, INFINI, normal_cylinder(cyl, v)));
             }
             else 
                 return (NULL);
@@ -172,7 +182,7 @@ t_hit_point         *hit_cylinder3(void *o, t_ray *r)
     {
         res = (- b - delta )/ 2 * a;
         v = new_vect(r->origin->x + res * r->direction->x, r->origin->y + res * r->direction->y, r->origin->z + res * r->direction->z);
-        return (new_hit_point(v, INFINI));
+        return (new_hit_point(v, INFINI, normal_cylinder(cyl, v)));
     }
     return (NULL);
 }

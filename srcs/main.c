@@ -64,7 +64,7 @@ void        trace(t_env *env)
                 env->y = y;
                 v = new_vect(x, y, 0.0);
 
-                r = new_ray(env->cam->pos, normed_vector(minus_vect(v, env->cam->pos)), norm(minus_vect(env->cam->pos, v)));
+                r = new_ray(env->cam->pos, normed_vect(minus_vect(v, env->cam->pos)), norm(minus_vect(env->cam->pos, v)), NULL);
                     if (tmp->form == 4)
                     {
                         cone = (t_cone *)tmp->type;
@@ -123,7 +123,7 @@ void        trace3(t_env *env)
                 tmp = env->obj;
                 v = new_vect(p, q, 0);
             
-                r = new_ray(env->cam->pos, normed_vector(minus_vect(v, env->cam->pos)), norm(minus_vect(env->cam->pos, v)));
+                r = new_ray(env->cam->pos, normed_vect(minus_vect(v, env->cam->pos)), norm(minus_vect(env->cam->pos, v)), new_vect(0.0, 0.0, 0.0));
                 //ft_putnbr(p);
                //ft_putchar(' ');
                //ft_putnbr(q);
@@ -157,21 +157,17 @@ void        trace3(t_env *env)
                     meet_object = 0;
                     //ft_putstr("Chouette");
                     
-                    r = new_ray(mem->vect, normed_vector(minus_vect(env->light->pos, mem->vect)), 0.0);
+                    r = new_ray(mem->vect, normed_vect(minus_vect(env->light->pos, mem->vect)), 0.0, new_vect(0.0, 0.0, 0.0));
                     
                     while (tmp && !meet_object)
                     {   
                          
-
-                 
                          if (!(hp = tmp->is_hit(tmp->type, r)))
                          {
-                                
                               tmp = tmp->next;
                          }
                          else
                          {
-                          
                             meet_object = 1;
                          }  
                     }
@@ -230,7 +226,7 @@ void        trace2(t_env *env)
               + q * env->screen->w->z;
               
                 v = new_vect(x1, y1, z1);
-                r = new_ray(env->cam->pos, normed_vector(minus_vect(v, env->cam->pos)), norm(minus_vect(env->cam->pos, v)));
+                r = new_ray(env->cam->pos, normed_vect(minus_vect(v, env->cam->pos)), norm(minus_vect(env->cam->pos, v)), new_vect(0.0, 0.0, 0.0));
                 while (tmp)
                 {   
                     

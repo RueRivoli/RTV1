@@ -33,7 +33,7 @@ t_hit_point         *hit_plan(void *o, t_ray *r)
     if (res >= 0.0)
     {
         v = new_vect(r->origin->x + res * r->direction->x, r->origin->y + res * r->direction->y, r->origin->z + res * r->direction->z);
-        return (new_hit_point(v, 0.0));
+        return (new_hit_point(v, 0.0, normed_vect(p->normal)));
     } 
     return (NULL);
 }

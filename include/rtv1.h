@@ -90,13 +90,13 @@ t_env           *init_env(void);
 void            render(t_env *env);
 int             event(t_env *env);
 t_cam           *new_cam(t_vect *v1);
-t_ray           *new_ray(t_vect *orig, t_vect *dir, float fl);
+t_ray           *new_ray(t_vect *orig, t_vect *dir, float fl, t_vect *color);
 void            quit_SDL(t_env *env);
 void            trace(t_env *env);
 void             trace2(t_env *env);
 float           term(float alpha, float beta);
 void             error_param();
-t_hit_point     *new_hit_point(t_vect *vect, float dist_to_cam);
+t_hit_point     *new_hit_point(t_vect *vect, float dist_to_cam, t_vect *normal);
 
 int             type_objects(char *str);
 int             register_sphere(char *line, t_env *env, int fd);

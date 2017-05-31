@@ -7,7 +7,7 @@ t_cone      *new_cone(t_vect *summit, t_vect *axis, float angle)
     if (!(c = (t_cone *)malloc(sizeof(t_cone))))
         return (NULL);
     c->summit = summit;
-    c->axis = normed_vector(axis); 
+    c->axis = normed_vect(axis); 
     c->angle = angle;
     return (c);
 }
@@ -30,6 +30,17 @@ float       alpha2cone(float expr, float n, float angle)
 float       beta2cone(float expr2, float n, float angle)
 {
     return (expr2 * n * tan(angle));
+}
+
+
+t_vect              *normal_cone(t_cone *cone, t_vect *p)
+{
+    t_vect *h;
+    t_vect *v;
+    h = multiply_scalar(normed_vect(cone->axis), scalar_product(minus_vect(p, cone->summit), normed_vect(cone->axis)));
+    v = minus_vect(p, h);
+    v = normed_vect(v);
+    return (v);
 }
 
 t_hit_point         *hit_cone(void *o, t_ray *r)
@@ -70,7 +81,7 @@ t_hit_point         *hit_cone(void *o, t_ray *r)
           if (res > 0 /*&& norm(traj) >= r->dist_to_screen*/)
           {
             v = new_vect(r->origin->x + res * r->direction->x, r->origin->y + res * r->direction->y, r->origin->z + res * r->origin->z);
-            return (new_hit_point(v, INFINI));
+            return (new_hit_point(v, INFINI, normal_cone(cone, v)));
           }
     }
     return (NULL);

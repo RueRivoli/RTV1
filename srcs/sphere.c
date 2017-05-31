@@ -21,6 +21,14 @@ int         belong_to_sphere(t_sphere *sp, t_vect *v)
     return (0);
 }
 
+t_vect              *normal_sphere(t_sphere *sp, t_vect *p)
+{
+        t_vect *op;
+
+        op = normed_vect(minus_vect(p, sp->origin));
+        return (op);
+}
+
 /*t_hit_point         *hit_sphere1(void *o, t_ray *r)
 {
     float delta;
@@ -51,6 +59,7 @@ t_hit_point         *hit_sphere(void *o, t_ray *r)
     float delta;
     float a;
     t_vect *vect;
+    t_vect *normal;
     float res;
     t_sphere *sp;
     sp = (void *)o;
@@ -66,7 +75,8 @@ t_hit_point         *hit_sphere(void *o, t_ray *r)
         if (res > 0)
         {
             vect = new_vect(r->origin->x + res * r->direction->x, r->origin->y + res * r->direction->y, r->origin->z + res * r->direction->z);
-            return (new_hit_point(vect, 0.0));
+            normal = normal_sphere(sp, vect);
+            return (new_hit_point(vect, 0.0, normal));
         }
     }
     return (NULL);

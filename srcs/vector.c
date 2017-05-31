@@ -49,7 +49,7 @@ int     colin(t_vect *v, t_vect *w)
         return (1);  
     return (0);
 }
-t_vect      *normed_vector(t_vect *v1)
+t_vect      *normed_vect(t_vect *v1)
 {
     float nor;
     nor = norm(v1);
@@ -66,7 +66,7 @@ t_vect      *multiply_scalar(t_vect *v, float k)
     return (new_vect(k * v->x, k * v->y, k * v->z));
 }
 
-t_vect  *product_vectorial(t_vect *u, t_vect *v)
+t_vect  *product_vect(t_vect *u, t_vect *v)
 {
     return (new_vect(u->y * v->z - u->z * v->y, u->z * v->x - u->x * v->z, u->x * v->y - u->y * v->x));
 }
