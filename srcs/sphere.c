@@ -72,7 +72,8 @@ t_hit_point         *hit_sphere(void *o, t_ray *r)
     if (delta >= 0.0)
     {
         res = min_positiv((- b - sqrt(delta)) / (2 * a), (- b + sqrt(delta)) / (2 * a));
-        if (res > 1)
+        res -= 0.0001;
+        if (res > 0.0)
         {
             vect = new_vect(r->origin->x + res * r->direction->x, r->origin->y + res * r->direction->y, r->origin->z + res * r->direction->z);
             normal = normal_sphere(sp, vect);
