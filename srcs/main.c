@@ -113,8 +113,7 @@ void        trace3(t_env *env)
     t_hit_point *hp;
     t_hit_point *hr;
     t_hit_point *mem;
-   int meet_object;
-    t_vect *xl;
+    int meet_object;
     float sum1;
     float sum2;
     int nb1;
@@ -138,13 +137,9 @@ void        trace3(t_env *env)
                 v = new_vect(p, q, 0);
             
                 r = new_ray(env->cam->pos, normed_vect(minus_vect(v, env->cam->pos)), norm(minus_vect(env->cam->pos, v)), new_vect(0.0, 0.0, 0.0));
-                //ft_putnbr(p);
-               //ft_putchar(' ');
-               //ft_putnbr(q);
-              // ft_putchar('\n');
                 while (tmp)
                 {   
-                    
+                     
                     if (!(hp = tmp->is_hit(tmp->type, r)))
                     {                                        
                             tmp = tmp->next;
@@ -169,9 +164,8 @@ void        trace3(t_env *env)
                 {
                     
                     meet_object = 0;
-                    xl = new_vect(mem->vect->x + 0.09, mem->vect->y + 0.09, mem->vect->z + 0.009);
-                    r = new_ray(mem->vect, normed_vect(minus_vect(env->light->pos, xl)), 0.0, new_vect(0.0, 0.0, 0.0));
-    
+                    r = new_ray(mem->vect, normed_vect(minus_vect(env->light->pos, mem->vect)), 0.0, new_vect(0.0, 0.0, 0.0));
+                    
                     while (tmp && !meet_object)
                     {   
                          
@@ -184,69 +178,28 @@ void        trace3(t_env *env)
                             meet_object = 1;
                          }  
                     }
-                    /*if (p > 500 && p < 600 && q > 350 && q < 450 && hr)
-                    {
-                        //if (sum1 < norm(minus_vect(mem->vect, hr->vect)))
-                            sum1 += norm(minus_vect(mem->vect, hr->vect));
-                         nb1++;
-                    }
-                     if (p > 600 && p < 700 && q > 350 && q < 450 && hr)
-                    {
-                        //if (sum2 > norm(minus_vect(mem->vect, hr->vect)))
-                            sum2 += norm(minus_vect(mem->vect, hr->vect));
-                        nb2++;
-                    }*/
-
-                            color = find_color(env, mem, colore->mater);
-                            SDL_SetRenderDrawColor(env->win->rend, (int)color->x + colore->mater->ir/4, (int)color->y + colore->mater->ir/4, (int)color->z + colore->mater->ir/4, 0);
+                    color = find_color(env, mem, colore->mater);
+                    SDL_SetRenderDrawColor(env->win->rend, (int)color->x + colore->mater->ir/4, (int)color->y + colore->mater->ir/4, (int)color->z + colore->mater->ir/4, 0);
+                            //SDL_SetRenderDrawColor(env->win->rend, (int)color->x, (int)color->y, (int)color->z, 0);
                             SDL_RenderDrawPoint(env->win->rend, p, q);
-                    
                         /*if (!meet_object)
                         {
                             color = find_color(env, mem, colore->mater);
+                            //SDL_SetRenderDrawColor(env->win->rend, (int)color->x + colore->mater->ir/4, (int)color->y + colore->mater->ir/4, (int)color->z + colore->mater->ir/4, 0);
                             SDL_SetRenderDrawColor(env->win->rend, (int)color->x, (int)color->y, (int)color->z, 0);
-                         SDL_RenderDrawPoint(env->win->rend, p, q);
+                            SDL_RenderDrawPoint(env->win->rend, p, q);
                          }
                          else
                          {
                                SDL_SetRenderDrawColor(env->win->rend, colore->mater->ir/4, colore->mater->ig/4, colore->mater->ib/4, 0);
                                 SDL_RenderDrawPoint(env->win->rend, p, q);
                          }*/
-                       // SDL_SetRenderDrawColor(env->win->rend, 255, 255, 255, 0);
-                             
-                    /*if (meet_object && (norm(minus_vect(mem->vect, hr->vect)) > 15))
-                     {
-                         SDL_SetRenderDrawColor(env->win->rend, colore->mater->ir/4, colore->mater->ig/4, colore->mater->ib/4, 0);
-                         SDL_SetRenderDrawColor(env->win->rend, 0, 255, 0, 0);
-                         SDL_RenderDrawPoint(env->win->rend, p, q);
-                     }
-                    else
-                    {
-                        color = find_color(env, mem, colore->mater);
-                        SDL_SetRenderDrawColor(env->win->rend, 255, 255, 255, 0);
-                        SDL_SetRenderDrawColor(env->win->rend, (int)color->x, (int)color->y, (int)color->z, 0);
-                        SDL_SetRenderDrawColor(env->win->rend, 0, 0, 255, 0);
-                         SDL_RenderDrawPoint(env->win->rend, p, q);
-                    }*/
-                     /*else
-                     {
-                         //SDL_SetRenderDrawColor(env->win->rend, colore->mater->ir/4, colore->mater->ig/4, colore->mater->ib/4, 0);
-                         SDL_SetRenderDrawColor(env->win->rend, 255, 255, 100, 0);
-                         SDL_RenderDrawPoint(env->win->rend, p, q);
-                     }*/
-
-                    
                     tmp = env->obj;
                 }
                q++;
              }
                p++;    
             }
-            //sum1 = sum1/nb1;
-            //sum2 = sum2/nb2;
-            printf("%f\n", sum1/nb1);
-            printf("%f\n", sum2/nb2);
-           // printf("%d", nb);
         
         //SDL_UpdateWindowSurface(env->win->handle);
 }

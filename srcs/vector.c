@@ -40,7 +40,7 @@ t_vect *minus_vect(t_vect *v1, t_vect *v2)
 
 float       norm(t_vect *v)
 {
-    return (sqrt(pow(v->x, 2) + pow(v->y, 2) + pow(v->z, 2)));
+    return (sqrt(v->x * v->x + v->y * v->y + v->z * v->z));
 }
 
 int     colin(t_vect *v, t_vect *w)
@@ -49,11 +49,12 @@ int     colin(t_vect *v, t_vect *w)
         return (1);  
     return (0);
 }
+
 t_vect      *normed_vect(t_vect *v1)
 {
     float nor;
     nor = norm(v1);
-    return (new_vect((float)(v1->x / nor), (float)(v1->y / nor), (float)(v1->z / nor)));
+    return (new_vect(v1->x / (float)nor, v1->y / (float)nor, v1->z / (float)nor));
 }
 
 float   distance(t_vect *v1, t_vect *v2)

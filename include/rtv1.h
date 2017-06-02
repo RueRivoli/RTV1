@@ -112,4 +112,5 @@ void            set_virtual_screen(t_env *env);
 void            trace3(t_env *env);
 float           norm(t_vect *v);
 int             colin(t_vect *v, t_vect *w);
+float calcul(t_env *env, t_hit_point *hp);
 #endif
