@@ -178,10 +178,18 @@ void        trace3(t_env *env)
                             meet_object = 1;
                          }  
                     }
+                    if (!meet_object || (hr && hp && distance(hp->vect, hr->vect) < 15))
+                    {
                     color = find_color(env, mem, colore->mater);
-                    SDL_SetRenderDrawColor(env->win->rend, (int)color->x + colore->mater->ir/4, (int)color->y + colore->mater->ir/4, (int)color->z + colore->mater->ir/4, 0);
-                            //SDL_SetRenderDrawColor(env->win->rend, (int)color->x, (int)color->y, (int)color->z, 0);
+                    //SDL_SetRenderDrawColor(env->win->rend, (int)color->x + colore->mater->ir/4, (int)color->y + colore->mater->ir/4, (int)color->z + colore->mater->ir/4, 0);
+                            SDL_SetRenderDrawColor(env->win->rend, (int)color->x, (int)color->y, (int)color->z, 0);
                             SDL_RenderDrawPoint(env->win->rend, p, q);
+                    }
+                    else 
+                    {
+                        SDL_SetRenderDrawColor(env->win->rend, 0, 0, 0, 0);
+                            SDL_RenderDrawPoint(env->win->rend, p, q);
+                    }
                         /*if (!meet_object)
                         {
                             color = find_color(env, mem, colore->mater);
