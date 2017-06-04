@@ -3,11 +3,11 @@
 name Scene_1
 camera origin 450.0 350.0 -200.0
 render size 900 700
-spot 100.0 50.0 100.0
+spot 150.0 350.0 -100.0
 
 # Objects
 
 name sphere 
 origin 450.0 350.0 200.0
-radius 200.0
+radius 150.0
 color 0 255 0 255

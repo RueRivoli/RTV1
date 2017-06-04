@@ -70,15 +70,8 @@ void        trace(t_env *env)
                         cone = (t_cone *)tmp->type;
                         if ((x == 300 && y == 250))
                         {
-                            //ft_putnbr(minus_vect(v, env->cam->pos)->x);
-                            //ft_putnbr( 10 * normed_vector(minus_vect(v, env->cam->pos))->y);
-                            //ft_putchar('\n');
-                            //ft_putnbr((int)norm(minus_vect(v, env->cam->pos)));
-                            //ft_putchar('\n');
                          if ((hp = hit_cone(cone, r)))
                             SDL_RenderDrawPoint(env->win->rend, x, y);
-                            if (x == 500 && y == 380 && !hp)
-                                 ft_putstr("ffe");
                            
                     }
                     }
@@ -101,12 +94,6 @@ void        trace3(t_env *env)
 
     t_vect *v;
     t_ray *r;
-
-
-    float sum;
-    int nb;
-    sum = 900.0;
-    nb = 0;
     t_vect *color;
     t_obj *tmp;
     t_obj *colore;
@@ -114,17 +101,7 @@ void        trace3(t_env *env)
     t_hit_point *hr;
     t_hit_point *mem;
     int meet_object;
-    float sum1;
-    float sum2;
-    int nb1;
-    int nb2;
-    sum1 = 0.0;
-    sum2 = 0.0;
-    nb1 = 0;
-    nb2 = 0;
     tmp = env->obj;
-     //SDL_SetRenderDrawColor(env->win->rend, 255, 0, 0, 0);
-    //SDL_RenderDrawPoint(env->win->rend, 100, 100);
         p = 0;
         while (p < env->size_x)
         {
@@ -146,7 +123,6 @@ void        trace3(t_env *env)
                     }
                     else 
                     {
-                       
                           hp->distance_to_cam = distance_with_cam(env, hp);
                           if (hp->distance_to_cam < min)
                           {
@@ -160,50 +136,38 @@ void        trace3(t_env *env)
                       }
                 }
                 tmp = env->obj;
+                
                 if (min < INFINI && mem)
-                {
-                    
+                {   
                     meet_object = 0;
                     r = new_ray(mem->vect, normed_vect(minus_vect(env->light->pos, mem->vect)), 0.0, new_vect(0.0, 0.0, 0.0));
                     
                     while (tmp && !meet_object)
                     {   
-                         
                          if (!(hr = tmp->is_hit(tmp->type, r)))
-                         {
                               tmp = tmp->next;
-                         }
                          else
-                         {
                             meet_object = 1;
-                         }  
                     }
-                    if (!meet_object || (hr && hp && distance(hp->vect, hr->vect) < 15))
+                    
+
+                    if (!meet_object || (hr && hp && distance(hp->vect, hr->vect) < 10))
                     {
-                    color = find_color(env, mem, colore->mater);
-                    //SDL_SetRenderDrawColor(env->win->rend, (int)color->x + colore->mater->ir/4, (int)color->y + colore->mater->ir/4, (int)color->z + colore->mater->ir/4, 0);
+                        color = find_color(env, mem, colore->mater);  
+                         if ((int)color->x == 0)
+                             color->x = 1;
+                            
+                           // ft_putchar('\n');
                             SDL_SetRenderDrawColor(env->win->rend, (int)color->x, (int)color->y, (int)color->z, 0);
-                            SDL_RenderDrawPoint(env->win->rend, p, q);
+                           SDL_RenderDrawPoint(env->win->rend, p, q);
                     }
-                    else 
+                    else
                     {
-                        SDL_SetRenderDrawColor(env->win->rend, 0, 0, 0, 0);
-                            SDL_RenderDrawPoint(env->win->rend, p, q);
+                          SDL_SetRenderDrawColor(env->win->rend, colore->mater->ir / 40, colore->mater->ig / 40, colore->mater->ib / 40, 0);
+                           SDL_RenderDrawPoint(env->win->rend, p, q);
                     }
-                        /*if (!meet_object)
-                        {
-                            color = find_color(env, mem, colore->mater);
-                            //SDL_SetRenderDrawColor(env->win->rend, (int)color->x + colore->mater->ir/4, (int)color->y + colore->mater->ir/4, (int)color->z + colore->mater->ir/4, 0);
-                            SDL_SetRenderDrawColor(env->win->rend, (int)color->x, (int)color->y, (int)color->z, 0);
-                            SDL_RenderDrawPoint(env->win->rend, p, q);
-                         }
-                         else
-                         {
-                               SDL_SetRenderDrawColor(env->win->rend, colore->mater->ir/4, colore->mater->ig/4, colore->mater->ib/4, 0);
-                                SDL_RenderDrawPoint(env->win->rend, p, q);
-                         }*/
                     tmp = env->obj;
-                }
+                    }
                q++;
              }
                p++;    
@@ -282,7 +246,7 @@ void        trace2(t_env *env)
 }
 
 
-int main(int argc, char **argv)
+int              main(int argc, char **argv)
 {
     t_env *env;
     t_win *win;
@@ -298,29 +262,16 @@ int main(int argc, char **argv)
         error_param();
         return (0);
     }
+
     fd = open(argv[1], O_RDONLY);
 
     /*Lecture et affichage de la scene*/
     if (lecture(fd, env) != 0)
         display_scene(env);
-        //ft_putstr("repas");
     /*Placement de l'ecran virtuel*/
     
     //set_virtual_screen(env);
 
-
-    /*t_vect *v1;
-    t_vect *norm;
-    t_cone *c;
-
-    if (!(v1 = new_vect(450.0, 350.0, 200.0)))
-        return (0);
-   
-    if (!(norm = new_vect(10.0, 10.0, 10.0)))
-        return (0);
-    if (!(c = new_cone(v1, norm, 10.0)))
-        return (0);*/
-       
     SDL_CreateWindowAndRenderer(win->width, win->height, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE, &win->handle, &win->rend);
     SDL_SetRenderDrawColor(env->win->rend, 255, 0, 0, 0);
     SDL_RenderClear(env->win->rend);
@@ -328,7 +279,6 @@ int main(int argc, char **argv)
      //SDL_SetRenderDrawColor(env->win->rend, 0, 0, 255, 0);
     
      trace3(env);
-     //printf("%f", tan(30));
      SDL_RenderPresent(env->win->rend);
      while(!env->boucle)
     {

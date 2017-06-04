@@ -179,7 +179,7 @@ void        display_scene(t_env *env)
             ft_putnbr(c->axis->z);
              ft_putstr("\n");
              ft_putstr("Angle : ");
-             ft_putnbr(c->angle);
+             ft_putnbr(c->angle * 180 / M_PI);
              ft_putstr("\n");
              ft_putstr("Color : ");
              //printf("%f", mat->alpha);
@@ -226,7 +226,7 @@ float   read_float(char *line, int fd, char *str)
     if (get_next_line(fd, &line) && (str1 = ft_strstr(line, str)))
     {
         tab = ft_strsplit(line, ' ');
-        if (tab[1] && ft_atoi(tab[1]) > -1)
+        if (tab[1])
             res = ft_atoi(tab[1]);
         else
             return (0);
@@ -293,7 +293,7 @@ int         register_plan(char *line, t_env *env, int fd)
         return (0);
     if (!(mat = read_mater(line, fd, "color")))
         return (0);
-     p = new_plan(vect, norm);
+     p = new_plan(vect, normed_vect(norm));
      env->obj = add_obj(env->obj, 2, mat, (void*)p);
     return (1);
 }

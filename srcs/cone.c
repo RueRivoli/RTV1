@@ -7,7 +7,7 @@ t_cone      *new_cone(t_vect *summit, t_vect *axis, float angle)
     if (!(c = (t_cone *)malloc(sizeof(t_cone))))
         return (NULL);
     c->summit = summit;
-    c->axis = normed_vect(axis); 
+    c->axis = axis; 
     c->angle = angle;
     return (c);
 }
@@ -38,7 +38,7 @@ t_vect              *normal_cone(t_cone *cone, t_vect *p)
     t_vect *h;
     t_vect *v;
     h = multiply_scalar(normed_vect(cone->axis), scalar_product(minus_vect(p, cone->summit), normed_vect(cone->axis)));
-    v = minus_vect(p, h);
+    v = minus_vect(p, add_vect(cone->summit, h));
     v = normed_vect(v);
     return (v);
 }
@@ -57,7 +57,7 @@ t_hit_point         *hit_cone(void *o, t_ray *r)
     float res;
 
     t_vect *traj;
-    
+    cone->axis = normed_vect(cone->axis);
     expr = cone->axis->x * r->direction->x + cone->axis->y * r->direction->y + cone->axis->z * r->direction->z;
     expr2 = (r->origin->x - cone->summit->x) * cone->axis->x + (r->origin->y - cone->summit->y) * cone->axis->y +\
     (r->origin->z - cone->summit->z) * cone->axis->z;
@@ -80,7 +80,7 @@ t_hit_point         *hit_cone(void *o, t_ray *r)
         traj = multiply_scalar(r->direction, res);
           if (res > 0 /*&& norm(traj) >= r->dist_to_screen*/)
           {
-            v = new_vect(r->origin->x + res * r->direction->x, r->origin->y + res * r->direction->y, r->origin->z + res * r->origin->z);
+            v = new_vect(r->origin->x + res * r->direction->x, r->origin->y + res * r->direction->y, r->origin->z + res * r->direction->z);
             return (new_hit_point(v, INFINI, normal_cone(cone, v)));
           }
     }

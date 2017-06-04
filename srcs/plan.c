@@ -25,15 +25,31 @@ t_hit_point         *hit_plan(void *o, t_ray *r)
     float den;
     float res;
     t_vect *v;
+    t_vect *essai;
     t_plan *p;
     p = (t_plan *)o;
     res = scalar_product(p->normal, minus_vect(p->origin, r->origin));
     den = scalar_product(p->normal, r->direction);
-    res /= den;
-    if (res >= 0.0)
+    if (den == 0.0)
     {
+        printf(" valeurs oa %f\n", scalar_product(minus_vect(p->origin, r->origin), p->normal));
+        if (scalar_product(minus_vect(p->origin, r->origin), p->normal) == 0.0)
+        {
+            v = new_vect(r->origin->x, r->origin->y, r->origin->z);
+             return (new_hit_point(v, 0.0, normed_vect(p->normal)));
+        }
+    }
+    else if (fabsf(den) > 1e-6)
+    {
+        res /= den;
+        //res -= 0.0001;
         v = new_vect(r->origin->x + res * r->direction->x, r->origin->y + res * r->direction->y, r->origin->z + res * r->direction->z);
-        return (new_hit_point(v, 0.0, normed_vect(p->normal)));
+        essai = minus_vect(v, r->origin);
+        if (res > 0.0 /*&& norm(essai) > 5*/)
+        {
+             return (new_hit_point(v, 0.0, normed_vect(p->normal)));
+            
+        }
     } 
     return (NULL);
 }

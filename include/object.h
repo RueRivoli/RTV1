@@ -108,14 +108,4 @@ t_vect      *vectv(t_vect *n);
 t_vect      *vectw(t_vect *n);
 t_obj       *add_obj(t_obj *obj, int obj_type, t_mater *mater, void *type);
 
-
-t_hit_point         *hit_cylinder3(void *o, t_ray *r);
-float       sec_deg_eq2(float expr, float n, float dir);
-float       fst_deg_eq(float n, float dir, float a, float o);
-
-float       fst_deg_eq2(float n, float dir, float a, float o, float expr, float expr2);
-
-float       zer_deg_eq(float n, float a, float o);
-
-float       zer_deg_eq2(float n, float expr2, float o, float a);
 #endif
