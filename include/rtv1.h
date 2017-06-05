@@ -100,6 +100,7 @@ void             error_param();
 t_hit_point     *new_hit_point(t_vect *vect, float dist_to_cam, t_vect *normal, int form);
 
 int             type_objects(char *str);
+
 int             register_sphere(char *line, t_env *env, int fd);
 int             registering(int to, char *line, t_env *env, int fd);
 int              read_scene(int fd, char *line, t_env *env);
@@ -112,5 +113,9 @@ void            set_virtual_screen(t_env *env);
 void            trace3(t_env *env);
 float           norm(t_vect *v);
 int             colin(t_vect *v, t_vect *w);
-float calcul(t_env *env, t_hit_point *hp);
+float       calcul(t_env *env, t_hit_point *hp);
+
+t_vect      *origin(int to, void *o);
+t_vect      *normal(int to, void *o);
+void        modify(void *o, char *line, int fd, int to);
 #endif

@@ -259,6 +259,136 @@ t_mater      *read_mater(char *line, int fd, char *str)
     return (mat);
 }
 
+t_vect      *origin(int to, void *o)
+{
+    t_vect *v;
+    if (to == 1)
+    {   
+        t_sphere *sp;
+        sp = (t_sphere*)o;
+        v = sp->origin;
+    }
+    if (to == 2)
+    {   
+        t_plan *p;
+        p = (t_plan*)o;
+        v = p->origin;
+    }
+    if (to == 3)
+    {   
+        t_cylinder *cyl;
+        cyl = (t_cylinder*)o;
+        v = cyl->origin;
+    }
+    if (to == 4)
+    {   
+        t_cone *c;
+        c = (t_cone*)o;
+        v = c->summit;
+    }
+    return (v);
+}
+
+t_vect      *normal(int to, void *o)
+{
+    t_vect *n;
+    n = NULL;
+    if (to == 2)
+    {   
+        t_plan *p;
+        p = (t_plan*)o;
+        n = p->normal;
+    }
+    if (to == 3)
+    {   
+        t_cylinder *cyl;
+        cyl = (t_cylinder*)o;
+        n = cyl->normal;
+    }
+    if (to == 4)
+    {   
+        t_cone *c;
+        c = (t_cone*)o;
+        n = c->axis;
+    }
+    return (n);
+}
+
+void        modify(void *o, char *line, int fd, int to)
+{
+    char **tab;
+    float theta;
+    float mem;
+    t_vect *v;
+    t_vect *n;
+    v = origin(to, o);
+    n = normal(to, o);
+        while (get_next_line(fd, &line) && (ft_strstr(line, "translationX") || ft_strstr(line, "translationY") || \
+        ft_strstr(line, "translationZ") || ft_strstr(line, "rotationX") || ft_strstr(line, "rotationY") || \
+        ft_strstr(line, "rotationZ")))
+        {
+             
+            if (ft_strstr(line, "translationX"))
+            {
+                tab = ft_strsplit(line, ' ');
+                if (tab[1])
+                    v->x += ft_atoi(tab[1]);
+             }
+            if (ft_strstr(line, "translationY"))
+            {
+                ft_putstr("FF");
+                tab = ft_strsplit(line, ' ');
+                if (tab[1])
+                    v->y += ft_atoi(tab[1]);
+            }
+            if (ft_strstr(line, "translationZ"))
+            {
+                tab = ft_strsplit(line, ' ');
+                if (tab[1])
+                    v->z += ft_atoi(tab[1]);
+            }
+            if (ft_strstr(line, "rotationX") && to != 1)
+            {
+               ft_putstr("FF");
+                tab = ft_strsplit(line, ' ');
+                if (tab[1])
+                {
+                    theta = ft_atoi(tab[1]) * M_PI / 180;
+                    mem = n->y;
+                    n->y = cos(theta) * n->y + sin(theta) * n->z;
+                    n->z = -sin(theta) * mem + cos(theta) * n->z;
+                    n = normed_vect(n);
+                    //printf("%.2f %.2f", p->normal->y, p->normal->z);
+                }
+            }
+            if (ft_strstr(line, "rotationY") && to != 1)
+            {
+                tab = ft_strsplit(line, ' ');
+                if (tab[1])
+                {
+                    theta = ft_atoi(tab[1]) * M_PI / 180;
+                    mem = n->x;
+                    n->x = cos(theta) * n->x + sin(theta) * n->z;
+                    n->z = -sin(theta) * mem + cos(theta) * n->z;
+                    n = normed_vect(n);
+                }
+                
+            }
+            if (ft_strstr(line, "rotationZ") && to != 1)
+            {
+                tab = ft_strsplit(line, ' ');
+                if (tab[1])
+                {
+                    theta = ft_atoi(tab[1]) * M_PI / 180;
+                    mem = n->x;
+                    n->x = cos(theta) * n->x + sin(theta) * n->y;
+                    n->y = -sin(theta) * mem + cos(theta) * n->y;
+                    n = normed_vect(n);
+                }
+            }
+        }
+}
+
 int         register_sphere(char *line, t_env *env, int fd)
 {
     t_vect *vect;
@@ -274,8 +404,8 @@ int         register_sphere(char *line, t_env *env, int fd)
         return (0);
     if (!(mat = read_mater(line, fd, "color")))
         return (0);
-      
     sp = new_sphere(vect, rad);
+    modify((void*)sp, line, fd, 1);
     env->obj = add_obj(env->obj, 1, mat, (void*)sp);
     return (1);
 }
@@ -294,6 +424,8 @@ int         register_plan(char *line, t_env *env, int fd)
     if (!(mat = read_mater(line, fd, "color")))
         return (0);
      p = new_plan(vect, normed_vect(norm));
+    modify((void*)p, line, fd, 2);
+    printf("%.2f %.2f", p->normal->y, p->normal->z);
      env->obj = add_obj(env->obj, 2, mat, (void*)p);
     return (1);
 }
@@ -314,6 +446,7 @@ int         register_cylinder(char *line, t_env *env, int fd)
     if (!(mat = read_mater(line, fd, "color")))
         return (0);
     cyl = new_cylinder(vect, norm, rad);
+    modify((void*)cyl, line, fd, 3);
         env->obj = add_obj(env->obj, 3, mat, (void*)cyl);
     return (1);
 }
@@ -334,6 +467,7 @@ int         register_cone(char *line, t_env *env, int fd)
     if (!(mat = read_mater(line, fd, "color")))
         return (0);
     cone = new_cone(vect, axis, angle);
+    modify((void*)cone, line, fd, 4);
     cone->angle = cone->angle * M_PI / 180;
     env->obj = add_obj(env->obj, 4, mat, (void*)cone);
     return (1);
@@ -342,10 +476,7 @@ int         register_cone(char *line, t_env *env, int fd)
 int         registering(int to, char *line, t_env *env, int fd)
 {
     if (to == 1)
-    {
-        
         return (register_sphere(line, env, fd));
-    }
     if (to == 2)
         return (register_plan(line, env, fd));
     if (to == 3)
