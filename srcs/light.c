@@ -17,9 +17,9 @@ float       coef_lambert(t_env *env, t_hit_point *hp)
     t_vect *v;
     float res;
     
-    if (hp->form == 2)
+   /*if (hp->form == 4)
         v = multiply_scalar(normed_vect(minus_vect(env->light->pos, hp->vect)), -1.0);
-    else 
+    else */
         v = multiply_scalar(normed_vect(minus_vect(env->light->pos, hp->vect)), 1.0);
     //printf("v->x %f\n", v->x);
     //printf("v->y %f\n", v->y);
@@ -28,7 +28,10 @@ float       coef_lambert(t_env *env, t_hit_point *hp)
     //printf("hp->y %f\n", hp->normal->y);
     //printf("hp->z %f\n", hp->normal->z);
     res = scalar_product(hp->normal, v);
-    res = max(res, 0.0);
+    if (hp->form == 2)
+        res = max(max(-res, res), 0.0);
+    else
+        res = max(res, 0.0);
     //printf("LAMBERT %f\n", res);
     return (res);
 }

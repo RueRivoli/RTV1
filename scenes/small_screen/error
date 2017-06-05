@@ -11,6 +11,3 @@ name plan
 origin 300.0 250.0 200.0
 normal 0.0 0.0 -1.0
 color 0 0 255 255
-rotationZ 30
-translationX 400
-translationZ 400
