@@ -97,7 +97,7 @@ void            trace(t_env *env);
 void             trace2(t_env *env);
 float           term(float alpha, float beta);
 void             error_param();
-t_hit_point     *new_hit_point(t_vect *vect, float dist_to_cam, t_vect *normal);
+t_hit_point     *new_hit_point(t_vect *vect, float dist_to_cam, t_vect *normal, int form);
 
 int             type_objects(char *str);
 int             register_sphere(char *line, t_env *env, int fd);

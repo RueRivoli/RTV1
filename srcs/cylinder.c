@@ -86,18 +86,21 @@ t_hit_point         *hit_cylinder(void *o, t_ray *r)
         if (sqrt(pow(oa, 2) - pow(oh, 2)) <= cyl->radius)
         {
             w = new_vect(INFINI - 1, INFINI - 1, INFINI - 1);
-             return (new_hit_point(w, -1.0, new_vect(0,0,0)));
+             return (new_hit_point(w, -1.0, new_vect(0,0,0), 3));
         }
     }
      else if (delta >= 0.0)
     {
+            //res = max((- b - sqrt(delta)) / (2 * a), (- b + sqrt(delta)) / (2 * a));
             
-            res = max((- b - sqrt(delta)) / (2 * a), (- b + sqrt(delta)) / (2 * a));
+            res = min_positiv_s((- b - sqrt(delta)) / (2 * a), (- b + sqrt(delta)) / (2 * a), 0);
             traj = multiply_scalar(r->direction, res);
-            if (res > 0 && norm(traj) >= r->dist_to_screen)
+            //ft_putnbr(norm(traj));
+            //ft_putchar(' ');
+            if (res > 0 /*&& norm(traj) >= r->dist_to_screen*/)
             {
                 v = new_vect(r->origin->x + res * r->direction->x, r->origin->y + res * r->direction->y, r->origin->z + res * r->direction->z);
-                return (new_hit_point(v, INFINI, normal_cylinder(cyl, v)));
+                return (new_hit_point(v, INFINI, normal_cylinder(cyl, v), 3));
             }
             else 
                 return (NULL);

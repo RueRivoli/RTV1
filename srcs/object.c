@@ -187,7 +187,7 @@ t_obj       *add_obj(t_obj *obj, int obj_type, t_mater *mater, void *type)
     return (obj);
 }
 
-t_hit_point     *new_hit_point(t_vect *vect, float dist_to_cam, t_vect *normal)
+t_hit_point     *new_hit_point(t_vect *vect, float dist_to_cam, t_vect *normal, int form)
 {
     t_hit_point *ht;
     if (!(ht = (t_hit_point*)malloc(sizeof(t_hit_point))))
@@ -195,6 +195,7 @@ t_hit_point     *new_hit_point(t_vect *vect, float dist_to_cam, t_vect *normal)
     ht->vect = vect;
     ht->distance_to_cam = dist_to_cam;
     ht->normal = normal;
+    ht->form = form;
     return (ht);
 }
 

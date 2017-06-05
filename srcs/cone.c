@@ -76,12 +76,13 @@ t_hit_point         *hit_cone(void *o, t_ray *r)
     delta = pow(b, 2) - 4.0 * a * c;
     if (delta >= 0.0)
     {
-        res = max((- b - sqrt(delta)) / (2 * a), (- b + sqrt(delta)) / (2 * a));
-        traj = multiply_scalar(r->direction, res);
-          if (res > 0 /*&& norm(traj) >= r->dist_to_screen*/)
+        //res = min((- b - sqrt(delta)) / (2 * a), (- b + sqrt(delta)) / (2 * a));
+         res = min_positiv_s((- b - sqrt(delta)) / (2 * a), (- b + sqrt(delta)) / (2 * a), 0);
+            traj = multiply_scalar(r->direction, res);
+          if (res >= 0 /**/ /*&& norm(traj) >= r->dist_to_screen*/)
           {
             v = new_vect(r->origin->x + res * r->direction->x, r->origin->y + res * r->direction->y, r->origin->z + res * r->direction->z);
-            return (new_hit_point(v, INFINI, normal_cone(cone, v)));
+            return (new_hit_point(v, INFINI, normal_cone(cone, v), 4));
           }
     }
     return (NULL);

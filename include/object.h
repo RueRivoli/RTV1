@@ -47,6 +47,7 @@ typedef struct s_hit_point
     t_vect  *vect;
     float   distance_to_cam;
     t_vect  *normal;
+    int     form;
 
 }               t_hit_point;
 

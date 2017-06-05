@@ -97,3 +97,24 @@ float       min_positiv(float r, float s)
     else
         return (r);
 }
+
+float       min_positiv_s(float r, float s, float seuil)
+{
+    if (r <= s)
+    {
+        if (r >= seuil)
+            return (r);
+            else if (s >= seuil)
+            return (s);   
+    }
+    else if (s <= r)
+    {
+        if (s >= seuil)
+            return (s);
+        else if (r >= seuil)
+            return (r);
+    }
+    else if (r > seuil && s > seuil)
+        return (-1.0);
+    return (-1.0);
+}

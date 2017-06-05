@@ -25,6 +25,7 @@ t_hit_point         *hit_plan(void *o, t_ray *r)
     float den;
     float res;
     t_vect *v;
+    t_vect *traj;
     t_vect *essai;
     t_plan *p;
     p = (t_plan *)o;
@@ -32,11 +33,12 @@ t_hit_point         *hit_plan(void *o, t_ray *r)
     den = scalar_product(p->normal, r->direction);
     if (den == 0.0)
     {
-        printf(" valeurs oa %f\n", scalar_product(minus_vect(p->origin, r->origin), p->normal));
+        
+        //printf(" valeurs oa %f\n", scalar_product(minus_vect(p->origin, r->origin), p->normal));
         if (scalar_product(minus_vect(p->origin, r->origin), p->normal) == 0.0)
         {
             v = new_vect(r->origin->x, r->origin->y, r->origin->z);
-             return (new_hit_point(v, 0.0, normed_vect(p->normal)));
+             return (new_hit_point(v, 0.0, normed_vect(p->normal), 2));
         }
     }
     else if (fabsf(den) > 1e-6)
@@ -45,9 +47,12 @@ t_hit_point         *hit_plan(void *o, t_ray *r)
         //res -= 0.0001;
         v = new_vect(r->origin->x + res * r->direction->x, r->origin->y + res * r->direction->y, r->origin->z + res * r->direction->z);
         essai = minus_vect(v, r->origin);
-        if (res > 0.0 /*&& norm(essai) > 5*/)
+        traj = multiply_scalar(r->direction, res);
+        if (res > 0.0)
         {
-             return (new_hit_point(v, 0.0, normed_vect(p->normal)));
+            //ft_putnbr(res);
+            //ft_putchar(' ');
+             return (new_hit_point(v, 0.0, normed_vect(p->normal), 2));
             
         }
     } 
