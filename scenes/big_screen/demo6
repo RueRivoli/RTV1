@@ -31,5 +31,5 @@ color 0 0 50 255
 name cone
 summit 850.0 600.0 180.0
 axis 1.0 1.0 0.0
-angle 20.0
+angle 25.0
 color 0 0 255 255

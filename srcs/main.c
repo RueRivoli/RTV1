@@ -142,14 +142,20 @@ void        trace3(t_env *env)
                     r = new_ray(mem->vect, normed_vect(minus_vect(env->light->pos, mem->vect)), 0.0, new_vect(0.0, 0.0, 0.0));
                     while (tmp && !meet_object)
                     {   
-                         if (!(hr = tmp->is_hit(tmp->type, r)))
-                              tmp = tmp->next;
+                         if (tmp == colore)
+                                tmp = tmp->next;
+                         else if (!(hr = tmp->is_hit(tmp->type, r)))
+                             tmp = tmp->next;
                          else
+                        {
                             meet_object = 1;
+                            hr->distance_to_cam = distance_with_cam(env, hr);
+                        }
                     }
-                    
+                    if (colore->form == 2 && hr)
+                        printf("%d\n", hr->form);
 
-                    if (!meet_object || (hr && hp && distance(hp->vect, hr->vect) < 10))
+                    if (!meet_object || (hr && hp && distance(hp->vect, hr->vect) > hr->distance_to_cam))
                     {
                         color = find_color(env, mem, colore->mater);  
                          //if ((int)color->x == 0)
@@ -167,11 +173,12 @@ void        trace3(t_env *env)
                            //SDL_RenderDrawPoint(env->win->rend, p, q);
                            //ft_putstr("PPL");
                            color = find_color(env, mem, colore->mater);  
-                         if ((int)color->x == 0)
-                             color->x = 1;
+                         //if ((int)color->x == 0)
+                           //  color->x = 1;
                             
                            //ft_putchar('\n');
-                            SDL_SetRenderDrawColor(env->win->rend, (int)color->x, (int)color->y, (int)color->z, 0);
+                            SDL_SetRenderDrawColor(env->win->rend, (int)(color->x / 2), (int) (color->y / 2), (int) (color->z / 2), 0);
+                            //SDL_SetRenderDrawColor(env->win->rend, (int)color->x, (int) color->y, (int) color->z, 0);
                            SDL_RenderDrawPoint(env->win->rend, p, q);
                     }
                     tmp = env->obj;
