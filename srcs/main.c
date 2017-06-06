@@ -93,14 +93,20 @@ void        trace3(t_env *env)
     float min;
 
     t_vect *v;
+    t_vect *col;
     t_ray *r;
-    t_vect *color;
+    //t_vect *color;
     t_obj *tmp;
     t_obj *colore;
     t_hit_point *hp;
     t_hit_point *hr;
     t_hit_point *mem;
+    t_light *light;
+    int red;
+    int green;
+    int blue;
     int meet_object;
+    int nb_of_lights;
     tmp = env->obj;
         p = 0;
         while (p < env->size_x)
@@ -112,7 +118,6 @@ void        trace3(t_env *env)
                 min = INFINI;
                 tmp = env->obj;
                 v = new_vect(p, q, 0);
-            
                 r = new_ray(env->cam->pos, normed_vect(minus_vect(v, env->cam->pos)), norm(minus_vect(env->cam->pos, v)), new_vect(0.0, 0.0, 0.0));
                 while (tmp)
                 {   
@@ -138,50 +143,63 @@ void        trace3(t_env *env)
                 
                 if (min < INFINI && mem)
                 {   
-                    meet_object = 0;
-                    r = new_ray(mem->vect, normed_vect(minus_vect(env->light->pos, mem->vect)), 0.0, new_vect(0.0, 0.0, 0.0));
-                    while (tmp && !meet_object)
+                    light = env->light;
+                    red = 0;
+                    blue = 0;
+                    green = 0;
+                    nb_of_lights = numberoflights(env);
+                    col = new_vect(0.0, 0.0, 0.0);
+                    while (light)
                     {   
-                         if (tmp == colore)
-                                tmp = tmp->next;
-                         else if (!(hr = tmp->is_hit(tmp->type, r)))
-                             tmp = tmp->next;
-                         else
-                        {
-                            meet_object = 1;
-                            hr->distance_to_cam = distance_with_cam(env, hr);
+                
+                        meet_object = 0;
+                        r = new_ray(mem->vect, normed_vect(minus_vect(light->pos, mem->vect)), 0.0, new_vect(0.0, 0.0, 0.0));
+                        tmp = env->obj;
+                        while (tmp && !meet_object)
+                         {   
+                              if (tmp == colore)
+                                    tmp = tmp->next;
+                             else if (!(hr = tmp->is_hit(tmp->type, r)))
+                                 tmp = tmp->next;
+                             else
+                             {
+                                
+                                if (distance(mem->vect, hr->vect) < distance(hr->vect, light->pos))
+                                {    
+                                    meet_object = 1;
+                                    hr->distance_to_cam = distance_with_cam(env, hr);
+                                }
+                                else
+                                    tmp = tmp->next;
+                            }
                         }
-                    }
-                    if (colore->form == 2 && hr)
-                        printf("%d\n", hr->form);
+                       
 
-                    if (!meet_object || (hr && hp && distance(hp->vect, hr->vect) > hr->distance_to_cam))
-                    {
-                        color = find_color(env, mem, colore->mater);  
-                         //if ((int)color->x == 0)
-                           //  color->x = 1;
-                           //ft_putchar('\n');
-                          //if (mem->form == 3 && coef_lambert(env, mem) == 0)
-                             //   ft_putstr("ALLEZ ASM");
-                           SDL_SetRenderDrawColor(env->win->rend, (int)color->x, (int)color->y, (int)color->z, 0);
-                           SDL_RenderDrawPoint(env->win->rend, p, q);
-                    }
-                    else
-                    {
-                         //SDL_SetRenderDrawColor(env->win->rend, 160, 160, 160, 0);
-                          //SDL_SetRenderDrawColor(env->win->rend, colore->mater->ir / 10, colore->mater->ig / 10, colore->mater->ib / 10, 0);
-                           //SDL_RenderDrawPoint(env->win->rend, p, q);
-                           //ft_putstr("PPL");
-                           color = find_color(env, mem, colore->mater);  
-                         //if ((int)color->x == 0)
-                           //  color->x = 1;
-                            
-                           //ft_putchar('\n');
-                            SDL_SetRenderDrawColor(env->win->rend, (int)(color->x / 2), (int) (color->y / 2), (int) (color->z / 2), 0);
+                         if (!meet_object)
+                         {
+                                //color = find_color(env, mem, colore->mater);  
+                                 //if ((int)color->x == 0)
+                               //  color->x = 1;
+                                 col = find_color_light(light, mem, colore->mater, col);
+                                 
+                               //  SDL_SetRenderDrawColor(env->win->rend, (int)color->x, (int)color->y, (int)color->z, 0);
+                              //SDL_RenderDrawPoint(env->win->rend, p, q);
+                         }
+                         else
+                         {
+                                  col = find_color_sha(light, mem, colore->mater, col);
+                              //if ((int)color->x == 0)
+                                  //  color->x = 1;
+                                   
+                            //SDL_SetRenderDrawColor(env->win->rend, (int)(color->x / 2), (int) (color->y / 2), (int) (color->z / 2), 0);
                             //SDL_SetRenderDrawColor(env->win->rend, (int)color->x, (int) color->y, (int) color->z, 0);
+                           //SDL_RenderDrawPoint(env->win->rend, p, q);
+                           }
+                           light = light->next;
+                            
+                       }
+                           SDL_SetRenderDrawColor(env->win->rend, (int)col->x / (255 * nb_of_lights), (int)col->y / (255 * nb_of_lights), (int)col->z / (255 * nb_of_lights), 0);
                            SDL_RenderDrawPoint(env->win->rend, p, q);
-                    }
-                    tmp = env->obj;
                     }
                q++;
              }

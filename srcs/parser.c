@@ -425,7 +425,6 @@ int         register_plan(char *line, t_env *env, int fd)
         return (0);
      p = new_plan(vect, normed_vect(norm));
     modify((void*)p, line, fd, 2);
-    printf("%.2f %.2f", p->normal->y, p->normal->z);
      env->obj = add_obj(env->obj, 2, mat, (void*)p);
     return (1);
 }
@@ -550,7 +549,6 @@ int        read_scene(int fd, char *line, t_env *env)
     while (get_next_line(fd, &line) && ft_strstr(line, "spot"))
     {
         tab = ft_strsplit(line, ' ');
-        ft_putnbr(ft_atoi(tab[3])); 
         if (tab[1] && tab[2] && tab[3])
           {
                v = new_vect(ft_atoi(tab[1]), ft_atoi(tab[2]), ft_atoi(tab[3]));
@@ -573,6 +571,7 @@ int        lecture(int fd, t_env *env)
         {
                 index++;
                 get_next_line(fd, &line);
+                
                if (index != 1 || read_scene(fd, line,env) < 3)
                 {
                     error_param();
@@ -584,11 +583,12 @@ int        lecture(int fd, t_env *env)
         {
                 index++;
                 get_next_line(fd, &line);
-                
+                              
                if (index != 2 || read_objects(fd, line,env) == 0)
                 {
                     error_param();
                     return (0);
+
                 }
                 
                 

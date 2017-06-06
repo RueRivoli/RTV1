@@ -85,8 +85,8 @@ typedef struct s_env
 }               t_env;
 
 t_light       *add_light(t_light *light, t_vect *pos);
-float       coef_lambert(t_env *env, t_hit_point *h);
-t_vect      *find_color(t_env *env, t_hit_point *hp, t_mater *mat);
+float           coef_lambert(t_light *light, t_hit_point *h);
+t_vect          *find_color(t_light *light, t_hit_point *hp, t_mater *mat);
 t_env           *init_env(void);
 void            render(t_env *env);
 int             event(t_env *env);
@@ -113,9 +113,13 @@ void            set_virtual_screen(t_env *env);
 void            trace3(t_env *env);
 float           norm(t_vect *v);
 int             colin(t_vect *v, t_vect *w);
-float       calcul(t_env *env, t_hit_point *hp);
+float           calcul(t_env *env, t_hit_point *hp);
 
-t_vect      *origin(int to, void *o);
-t_vect      *normal(int to, void *o);
-void        modify(void *o, char *line, int fd, int to);
+t_vect          *origin(int to, void *o);
+t_vect           *normal(int to, void *o);
+void              modify(void *o, char *line, int fd, int to);
+int               numberoflights(t_env *env);
+
+t_vect            *find_color_light(t_light *light, t_hit_point *hp, t_mater *mat, t_vect *v);
+t_vect            *find_color_sha(t_light *light, t_hit_point *hp, t_mater *mat, t_vect *v);
 #endif
