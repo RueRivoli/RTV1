@@ -11,31 +11,114 @@
 /* ************************************************************************** */
 
 # include "../include/rtv1.h"
+#   include "../include/event.h"
 # include <SDL2/SDL.h>
 # include <stdlib.h>
 #include <stdio.h>
 # include <math.h>
 
+void        refresh(t_env *env)
+{
+            SDL_SetRenderDrawColor(env->win->rend, 0, 0, 0, 0);
+	        SDL_RenderClear(env->win->rend);
+            raytrace(env);
+	        SDL_RenderPresent(env->win->rend);
+}
+
 int        event(t_env *env)
 {
-    SDL_Event   evenements;
+    SDL_Event   event;
+    //SDL_KeyboardEvent *key;
+    SDL_WaitEvent(&event);
+    //SDL_PollEvent(&event);
 
-    SDL_WaitEvent(&evenements);
-    if (evenements.type == SDL_KEYDOWN && evenements.key.keysym.sym == SDLK_ESCAPE)
+   
+    if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)
+                    return (0);
+	else if (event.type == SDL_QUIT)
+                    return (0);
+        else if (event.type == SDL_WINDOWEVENT)
+        {
+            if(event.window.event == SDL_WINDOWEVENT_RESIZED)
+            {
+                SDL_SetRenderDrawColor(env->win->rend, 0, 0, 0, 0);
+                SDL_RenderClear(env->win->rend);
+                  //return (0);
+            }
+           if(event.window.event == SDL_WINDOWEVENT_CLOSE)
                 return (0);
-	else if (evenements.type == SDL_QUIT)
-                return (0);
-    else if (evenements.type == SDL_WINDOWEVENT)
-    {
-        if(evenements.window.event == SDL_WINDOWEVENT_RESIZED)
-                printf("Fenêtre redimensionnée\n"); /* Fenêtre redimensionnée */
-        if(evenements.window.event == SDL_WINDOWEVENT_CLOSE)
-                return (0);
-    }
-	else if (evenements.type == SDL_WINDOWEVENT_SIZE_CHANGED)
-			SDL_RenderClear(env->win->rend);
-        return (1);
-}
+        }
+	     else if (event.type == SDL_WINDOWEVENT_SIZE_CHANGED)
+	     		SDL_RenderClear(env->win->rend);
+        else if (event.type == SDL_KEYUP)
+         {
+            ft_putnbr(event.key.keysym.scancode);
+            if (event.key.keysym.scancode == RIGHT)
+            {
+                env->cam->trans->x += 125.0;
+                refresh(env);
+            }
+            if (event.key.keysym.scancode == LEFT)
+            {
+                env->cam->trans->x -= 125.0;
+                refresh(env);
+            }
+            if (event.key.keysym.scancode == UP)
+            {
+                env->cam->trans->y -= 125.0;
+                refresh(env);
+            }
+            if (event.key.keysym.scancode == DOWN)
+            {
+                env->cam->trans->y += 125.0;
+                refresh(env);
+            }
+            if (event.key.keysym.scancode == Z_PLUS)
+            {
+                env->cam->trans->z += 125.0;
+                refresh(env);
+            }
+            if (event.key.keysym.scancode == Z_LESS)
+            {
+                env->cam->trans->z -= 125.0;
+                refresh(env);
+            }
+            if (event.key.keysym.scancode == RESET)
+            {
+                env->cam->trans->x = 0.0;
+                env->cam->trans->y = 0.0;
+                env->cam->trans->z = 0.0;
+                env->cam->add_phi = 0.0;
+                env->cam->add_theta = 0.0;
+                refresh(env);
+            }
+            if (event.key.keysym.scancode == ROT_THETA_PLUS)
+            {
+                env->cam->add_theta += 10.0;
+                refresh(env);
+            }
+            if (event.key.keysym.scancode == ROT_THETA_LESS)
+            {
+                env->cam->add_theta -= 10.0;
+                refresh(env);
+            }
+            if (event.key.keysym.scancode == ROT_PHI_PLUS)
+            {
+                env->cam->add_phi += 10.0;
+                refresh(env);
+            }
+            if (event.key.keysym.scancode == ROT_PHI_LESS)
+            {
+                env->cam->add_phi -= 10.0;
+                refresh(env);
+            }
+            }
+            else if (event.type == SDLK_DOWN)
+            {
+                   ft_putnbr(event.key.keysym.scancode);
+            }
+     return (1);
+ }
 
 void        quit_SDL(t_env *env)
 {
@@ -44,49 +127,8 @@ void        quit_SDL(t_env *env)
     SDL_Quit();
 }
 
-void        trace(t_env *env)
-{
-    int x;
-    int y;
-    t_vect *v;
-    t_ray *r;
-    t_obj *tmp;
-    t_hit_point *hp;
-    t_cone *cone;
-    tmp = env->obj;
-        x = 0;
-        while (x < env->size_x)
-        {
-            y = 0;
-            while (y < env->size_y)
-            {
-                env->x = x;
-                env->y = y;
-                v = new_vect(x, y, 0.0);
 
-                r = new_ray(env->cam->pos, normed_vect(minus_vect(v, env->cam->pos)), norm(minus_vect(env->cam->pos, v)), NULL);
-                    if (tmp->form == 4)
-                    {
-                        cone = (t_cone *)tmp->type;
-                        if ((x == 300 && y == 250))
-                        {
-                         if ((hp = hit_cone(cone, r)))
-                            SDL_RenderDrawPoint(env->win->rend, x, y);
-                           
-                    }
-                    }
-                    free(r);
-                y++;
-            }
-            x++;
-        }
-        //SDL_RenderPresent(env->win->rend);
-        //SDL_UpdateWindowSurface(env->win->handle);
-}
-
-
-
-void        trace3(t_env *env)
+void        raytrace(t_env *env)
 {
     int p;
     int q;
@@ -107,7 +149,16 @@ void        trace3(t_env *env)
     int blue;
     int meet_object;
     int nb_of_lights;
+    float a;
+    float b;
+    float c;
+    float me;
+    me = 0.0;
+    a = 0.0;
+    b = 0.0;
+    c = 0.0;
     tmp = env->obj;
+    env->cam->pos = add_vect(env->cam->pos, env->cam->trans);
         p = 0;
         while (p < env->size_x)
         {
@@ -117,8 +168,23 @@ void        trace3(t_env *env)
             {   
                 min = INFINI;
                 tmp = env->obj;
-                v = new_vect(p, q, 0);
+                a = p + env->cam->trans->x;
+                b = q + env->cam->trans->y;
+                c = env->cam->trans->z;
+                me = a;
+                /*a = cos(env->cam->rot->z * M_PI / 180) * a + sin(env->cam->rot->z * M_PI / 180) * b;
+                b = -sin(env->cam->rot->z * M_PI / 180) * me + cos(env->cam->rot->z * M_PI / 180) * b;
+                me = b;
+                b = cos(env->cam->rot->x * M_PI / 180) * b + sin(env->cam->rot->x * M_PI / 180) * c;
+                c = -sin(env->cam->rot->x * M_PI / 180) * me + cos(env->cam->rot->x * M_PI / 180) * c;
+                me = c;
+                c = cos(env->cam->rot->y * M_PI / 180) * c + sin(env->cam->rot->y * M_PI / 180) * a;
+                a = -sin(env->cam->rot->y * M_PI / 180) * me + cos(env->cam->rot->y * M_PI / 180) * a;*/
+
+                v = new_vect(p + a, q + b, c);
                 r = new_ray(env->cam->pos, normed_vect(minus_vect(v, env->cam->pos)), norm(minus_vect(env->cam->pos, v)), new_vect(0.0, 0.0, 0.0));
+                find_angle(env, r);
+                free(v);
                 while (tmp)
                 {   
                      
@@ -140,7 +206,7 @@ void        trace3(t_env *env)
                       }
                 }
                 tmp = env->obj;
-                
+                free(r);
                 if (min < INFINI && mem)
                 {   
                     light = env->light;
@@ -163,7 +229,6 @@ void        trace3(t_env *env)
                                  tmp = tmp->next;
                              else
                              {
-                                
                                 if (distance(mem->vect, hr->vect) < distance(hr->vect, light->pos))
                                 {    
                                     meet_object = 1;
@@ -173,8 +238,7 @@ void        trace3(t_env *env)
                                     tmp = tmp->next;
                             }
                         }
-                       
-
+                        free(r);
                          if (!meet_object)
                          {
                                 //color = find_color(env, mem, colore->mater);  
@@ -200,90 +264,54 @@ void        trace3(t_env *env)
                        }
                            SDL_SetRenderDrawColor(env->win->rend, (int)col->x / (255 * nb_of_lights), (int)col->y / (255 * nb_of_lights), (int)col->z / (255 * nb_of_lights), 0);
                            SDL_RenderDrawPoint(env->win->rend, p, q);
+                           free(col);
                     }
                q++;
              }
                p++;    
             }
-        
-        //SDL_UpdateWindowSurface(env->win->handle);
+    
 }
 
-void        trace2(t_env *env)
+void            SDL_render(t_env *env)
 {
-    int p;
-    int q;
-    int x1;/*abscisse du pixel dans l'ecran virtuel*/
-    int y1;/*ordonnee du pixel dans l'ecran virtuel*/
-    int z1;/*altitude du pixel dans l'ecran virtuel*/
-    float min;
+    SDL_Event event;
 
-    t_vect *v;
-    t_ray *r;
-   
-    t_obj *tmp;
-    t_obj *colore;
-    t_hit_point *hp;
-    
-    tmp = env->obj;
-    
-    p = 0;
-        while (p < env->size_x)
-        {
-            q = 0;
-            
-            while (q < env->size_y)
-            {   
-                min = INFINI;
-                x1 = env->screen->center->x - (env->size_x / 2) * env->screen->v->x - (env->size_y / 2) * env->screen->w->x + p * env->screen->v->x + \
-            q * env->screen->w->x;
-            y1 = env->screen->center->y - (env->size_x / 2) * env->screen->v->y - (env->size_y / 2) * env->screen->w->y + p * env->screen->v->y \
-             + q * env->screen->w->y;
-             z1 = env->screen->center->z - (env->size_x / 2) * env->screen->v->z - (env->size_y / 2) * env->screen->w->z + p * env->screen->v->z \
-              + q * env->screen->w->z;
-              
-                v = new_vect(x1, y1, z1);
-                r = new_ray(env->cam->pos, normed_vect(minus_vect(v, env->cam->pos)), norm(minus_vect(env->cam->pos, v)), new_vect(0.0, 0.0, 0.0));
-                while (tmp)
-                {   
-                    
-                    if (!(hp = tmp->is_hit(tmp->type, r)))
-                    {
-                            
-                            tmp = tmp->next;
-                    }
-                    else 
-                    {
-                        hp->distance_to_cam = distance_with_cam(env, hp);
-                        
-                    if (hp->distance_to_cam < min)
-                    {
-                       
-                        min = hp->distance_to_cam;
-                        colore = tmp;
-                        SDL_SetRenderDrawColor(env->win->rend, colore->mater->ir, colore->mater->ig, colore->mater->ib, 0);
-                    }
-                    tmp = tmp->next;
-                    }
-                }
-                if (min < INFINI)
-                        SDL_RenderDrawPoint(env->win->rend, p, q);
-                    q++;
-             }
-                p++;
-            }
-            
-        
-        SDL_RenderPresent(env->win->rend);
-        //SDL_UpdateWindowSurface(env->win->handle);
+    SDL_SetRenderDrawColor(env->win->rend, 0, 0, 0, 0);
+	SDL_RenderClear(env->win->rend);
+	raytrace(env);
+	SDL_RenderPresent(env->win->rend);
+	while (1)
+	{
+		while (SDL_PollEvent(&event))
+		{
+			if (event.type == SDL_WINDOWEVENT_RESIZED)
+			{
+				raytrace(env);
+				SDL_RenderClear(env->win->rend);
+				return ;
+			}
+			else if (event.type == SDL_WINDOWEVENT_SIZE_CHANGED)
+			{
+				SDL_RenderClear(env->win->rend);
+				return ;
+			}
+			else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE) {
+				return ;
+			}
+			else if (event.type == SDL_QUIT)
+				return ;
+		}
+	}
 }
-
+  
 
 int              main(int argc, char **argv)
 {
     t_env *env;
     t_win *win;
-
+    int b;
+    b = 1;
  
     int fd;
     
@@ -308,32 +336,17 @@ int              main(int argc, char **argv)
     SDL_CreateWindowAndRenderer(win->width, win->height, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE, &win->handle, &win->rend);
     SDL_SetRenderDrawColor(env->win->rend, 0, 0, 0, 0);
     SDL_RenderClear(env->win->rend);
-	 SDL_SetWindowTitle(win->handle, "RTV1");
-     //SDL_SetRenderDrawColor(env->win->rend, 0, 0, 255, 0);
-    
-     trace3(env);
-     SDL_RenderPresent(env->win->rend);
+	SDL_SetWindowTitle(win->handle, "RTV1");
+
+     
+     SDL_RenderClear(env->win->rend);
+    raytrace(env);
+	SDL_RenderPresent(env->win->rend);
      while(!env->boucle)
     {
-       
-    //On met le fond en couleur
-       
-    //Couleur de dessin :
-        //SDL_SetRenderDrawColor(env->win->rend, 50, 50, 50, 255);
-
-        //SDL_GetWindowSize(env->win->handle, size_x, size_y);
-       //SDL_GetWindowPosition(env->win->handle, pos_x, pos_y);
-       
-       //SDL_SetRenderDrawColor(env->win->rend, 255, 0, 0, 0)
-       
-        //trace2(env);
-        //SDL_RenderPresent(env->win->rend);
-        //SDL_UpdateWindowSurface(env->win->handle);
         if (event(env) == 0)
             env->boucle = 1;
     }
-    
-    
     quit_SDL(env);
     return (0); 
 }

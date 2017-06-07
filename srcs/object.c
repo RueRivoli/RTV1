@@ -1,11 +1,14 @@
 #include "rtv1.h"
 
-t_cam   *new_cam(t_vect *v1)
+t_cam   *new_cam(t_vect *v1, t_vect *v2, float phi, float theta)
 {
     t_cam *c;
     if (!(c = (t_cam*)malloc(sizeof(t_cam))))
         return (NULL);
     c->pos = v1;
+    c->trans = v2;
+    c->add_phi = phi;
+    c->add_theta = theta;
     return (c);
 }
 

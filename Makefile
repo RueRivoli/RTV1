@@ -20,7 +20,7 @@ CFLAGS = -c -Wall -Werror -Wextra -pedantic $(OPTI)
 LIBFT_INC_PATH = libft
 LIBFT_INC_FILES = libft.h
 INC_PATH = include
-INC_FILES = rtv1.h vector.h object.h
+INC_FILES = rtv1.h vector.h object.h event.h
 INCS = -I include -I framework/SDL2/include -I ./libft/libft.h
 HEADERS =  $(LIBFT_INC_FILES:%.h=$(LIBFT_INC_PATH)/%.h)
 HEADERS += $(INC_FILES:%.h=$(INC_PATH)/%.h)

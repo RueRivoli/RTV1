@@ -510,6 +510,7 @@ int        read_scene(int fd, char *line, t_env *env)
     char *str;
     char **tab;
     t_vect *v;
+    t_vect *trans;
     str = NULL;
     tab = NULL;
      v = NULL;
@@ -532,7 +533,8 @@ int        read_scene(int fd, char *line, t_env *env)
             v = new_vect(ft_atoi(tab[2]),ft_atoi(tab[3]), ft_atoi(tab[4]));
             ret++;
         }
-       env->cam = new_cam(v);
+        trans = new_vect(0.0, 0.0, 0.0);
+        env->cam = new_cam(v, trans, 0.0, 0.0);
     }
     if (get_next_line(fd, &line) && ft_strstr(line, "render"))
     {

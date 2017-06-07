@@ -39,6 +39,7 @@ t_vect              *normal_cone(t_cone *cone, t_vect *p)
     t_vect *v;
     h = multiply_scalar(normed_vect(cone->axis), scalar_product(minus_vect(p, cone->summit), normed_vect(cone->axis)));
     v = minus_vect(p, add_vect(cone->summit, h));
+    free(h);
     v = normed_vect(v);
     return (v);
 }

@@ -34,6 +34,9 @@
 typedef struct s_cam
 {
     t_vect      *pos;
+    t_vect      *trans;
+    float       add_phi;
+    float       add_theta;
 }               t_cam;
 
 typedef struct s_screen 
@@ -90,7 +93,7 @@ t_vect          *find_color(t_light *light, t_hit_point *hp, t_mater *mat);
 t_env           *init_env(void);
 void            render(t_env *env);
 int             event(t_env *env);
-t_cam           *new_cam(t_vect *v1);
+t_cam           *new_cam(t_vect *v1, t_vect *trans, float phi, float theta);
 t_ray           *new_ray(t_vect *orig, t_vect *dir, float fl, t_vect *color);
 void            quit_SDL(t_env *env);
 void            trace(t_env *env);
@@ -110,7 +113,7 @@ int             read_objects(int fd, char *line, t_env *env);
 t_vect          *center_average(t_env *env);
 float           distance_with_cam(t_env *env, t_hit_point *hp);
 void            set_virtual_screen(t_env *env);
-void            trace3(t_env *env);
+void            raytrace(t_env *env);
 float           norm(t_vect *v);
 int             colin(t_vect *v, t_vect *w);
 float           calcul(t_env *env, t_hit_point *hp);
@@ -122,4 +125,7 @@ int               numberoflights(t_env *env);
 
 t_vect            *find_color_light(t_light *light, t_hit_point *hp, t_mater *mat, t_vect *v);
 t_vect            *find_color_sha(t_light *light, t_hit_point *hp, t_mater *mat, t_vect *v);
+void                SDL_render(t_env *env);
+void                refresh(t_env *env);
+void                find_angle(t_env *env, t_ray *ray);
 #endif
