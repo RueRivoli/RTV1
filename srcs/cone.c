@@ -37,10 +37,18 @@ t_vect              *normal_cone(t_cone *cone, t_vect *p)
 {
     t_vect *h;
     t_vect *v;
-    h = multiply_scalar(normed_vect(cone->axis), scalar_product(minus_vect(p, cone->summit), normed_vect(cone->axis)));
-    v = minus_vect(p, add_vect(cone->summit, h));
-    free(h);
+    t_vect *norm;
+    t_vect *min;
+    t_vect *add;
+    norm = normed_vect(cone->axis);
+    min = minus_vect(p, cone->summit);
+    h = multiply_scalar(norm, scalar_product(min, norm));
+    add = add_vect(cone->summit, h);
+    v = minus_vect(p, add);
     v = normed_vect(v);
+    free(h);
+    free(add);
+    free(min);
     return (v);
 }
 
@@ -56,8 +64,8 @@ t_hit_point         *hit_cone(void *o, t_ray *r)
     cone = (t_cone *)o;
     t_vect *v;
     float res;
-
-    t_vect *traj;
+    //t_vect *traj;
+    
     cone->axis = normed_vect(cone->axis);
     expr = cone->axis->x * r->direction->x + cone->axis->y * r->direction->y + cone->axis->z * r->direction->z;
     expr2 = (r->origin->x - cone->summit->x) * cone->axis->x + (r->origin->y - cone->summit->y) * cone->axis->y +\
@@ -79,7 +87,7 @@ t_hit_point         *hit_cone(void *o, t_ray *r)
     {
         //res = min((- b - sqrt(delta)) / (2 * a), (- b + sqrt(delta)) / (2 * a));
          res = min_positiv_s((- b - sqrt(delta)) / (2 * a), (- b + sqrt(delta)) / (2 * a), 0);
-            traj = multiply_scalar(r->direction, res);
+            //traj = multiply_scalar(r->direction, res);
           if (res >= 0 /**/ /*&& norm(traj) >= r->dist_to_screen*/)
           {
             v = new_vect(r->origin->x + res * r->direction->x, r->origin->y + res * r->direction->y, r->origin->z + res * r->direction->z);

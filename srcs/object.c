@@ -81,11 +81,15 @@ t_vect      *vectv(t_vect *n)
     float x;
     float y;
     float z;
+    t_vect *v;
+    t_vect *w;
     x = 1.0;
     y = -n->x /n->y;
     z = 0.0;
-
-    return (normed_vect(new_vect(x, y, z)));
+    v = new_vect(x, y, z);
+    w = normed_vect(v);
+    free(v);
+    return (w);
 }
 
 t_vect      *vectw(t_vect *n)
@@ -93,22 +97,32 @@ t_vect      *vectw(t_vect *n)
     float x;
     float y;
     float z;
-    
+    t_vect *v;
+    t_vect *w;
     y = -0.5 * n->z / (n->y + pow(n->x, 2)/ n->y);
     x = (n->x / n->z) * y;
     z = 0.5;
-    return (normed_vect(new_vect(x, y, z)));
+    v = new_vect(x, y, z);
+     w = normed_vect(v);
+    free(v);
+    return (w);
 }
 
 void    set_virtual_screen(t_env *env)
 {
     t_vect *v;
     t_vect *n;
+    t_vect *aver;
+    t_vect *w;
 
-    v = minus_vect(center_average(env), env->cam->pos);
+    aver = center_average(env);
+    v = minus_vect(aver, env->cam->pos);
+    free(aver);
     n = normed_vect(v);
+    free(v);
     v = multiply_scalar(n, 100);
-    v = add_vect(env->cam->pos, v);
+    free(n);
+    w = add_vect(env->cam->pos, v);
     if (!(env->screen = (t_screen*)malloc(sizeof(t_screen))))
         return ;
     env->screen->center = v;
@@ -204,15 +218,16 @@ t_hit_point     *new_hit_point(t_vect *vect, float dist_to_cam, t_vect *normal, 
 
 float       distance_with_cam(t_env *env, t_hit_point *hp)
 {
-    t_vect *pos;
     t_vect *diff;
-    pos = env->cam->pos;
+    float dis;
     if (!hp)
         return (INFINI); 
     if (hp->distance_to_cam == -1.0)
         return (0.0);
-    diff = minus_vect(pos, hp->vect);
-    return (sqrt(pow(diff->x, 2) + pow(diff->y, 2) + pow(diff->z, 2)));
+    diff = minus_vect(env->cam->pos, hp->vect);
+    dis = sqrt(pow(diff->x, 2) + pow(diff->y, 2) + pow(diff->z, 2));
+    free(diff);
+    return (dis);
 }
 
 t_ray   *new_ray(t_vect *orig, t_vect *dir, float fl, t_vect *color)

@@ -1,33 +1,19 @@
 #include "rtv1.h"
 
-
-float calcul(t_env *env, t_hit_point *hp)
-{
-    t_vect *v;
-    float res;
-    v = minus_vect(env->light->pos, hp->vect);
-    v = normed_vect(v);
-    res =  scalar_product(hp->normal, v);
-  
-    return (res); 
-}
-
 float       coef_lambert(t_light *light, t_hit_point *hp)
 {
     t_vect *v;
+    t_vect *min;
+    t_vect *norm;
     float res;
     
-   /*if (hp->form == 4)
-        v = multiply_scalar(normed_vect(minus_vect(env->light->pos, hp->vect)), -1.0);
-    else */
-        v = multiply_scalar(normed_vect(minus_vect(light->pos, hp->vect)), 1.0);
-    //printf("v->x %f\n", v->x);
-    //printf("v->y %f\n", v->y);
-    //printf("v->z %f\n", v->z);
-    //printf("hp->x %f\n", hp->normal->x);
-    //printf("hp->y %f\n", hp->normal->y);
-    //printf("hp->z %f\n", hp->normal->z);
+    min = minus_vect(light->pos, hp->vect);
+    norm = normed_vect(min);
+    v = multiply_scalar(norm, 1.0);
     res = scalar_product(hp->normal, v);
+    free(v);
+    free(min);
+    free(norm);
     if (hp->form == 2)
         res = max(max(-res, res), 0.0);
     else

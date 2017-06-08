@@ -127,99 +127,66 @@ void        quit_SDL(t_env *env)
     SDL_Quit();
 }
 
-
-void        raytrace(t_env *env)
+int            find_nearest_inter(t_env *env, t_vect *v, t_hit_point **mem, t_obj **colore)
 {
-    int p;
-    int q;
+    t_vect *mini;
+    t_vect *w;
+    t_vect *ray_dir;
+    t_obj *tmp;
+    t_hit_point *hp;
+    t_ray *r;
     float min;
 
-    t_vect *v;
-    t_vect *col;
-    t_ray *r;
-    //t_vect *color;
-    t_obj *tmp;
-    t_obj *colore;
-    t_hit_point *hp;
-    t_hit_point *hr;
-    t_hit_point *mem;
-    t_light *light;
-    int red;
-    int green;
-    int blue;
-    int meet_object;
-    int nb_of_lights;
-    float a;
-    float b;
-    float c;
-    float me;
-    me = 0.0;
-    a = 0.0;
-    b = 0.0;
-    c = 0.0;
     tmp = env->obj;
-    env->cam->pos = add_vect(env->cam->pos, env->cam->trans);
-        p = 0;
-        while (p < env->size_x)
-        {
-            q = 0;
-            
-            while (q < env->size_y)
-            {   
-                min = INFINI;
-                tmp = env->obj;
-                a = p + env->cam->trans->x;
-                b = q + env->cam->trans->y;
-                c = env->cam->trans->z;
-                me = a;
-                /*a = cos(env->cam->rot->z * M_PI / 180) * a + sin(env->cam->rot->z * M_PI / 180) * b;
-                b = -sin(env->cam->rot->z * M_PI / 180) * me + cos(env->cam->rot->z * M_PI / 180) * b;
-                me = b;
-                b = cos(env->cam->rot->x * M_PI / 180) * b + sin(env->cam->rot->x * M_PI / 180) * c;
-                c = -sin(env->cam->rot->x * M_PI / 180) * me + cos(env->cam->rot->x * M_PI / 180) * c;
-                me = c;
-                c = cos(env->cam->rot->y * M_PI / 180) * c + sin(env->cam->rot->y * M_PI / 180) * a;
-                a = -sin(env->cam->rot->y * M_PI / 180) * me + cos(env->cam->rot->y * M_PI / 180) * a;*/
-
-                v = new_vect(p + a, q + b, c);
-                r = new_ray(env->cam->pos, normed_vect(minus_vect(v, env->cam->pos)), norm(minus_vect(env->cam->pos, v)), new_vect(0.0, 0.0, 0.0));
-                find_angle(env, r);
-                free(v);
-                while (tmp)
-                {   
+    min = INFINI;
+    mini = minus_vect(v, env->cam->pos);
+    w = new_vect(0.0, 0.0, 0.0);
+    ray_dir = normed_vect(mini);
+    r = new_ray(env->cam->pos, ray_dir, norm(mini), w);
+    while (tmp)
+   {   
                      
                     if (!(hp = tmp->is_hit(tmp->type, r)))
-                    {                                        
                             tmp = tmp->next;
-                    }
                     else 
                     {
                           hp->distance_to_cam = distance_with_cam(env, hp);
                           if (hp->distance_to_cam < min)
                           {
                                 min = hp->distance_to_cam;
-                                colore = tmp;
-                                mem = hp;
-                            //SDL_SetRenderDrawColor(env->win->rend, colore->mater->ir, colore->mater->ig, colore->mater->ib, 0);
+                                *colore = tmp;
+                                *mem = hp;
+                            
                           }
                          tmp = tmp->next;
                       }
-                }
+   }
                 tmp = env->obj;
+                free(v);
+                free(mini);
+                free(ray_dir);
+                free(w);
                 free(r);
-                if (min < INFINI && mem)
-                {   
-                    light = env->light;
-                    red = 0;
-                    blue = 0;
-                    green = 0;
-                    nb_of_lights = numberoflights(env);
-                    col = new_vect(0.0, 0.0, 0.0);
-                    while (light)
-                    {   
+                return (min);
+}
+
+  int        is_light_reached(t_light *light, t_env *env, t_hit_point *mem, t_obj *colore)
+    {
+                    t_vect *mini;
+                    t_vect *v;
+                    t_vect *w;
+                    t_vect *ray_dir;
+                    t_ray *r;
+                    t_obj *tmp;
+                    t_hit_point *hr;
+                    int meet_object;
                 
-                        meet_object = 0;
-                        r = new_ray(mem->vect, normed_vect(minus_vect(light->pos, mem->vect)), 0.0, new_vect(0.0, 0.0, 0.0));
+                    meet_object = 0;
+                        mini = minus_vect(light->pos, mem->vect);
+                        v = normed_vect(mini);
+                        w = new_vect(0.0, 0.0, 0.0);
+                        ray_dir = normed_vect(mini);
+                        r = new_ray(mem->vect, v, 0.0, w);
                         tmp = env->obj;
                         while (tmp && !meet_object)
                          {   
@@ -230,47 +197,116 @@ void        raytrace(t_env *env)
                              else
                              {
                                 if (distance(mem->vect, hr->vect) < distance(hr->vect, light->pos))
-                                {    
-                                    meet_object = 1;
-                                    hr->distance_to_cam = distance_with_cam(env, hr);
-                                }
-                                else
-                                    tmp = tmp->next;
+                                    return (1);
+                                tmp = tmp->next;
+                                free(hr);
                             }
                         }
+                        
                         free(r);
+                        free(v);
+                        free(mini);
+                        free(ray_dir);
+                         free(w);
+                         return (0);
+   }
+
+ t_vect         *put_on_light(t_env *env, t_hit_point *mem, t_obj *colore)
+{
+                    float nb_of_lights;
+                    t_light *light;
+                    t_vect *col;
+                    int meet_object;
+                    light = env->light;
+                    nb_of_lights = numberoflights(env);
+                    while (light)
+                    {   
+                        meet_object = is_light_reached(light, env, mem, colore);
+                        
                          if (!meet_object)
                          {
-                                //color = find_color(env, mem, colore->mater);  
+                             
                                  //if ((int)color->x == 0)
                                //  color->x = 1;
                                  col = find_color_light(light, mem, colore->mater, col);
                                  
-                               //  SDL_SetRenderDrawColor(env->win->rend, (int)color->x, (int)color->y, (int)color->z, 0);
-                              //SDL_RenderDrawPoint(env->win->rend, p, q);
                          }
                          else
                          {
-                                  col = find_color_sha(light, mem, colore->mater, col);
-                              //if ((int)color->x == 0)
+                             //if ((int)color->x == 0)
                                   //  color->x = 1;
-                                   
-                            //SDL_SetRenderDrawColor(env->win->rend, (int)(color->x / 2), (int) (color->y / 2), (int) (color->z / 2), 0);
-                            //SDL_SetRenderDrawColor(env->win->rend, (int)color->x, (int) color->y, (int) color->z, 0);
-                           //SDL_RenderDrawPoint(env->win->rend, p, q);
+                                  col = find_color_sha(light, mem, colore->mater, col);
                            }
                            light = light->next;
-                            
                        }
-                           SDL_SetRenderDrawColor(env->win->rend, (int)col->x / (255 * nb_of_lights), (int)col->y / (255 * nb_of_lights), (int)col->z / (255 * nb_of_lights), 0);
-                           SDL_RenderDrawPoint(env->win->rend, p, q);
-                           free(col);
+                       SDL_SetRenderDrawColor(env->win->rend, (int)col->x / (255 * nb_of_lights), (int)col->y / (255 * nb_of_lights), (int)col->z / (255 * nb_of_lights), 0);
+                    
+}
+void    choose_color(t_env *env, t_hit_point *mem, t_obj *colore)
+ {
+                    t_light *light;
+                    int nb_of_lights;
+                    t_vect *col;
+                    light = env->light;
+                    nb_of_lights = numberoflights(env);
+                    col = new_vect(0.0, 0.0, 0.0);
+                    put_on_light(env, mem, colore);
+                    free(col);
+                    free(mem);
+ }
+
+void        raytrace(t_env *env)
+{
+    int p;
+    int q;
+    float min;
+    t_vect *v;
+    t_vect *col;
+    t_obj *tmp;
+    t_obj *colore;
+
+    t_hit_point *mem;
+    t_light *light;
+
+    int nb_of_lights;
+
+
+    tmp = env->obj;
+    colore = NULL;
+
+    env->cam->pos = add_vect(env->cam->pos, env->cam->trans);
+    mem = malloc(sizeof(t_hit_point*));
+    nb_of_lights = numberoflights(env);
+        p = 0;
+        while (p < env->size_x)
+        {
+            q = 0;
+            
+            while (q < env->size_y)
+            {   
+
+
+
+                
+                min = INFINI;
+                tmp = env->obj;
+                v = new_vect(p + env->cam->trans->x, q + env->cam->trans->y, env->cam->trans->z);
+                min = find_nearest_inter(env, v, &mem, &colore);
+                if (min < INFINI && mem)
+                {   
+                    //choose_color(env, mem, colore);
+                    light = env->light;
+                    nb_of_lights = numberoflights(env);
+                    col = new_vect(0.0, 0.0, 0.0);
+                    put_on_light(env, mem, colore);
+                    
+                    SDL_RenderDrawPoint(env->win->rend, p, q);
+                    //free(mem);
                     }
                q++;
              }
                p++;    
             }
-    
 }
 
 void            SDL_render(t_env *env)
@@ -348,5 +384,8 @@ int              main(int argc, char **argv)
             env->boucle = 1;
     }
     quit_SDL(env);
+    free(env->cam);
+    free(env->win);
+    free(env);
     return (0); 
 }

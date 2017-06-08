@@ -199,10 +199,9 @@ void        display_scene(t_env *env)
 t_vect      *read_origin(char *line, int fd, char *str)
 {
     t_vect *vect;
-    char *str1;
     char **tab;
 
-    if (get_next_line(fd, &line) && (str1 = ft_strstr(line, str)))
+    if (get_next_line(fd, &line) && ft_strstr(line, str))
     {
         tab = ft_strsplit(line, ' ');
         if (tab[1] && tab[2] && tab[3])
@@ -212,18 +211,16 @@ t_vect      *read_origin(char *line, int fd, char *str)
     }
     else
         return (NULL);
-    free(str1);
     free(tab);
     return (vect);
 }
 
 float   read_float(char *line, int fd, char *str)
 {
-    char *str1;
     char **tab;
     float res;
 
-    if (get_next_line(fd, &line) && (str1 = ft_strstr(line, str)))
+    if (get_next_line(fd, &line) && ft_strstr(line, str))
     {
         tab = ft_strsplit(line, ' ');
         if (tab[1])
@@ -233,7 +230,6 @@ float   read_float(char *line, int fd, char *str)
     }
     else
         return (0);
-    free(str1);
     free(tab);
     return (res);
 }
@@ -241,10 +237,9 @@ float   read_float(char *line, int fd, char *str)
 t_mater      *read_mater(char *line, int fd, char *str)
 {
     t_mater *mat;
-    char *str1;
     char **tab;
 
-    if (get_next_line(fd, &line) && (str1 = ft_strstr(line, str)))
+    if (get_next_line(fd, &line) && ft_strstr(line, str))
     {
         tab = ft_strsplit(line, ' ');
         if (tab[1] && tab[2] && tab[3] && tab[4] && ft_atoi(tab[1]) > -1 && ft_atoi(tab[2]) > -1 && ft_atoi(tab[1]) > -1 && ft_atoi(tab[4]) > -1)
@@ -254,7 +249,6 @@ t_mater      *read_mater(char *line, int fd, char *str)
     }
     else
         return (NULL);
-    free(str1);
     free(tab);
     return (mat);
 }
@@ -321,11 +315,17 @@ void        modify(void *o, char *line, int fd, int to)
     float mem;
     t_vect *v;
     t_vect *n;
+    char *st1;
+    char *st2;
+    char *st3;
+    char *st4;
+    char *st5;
+    char *st6;
     v = origin(to, o);
     n = normal(to, o);
-        while (get_next_line(fd, &line) && (ft_strstr(line, "translationX") || ft_strstr(line, "translationY") || \
-        ft_strstr(line, "translationZ") || ft_strstr(line, "rotationX") || ft_strstr(line, "rotationY") || \
-        ft_strstr(line, "rotationZ")))
+        while (get_next_line(fd, &line) && ((st1 = ft_strstr(line, "translationX")) || (st2 = ft_strstr(line, "translationY")) || \
+        (st3 = ft_strstr(line, "translationZ")) || (st4 = ft_strstr(line, "rotationX")) || (st5 = ft_strstr(line, "rotationY")) || \
+        (st6 = ft_strstr(line, "rotationZ"))))
         {
              
             if (ft_strstr(line, "translationX"))
@@ -564,12 +564,11 @@ int        read_scene(int fd, char *line, t_env *env)
 int        lecture(int fd, t_env *env)
 {
     char *line;
-    char *st1;
     int index;
     index = 0;
     while (get_next_line(fd, &line))
     {
-        if ((st1 = ft_strstr(line, "# Scene")) != NULL)
+        if (ft_strstr(line, "# Scene")!= NULL)
         {
                 index++;
                 get_next_line(fd, &line);
@@ -581,7 +580,7 @@ int        lecture(int fd, t_env *env)
                 }
         }
         
-        if ((st1 = ft_strstr(line, "# Objects")) != NULL)
+        if (ft_strstr(line, "# Objects") != NULL)
         {
                 index++;
                 get_next_line(fd, &line);
@@ -593,7 +592,7 @@ int        lecture(int fd, t_env *env)
 
                 }
                 
-                
+   
         }
     }
     if (index < 2)

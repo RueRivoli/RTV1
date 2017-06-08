@@ -17,18 +17,22 @@ int         belong_to_cylinder(t_cylinder *c, t_vect *v)
     t_vect  *v1;
     t_vect *norm;
     t_vect *p;
+    t_vect *a;
 
     v1 = minus_vect(v, c->origin);
     norm = normed_vect(c->normal);
     p = multiply_scalar(norm , scalar_product(v, norm));
-    if (distance(v, add_vect(c->origin, p)) <= c->radius)
+    a = add_vect(c->origin, p);
+    if (distance(v, a) <= c->radius)
     {
         free(p);
         free(norm);
+        free(a);
         return (1);
     }
     free(p);
     free(norm);
+    free(a);
     return (0);
 }
 
@@ -72,7 +76,6 @@ t_hit_point         *hit_cylinder(void *o, t_ray *r)
     float delta;
     //t_vect *traj;
     float res;
-    t_vect *v;
     t_vect *y;
     t_vect *t;
     float oh;
@@ -102,18 +105,13 @@ t_hit_point         *hit_cylinder(void *o, t_ray *r)
         w = minus_vect(r->origin, cyl->origin);
         oh = scalar_product(w, cyl->normal);
         oa = norm(w);
-        
-        v = new_vect(INFINI, INFINI, INFINI);
+        free(w);
         
         if (sqrt(pow(oa, 2) - pow(oh, 2)) <= cyl->radius)
         {
             y = new_vect(INFINI - 1, INFINI - 1, INFINI - 1);
             v0 = new_vect(0,0,0);
             hp = new_hit_point(y, -1.0, v0, 3);
-            free(v0);
-            free(y);
-            free(v);
-            free(w);
              return (hp);
         }
     }
@@ -128,15 +126,12 @@ t_hit_point         *hit_cylinder(void *o, t_ray *r)
                 t = new_vect(r->origin->x + res * r->direction->x, r->origin->y + res * r->direction->y, r->origin->z + res * r->direction->z);
                 norm_cyl = normal_cylinder(cyl, t);
                 hp = new_hit_point(t, INFINI, norm_cyl, 3);
-                free(t);
-                free(norm_cyl);
+                
                 return (hp);
             }
             else 
                 return (NULL);
     }
-    
-    
         return (NULL);
 }
 

@@ -128,4 +128,8 @@ t_vect            *find_color_sha(t_light *light, t_hit_point *hp, t_mater *mat,
 void                SDL_render(t_env *env);
 void                refresh(t_env *env);
 void                find_angle(t_env *env, t_ray *ray);
+int                 find_nearest_inter(t_env *env, t_vect *v, t_hit_point **mem, t_obj **colore);
+int                     is_light_reached(t_light *light, t_env *env, t_hit_point *mem, t_obj *colore);
+t_vect                *put_on_light(t_env *env,t_hit_point *mem, t_obj *colore);
+void            choose_color(t_env *env, t_hit_point *mem, t_obj *colore);
 #endif

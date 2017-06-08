@@ -72,12 +72,12 @@ t_env   *init_env(void)
 	env->light = NULL;
 	env->screen = NULL;
     win = env->win;
-    win->width = 0;//1200
-    win->height = 0;//900
+    win->width = 0;
+    win->height = 0;
 	env->boucle = 0;
 	env->x = 0;
 	env->y = 0;
 	env->z = 0;
-	env->cam = NULL;//new_vect(600.0, 450.0, -400.0);
+	env->cam = NULL;
     return (env);
 }
