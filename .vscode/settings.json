@@ -4,6 +4,7 @@
         "cmath": "cpp",
         "limits": "cpp",
         "*.o": "cpp",
-        "random": "cpp"
+        "random": "cpp",
+        "*.sh": "cpp"
     }
 }

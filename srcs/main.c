@@ -211,7 +211,7 @@ int            find_nearest_inter(t_env *env, t_vect *v, t_hit_point **mem, t_ob
                          return (0);
    }
 
- t_vect         *put_on_light(t_env *env, t_hit_point *mem, t_obj *colore)
+ void               put_on_light(t_env *env, t_hit_point *mem, t_obj *colore, int p, int q)
 {
                     float nb_of_lights;
                     t_light *light;
@@ -219,6 +219,7 @@ int            find_nearest_inter(t_env *env, t_vect *v, t_hit_point **mem, t_ob
                     int meet_object;
                     light = env->light;
                     nb_of_lights = numberoflights(env);
+                    col = new_vect(0, 0, 0);
                     while (light)
                     {   
                         meet_object = is_light_reached(light, env, mem, colore);
@@ -240,20 +241,10 @@ int            find_nearest_inter(t_env *env, t_vect *v, t_hit_point **mem, t_ob
                            light = light->next;
                        }
                        SDL_SetRenderDrawColor(env->win->rend, (int)col->x / (255 * nb_of_lights), (int)col->y / (255 * nb_of_lights), (int)col->z / (255 * nb_of_lights), 0);
+                       SDL_RenderDrawPoint(env->win->rend, p, q);
                     
 }
-void    choose_color(t_env *env, t_hit_point *mem, t_obj *colore)
- {
-                    t_light *light;
-                    int nb_of_lights;
-                    t_vect *col;
-                    light = env->light;
-                    nb_of_lights = numberoflights(env);
-                    col = new_vect(0.0, 0.0, 0.0);
-                    put_on_light(env, mem, colore);
-                    free(col);
-                    free(mem);
- }
+
 
 void        raytrace(t_env *env)
 {
@@ -261,7 +252,6 @@ void        raytrace(t_env *env)
     int q;
     float min;
     t_vect *v;
-    t_vect *col;
     t_obj *tmp;
     t_obj *colore;
 
@@ -285,27 +275,21 @@ void        raytrace(t_env *env)
             while (q < env->size_y)
             {   
 
-
-
-                
                 min = INFINI;
                 tmp = env->obj;
                 v = new_vect(p + env->cam->trans->x, q + env->cam->trans->y, env->cam->trans->z);
                 min = find_nearest_inter(env, v, &mem, &colore);
                 if (min < INFINI && mem)
                 {   
-                    //choose_color(env, mem, colore);
                     light = env->light;
                     nb_of_lights = numberoflights(env);
-                    col = new_vect(0.0, 0.0, 0.0);
-                    put_on_light(env, mem, colore);
+                     put_on_light(env, mem, colore, p, q);
                     
-                    SDL_RenderDrawPoint(env->win->rend, p, q);
                     //free(mem);
                     }
-               q++;
+             q++;
              }
-               p++;    
+           p++;    
             }
 }
 
