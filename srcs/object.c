@@ -108,6 +108,93 @@ t_vect      *vectw(t_vect *n)
     return (w);
 }
 
+
+t_vect    *vect_central(t_env *env)
+{
+    t_vect *dir;
+    t_vect *min;
+    t_vect *norm;
+
+    dir = center_average(env);
+    min = minus_vect(dir, env->cam->pos);
+    free(dir);
+    norm = normed_vect(min);
+    free(min);
+    return (norm);
+}
+
+t_vect         *vect_basic()
+{
+    t_vect *inter;
+    t_vect *eye_center;
+    t_vect *pix_center;
+    t_vect *basic;
+
+    eye_center = new_vect(600.0, 450.0, -100.0);
+    pix_center = new_vect(600.0, 450.0, 0.0);
+    inter = minus_vect(pix_center, eye_center);
+    free(eye_center);
+    free(pix_center);
+    basic = normed_vect(inter);
+    free(inter);
+    return (basic);
+}
+
+float      phi(t_vect *v)
+{
+    return (acos(v->y / norm(v)));
+}
+
+float      theta(t_vect *v)
+{
+    float phi0;
+    phi0 = phi(v);
+    return (asin(v->x / (norm(v) * sin(phi0))));
+}
+
+float       add_phi(t_env *env)
+{
+    t_vect *central;
+    t_vect *basic;
+    float phi0;
+
+    basic = vect_basic();
+    central = vect_central(env);
+    phi0 = phi(central) - phi(basic);
+    free(basic);
+    free(central);
+    return (phi0);
+}
+
+float       add_theta(t_env *env)
+{
+    t_vect *central;
+    t_vect *basic;
+    float theta0;
+
+    basic = vect_basic();
+    central = vect_central(env);
+    theta0 = theta(central) - theta(basic);
+    free(basic);
+    free(central);
+    return (theta0);
+}
+
+t_vect      *change_vect(t_vect *v, float phi1, float theta1)
+{
+        float phi0;
+        float theta0;
+        float x;
+        float y;
+        float z;
+        phi0 = phi(v);
+        theta0 = theta(v);
+        y = norm(v) * cos(phi0 + phi1);
+        x = norm(v) * sin(phi0 + phi1) * sin(theta1 + theta0);
+        z = norm(v) * sin(phi0 + phi1) * cos(theta1 + theta0);
+        return (new_vect(x, y, z));
+}       
+
 void    set_virtual_screen(t_env *env)
 {
     t_vect *v;

@@ -132,4 +132,12 @@ int                 find_nearest_inter(t_env *env, t_vect *v, t_hit_point **mem,
 int                     is_light_reached(t_light *light, t_env *env, t_hit_point *mem, t_obj *colore);
 void            put_on_light(t_env *env,t_hit_point *mem, t_obj *colore, int p, int q);
 void            choose_color(t_env *env, t_hit_point *mem, t_obj *colore);
+
+t_vect    *vect_central(t_env *env);
+t_vect         *vect_basic();
+float      phi(t_vect *v);
+float      theta(t_vect *v);
+float       add_phi(t_env *env);
+float       add_theta(t_env *env);
+t_vect      *change_vect(t_vect *v, float phi, float theta);
 #endif

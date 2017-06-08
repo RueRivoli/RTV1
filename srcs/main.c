@@ -135,6 +135,10 @@ int            find_nearest_inter(t_env *env, t_vect *v, t_hit_point **mem, t_ob
     t_obj *tmp;
     t_hit_point *hp;
     t_ray *r;
+    float plus_phi;
+    float plus_theta;
+    //t_vect *new_dir_ray;
+    //t_vect *final;
     float min;
 
     tmp = env->obj;
@@ -142,7 +146,23 @@ int            find_nearest_inter(t_env *env, t_vect *v, t_hit_point **mem, t_ob
     mini = minus_vect(v, env->cam->pos);
     w = new_vect(0.0, 0.0, 0.0);
     ray_dir = normed_vect(mini);
-    r = new_ray(env->cam->pos, ray_dir, norm(mini), w);
+    plus_phi = add_phi(env);
+    plus_theta = add_theta(env);
+     printf("PHI %f", plus_phi);
+    printf("THETA %f", plus_theta);
+    //if (env->cam->pos->x == 600.0 && env->cam->pos->y == 450.0 && env->cam->pos->z == -100.0)
+   // {
+        r = new_ray(env->cam->pos, ray_dir, norm(mini), w);
+    //}
+    /*else
+    {
+        new_dir_ray = change_vect(ray_dir, plus_phi, plus_theta);
+        printf("NR->X  %f ", new_dir_ray->x);
+        printf("NR->X  %f ", new_dir_ray->y);
+        printf("NR->X %f  \n", new_dir_ray->z);
+        final = normed_vect(new_dir_ray);
+        r = new_ray(env->cam->pos, final, norm(mini), w);
+    }*/
     while (tmp)
    {   
                      
@@ -181,7 +201,7 @@ int            find_nearest_inter(t_env *env, t_vect *v, t_hit_point **mem, t_ob
                     t_hit_point *hr;
                     int meet_object;
                 
-                    meet_object = 0;
+                        meet_object = 0;
                         mini = minus_vect(light->pos, mem->vect);
                         v = normed_vect(mini);
                         w = new_vect(0.0, 0.0, 0.0);
@@ -254,10 +274,8 @@ void        raytrace(t_env *env)
     t_vect *v;
     t_obj *tmp;
     t_obj *colore;
-
     t_hit_point *mem;
     t_light *light;
-
     int nb_of_lights;
 
 
