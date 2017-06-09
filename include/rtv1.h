@@ -75,7 +75,6 @@ typedef struct s_env
     t_screen        *screen;
     t_cam           *cam;
     t_light         *light;
-    t_ray            *ray;
     t_obj            *obj;
     int             boucle;
     SDL_Surface     *background;
@@ -139,5 +138,5 @@ float      phi(t_vect *v);
 float      theta(t_vect *v);
 float       add_phi(t_env *env);
 float       add_theta(t_env *env);
-t_vect      *change_vect(t_vect *v, float phi, float theta);
+void        change_vect(t_vect *v, float phi, float theta);
 #endif

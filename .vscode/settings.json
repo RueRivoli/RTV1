@@ -5,6 +5,9 @@
         "limits": "cpp",
         "*.o": "cpp",
         "random": "cpp",
-        "*.sh": "cpp"
+        "*.sh": "cpp",
+        "*.txt": "cpp",
+        "*.vcproj": "cpp",
+        "*.vcxproj": "cpp"
     }
 }

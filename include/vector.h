@@ -28,5 +28,6 @@ float       min_positiv(float r, float s);
 float       min_positiv_s(float r, float s, float seuil);
 void        rotation_z(t_vect *v, float angle);
 void        rotation_x(t_vect *v, float angle);
+void        normed(t_vect *v);
 
 #endif
