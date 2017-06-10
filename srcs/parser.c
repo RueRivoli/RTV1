@@ -495,7 +495,7 @@ int         read_objects(int fd, char *line, t_env *env)
 			if (to < 1 || to > 4)
 				return (0);
 			ret = registering(to, line, env, fd);
-			//free(str);
+			free(str);
 			free(tab);
 		}
 	}

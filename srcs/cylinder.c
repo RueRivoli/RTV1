@@ -34,6 +34,7 @@ int         belong_to_cylinder(t_cylinder *c, t_vect *v)
 	v1 = minus_vect(v, c->origin);
 	norm = normed_vect(c->normal);
 	p = multiply_scalar(norm , scalar_product(v, norm));
+	free(v1);
 	a = add_vect(c->origin, p);
 	if (distance(v, a) <= c->radius)
 	{
@@ -73,6 +74,7 @@ t_vect              *normal_cylinder(t_cylinder *cyl, t_vect *p)
 	v = normed_vect(min);
 	free(p);
 	free(h);
+	free(n);
 	free(ad);
 	free(min);
 	return (v);

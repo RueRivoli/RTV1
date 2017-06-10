@@ -12,7 +12,7 @@
 
 #include "rtv1.h"
 
-t_plan  *new_plan(t_vect *origin, t_vect *normal)
+t_plan  	*new_plan(t_vect *origin, t_vect *normal)
 {
 	t_plan      *plan;
 
@@ -41,20 +41,17 @@ t_hit_point         *hit_plan(void *o, t_ray *r)
 	t_plan *p;
 	t_vect *v;
 	t_vect *min;
+	//t_vect *traj;
 	float den;
 	float res;
+
 	p = (t_plan *)o;
 	min = minus_vect(p->origin, r->origin);
-	//t_vect *traj;
-	
 	
 	res = scalar_product(p->normal, min);
-	
 	den = scalar_product(p->normal, r->direction);
 	if (den == 0.0)
 	{
-
-		//printf(" valeurs oa %f\n", scalar_product(minus_vect(p->origin, r->origin), p->normal));
 		if (scalar_product(min, p->normal) == 0.0)
 		{
 			v = new_vect(r->origin->x, r->origin->y, r->origin->z);
@@ -66,15 +63,11 @@ t_hit_point         *hit_plan(void *o, t_ray *r)
 	{
 		res /= den;
 		//res -= 0.0001;
+		free(min);
 		v = new_vect(r->origin->x + res * r->direction->x, r->origin->y + res * r->direction->y, r->origin->z + res * r->direction->z);
 		//traj = multiply_scalar(r->direction, res);
 		if (res > 0.0)
-		{
-			//ft_putnbr(res);
-			//ft_putchar(' ');
 			return (new_hit_point(v, 0.0, normed_vect(p->normal), 2));
-
-		}
 	} 
 	return (NULL);
 }

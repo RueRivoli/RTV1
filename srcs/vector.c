@@ -54,8 +54,6 @@ void        normed(t_vect *v)
 {
     float nor;
     nor = norm(v);
-    if (nor == 0.0)
-        ft_putstr("ZERO");
     v->x = v->x / nor;
     v->y = v->y / nor;
     v->z = v->z / nor;

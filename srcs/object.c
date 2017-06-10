@@ -94,14 +94,12 @@ t_vect      *vectv(t_vect *n)
 	float y;
 	float z;
 	t_vect *v;
-	t_vect *w;
 	x = 1.0;
 	y = -n->x /n->y;
 	z = 0.0;
 	v = new_vect(x, y, z);
-	w = normed_vect(v);
-	free(v);
-	return (w);
+	normed(v);
+	return (v);
 }
 
 t_vect      *vectw(t_vect *n)

@@ -68,7 +68,6 @@ t_vect              *normal_sphere(t_sphere *sp, t_vect *p)
 
 t_hit_point         *hit_sphere(void *o, t_ray *r)
 {
-	ft_putstr("SPHERE");
 	float delta;
 	float a;
 	t_vect *vect;
