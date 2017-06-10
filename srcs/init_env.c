@@ -12,49 +12,6 @@
 
 #include "../include/rtv1.h"
 
-
-void        render(t_env *env)            
-{
-	SDL_Event event;
-
-
-
-
-	//raytrace(e);
-
-	/*SDL_RenderPresent(env->win->rend);*/
-
-	//SDL_SetRenderDrawColor(env->win->rend,0,255,0,255);
-
-	while (1)
-	{
-		while (SDL_PollEvent(&event))
-		{
-			if (event.type == SDL_WINDOWEVENT_RESIZED)
-			{
-				//raytrace(e);
-				SDL_SetRenderDrawColor(env->win->rend, 255,  255, 255, 255);
-				SDL_RenderClear(env->win->rend);
-				SDL_RenderPresent(env->win->rend);
-
-				return ;
-			}
-			else if (event.type == SDL_WINDOWEVENT_SIZE_CHANGED)
-			{
-				SDL_SetRenderDrawColor(env->win->rend, 255,  255, 255, 255);
-				SDL_RenderClear(env->win->rend);
-				SDL_RenderPresent(env->win->rend);
-				return ;
-			}
-			else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE) {
-				return ;
-			}
-			else if (event.type == SDL_QUIT)
-				return ;
-		}
-	}
-}
-
 t_env   *init_env(void)
 {
 	t_env   *env;

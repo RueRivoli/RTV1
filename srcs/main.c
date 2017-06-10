@@ -290,7 +290,6 @@ void        raytrace(t_env *env)
 				nb_of_lights = numberoflights(env);
 				put_on_light(env, mem, colore, p, q);
 				free(mem);
-				free(colore);
 			}
 			q++;
 		}

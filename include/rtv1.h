@@ -86,6 +86,7 @@ typedef struct s_env
     int             z;
 }               t_env;
 
+void            build_light(t_light *light, t_vect *pos);
 t_light       *add_light(t_light *light, t_vect *pos);
 float           coef_lambert(t_light *light, t_hit_point *h);
 t_vect          *find_color(t_light *light, t_hit_point *hp, t_mater *mat);
@@ -139,4 +140,5 @@ float      theta(t_vect *v);
 float       add_phi(t_env *env);
 float       add_theta(t_env *env);
 void        change_vect(t_vect *v, float phi, float theta);
+t_vect              *center_average(t_env *env);
 #endif

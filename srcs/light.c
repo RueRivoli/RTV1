@@ -12,6 +12,29 @@
 
 #include "rtv1.h"
 
+
+t_light       *add_light(t_light *light, t_vect *pos)
+{
+	t_light *tmp;
+	t_light *new;
+	if (!light)
+	{
+		if (!(light = (t_light*)malloc(sizeof(t_light))))
+			return (NULL);
+		build_light(light, pos);
+	}
+	else 
+	{
+		tmp = light;
+		while (tmp->next)
+			tmp = tmp->next;
+		new = (t_light*)malloc(sizeof(t_light));
+		build_light(new, pos);
+		tmp->next = new;
+	}
+	return (light);
+}
+
 float       coef_lambert(t_light *light, t_hit_point *hp)
 {
 	t_vect *v;
@@ -30,17 +53,6 @@ float       coef_lambert(t_light *light, t_hit_point *hp)
 		res = max(res, 0.0);
 	return (res);
 }
-
-/*t_vect      *find_color(t_light *light, t_hit_point *hp, t_mater *mat)
-{
-	t_vect *new_color;
-	float lambert;
-
-	lambert = coef_lambert(light, hp);
-	new_color = new_vect((lambert * mat->ir * light->red) / (255) , (lambert * mat->ig * light->green) / (255), (lambert * mat->ib * light->blue) / (255));
-	//new_color = new_vect((lambert * mat->ir * env->light->red + 0.1 * mat->ir * env->light->red) / (1.1 * 255) , (lambert * mat->ig * env->light->green + 0.1 * mat->ig * env->light->green) / (1.1 * 255), (lambert * mat->ib * env->light->blue + 0.1 * mat->ib * env->light->blue) / (1.1 * 255));
-	return (new_color);
-}*/
 
 t_vect      *find_color_light(t_light *light, t_hit_point *hp, t_mater *mat, t_vect *v)
 {
