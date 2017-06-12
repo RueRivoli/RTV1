@@ -1,20 +1,20 @@
  # Scene
 
 name Scene_1
-camera origin 600.0 450.0 150.0
+camera origin 600.0 450.0 -150.0
 render size 1200 900
-spot 600.0 450.0 450.0
+spot 600.0 450.0 -100.0
 
 # Objects
 
 name cone
-summit 600.0 450.0 200.0
+summit 600.0 450.0 50.0
 axis 0.0 1.0 0.0
-angle 20.0
-color 0 255 0 255
+angle 25.0
+color 0 255 255 0
 
 name plan
 origin 600.0 700.0 50.0
-normal 0.0 2.0 1.0
+normal 0.0 10.0 1.0
 color 0 0 0 255
 

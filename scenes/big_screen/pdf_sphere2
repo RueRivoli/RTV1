@@ -7,20 +7,8 @@ spot 600.0 450.0 450.0
 
 # Objects
 
-name sphere 
-origin 600.0 450.0 200.0 
-radius 200.0
-color 0 255 0 0 
-
-name plan
-origin 750.0 450.0 50.0
-normal 0.0 2.0 1.0
-color 0 0 0 255
-
 name cylinder
 origin 450.0 150.0 100.0
 normal 0.0 0.0 1.0
 radius 50.0
 color 0 0 255 0
-
-

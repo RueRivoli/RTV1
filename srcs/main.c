@@ -122,24 +122,26 @@ void               put_on_light(t_env *env, t_hit_point *mem, t_obj *colore, int
 
 	light = env->light;
 	nb_of_lights = numberoflights(env);
-	col = new_vect(0, 0, 0);
+	col = new_vect(0.0, 0.0, 0.0);
 	while (light)
 	{   
 		meet_object = is_light_reached(light, env, mem, colore);
 		if (!meet_object)
 		{
-			//if ((int)color->x == 0)
-			//  color->x = 1;
 			col = find_color_light(light, mem, colore->mater, col);
+			if ((int)col->x == 0)
+			  col->x = 1;
 		}
 		else
 		{
-			//if ((int)color->x == 0)
-			//  color->x = 1;
+			
 			col = find_color_sha(light, mem, colore->mater, col);
+			if ((int)col->x == 0)
+			  col->x = 1;
 		}
 		light = light->next;
 	}
+	//printf("Couleurs : R %f, G %f B %f", (int)col->x / (255 * nb_of_lights), (int)col->y / (255 * nb_of_lights), (int)col->z / (255 * nb_of_lights));
 	SDL_SetRenderDrawColor(env->win->rend, (int)col->x / (255 * nb_of_lights), (int)col->y / (255 * nb_of_lights), (int)col->z / (255 * nb_of_lights), 0);
 	SDL_RenderDrawPoint(env->win->rend, p, q);
 	free(col);
@@ -260,13 +262,13 @@ int              main(int argc, char **argv)
 			env->boucle = 1;
 	}
 	quit_SDL(env);
-	free(env->cam);
+	/*free(env->cam);
 	free(env->win);
     free(env->light);
     free(env->obj);
     free(env->screen);
     free(env->title);
     free(env->background);
-	free(env);
+	free(env);*/
 	return (0); 
 }
