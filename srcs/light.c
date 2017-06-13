@@ -73,7 +73,7 @@ t_vect      *find_color_sha(t_light *light, t_hit_point *hp, t_mater *mat, t_vec
 	float lambert;
 
 	lambert = coef_lambert(light, hp);
-	new_color = new_vect(((lambert * mat->ir * light->red) / 2) + v->x , (lambert * mat->ig * light->green / 2) + v->y, (lambert * mat->ib * light->blue / 2)+ v->z);
+	new_color = new_vect(((lambert * mat->ir * light->red) / 2.0) + v->x , (lambert * mat->ig * light->green / 2.0) + v->y, (lambert * mat->ib * light->blue / 2.0)+ v->z);
 	//new_color = new_vect((lambert * mat->ir * light->red + 0.1 * mat->ir * light->red) / (1.1 * 255) , (lambert * mat->ig * light->green + 0.1 * mat->ig * light->green) / (1.1 * 255), (lambert * mat->ib * light->blue + 0.1 * mat->ib * light->blue) / (1.1 * 255));
 	free(v);
 	return (new_color);
