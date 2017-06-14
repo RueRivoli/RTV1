@@ -12,6 +12,7 @@
 
 #include "rtv1.h"
 #include "event.h"
+
 void		refresh(t_env *env)
 {
 	SDL_SetRenderDrawColor(env->win->rend, 0, 0, 0, 0);
