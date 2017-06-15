@@ -30,6 +30,7 @@
 
 #define INFINI 100000000.0
 #define PI 3.14159
+#define NB_THREAD 8
 
 typedef struct s_cam
 {

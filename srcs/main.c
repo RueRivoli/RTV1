@@ -127,53 +127,13 @@ void               put_on_light(t_env *env, t_hit_point *mem, t_obj *colore, int
 	{   
 		meet_object = is_light_reached(light, env, mem, colore);
 		if (!meet_object)
-		{
 			col = find_color_light(light, mem, colore->mater, col);
-			/*if ((int)col->x == 0 && (int)col->y == 0 && (int)col->z == 0)
-			{
-				//col->x = 1;
-				col->x = colore->mater->ir / 2;
-				col->y = colore->mater->ig / 2;
-				col->z = colore->mater->ib / 2;
-			}*/
-		}
 		else
-		{
-			
 			col = find_color_sha(light, mem, colore->mater, col);
-			/*if ((int)col->x == 0 && (int)col->y == 0 && (int)col->z == 0)
-			{
-				//col->x = 1;
-				col->x = colore->mater->ir / 2;
-				col->y = colore->mater->ig / 2;
-				col->z = colore->mater->ib / 2;
-			}*/
-		}
 		light = light->next;
 	}
-	//printf("Couleurs : R %f, G %f B %f", (int)col->x / (255 * nb_of_lights), (int)col->y / (255 * nb_of_lights), (int)col->z / (255 * nb_of_lights));
-	/*if (p == 550 && q == 450)
-	{
-		printf("%d %d %d\n",(int)col->x, (int)col->y, (int)col->z);
-		//SDL_SetRenderDrawColor(env->win->rend, 255, 0, 0, 0);
-		SDL_RenderDrawPoint(env->win->rend, p, q);
-	}
-	else
-	{*/
-	//SDL_SetRenderDrawColor(env->win->rend, 0, 0, 0, 0);
 	SDL_SetRenderDrawColor(env->win->rend, (int)(col->x / (255 * nb_of_lights)), (int)(col->y / (255 * nb_of_lights)), (int)(col->z / (255 * nb_of_lights)), 255);
-	//SDL_SetRenderDrawColor(env->win->rend, col->x, col->y , col->z, 0);
 	SDL_RenderDrawPoint(env->win->rend, p, q);
-	if (p > 530 && p < 600 && q == 450)
-	{
-		//SDL_SetRenderDrawColor(env->win->rend, 0, 0, 0, 0);
-	//SDL_SetRenderDrawColor(env->win->rend, col->x, col->y , col->z, 0);
-		//SDL_RenderDrawPoint(env->win->rend, p, q);
-		Uint8 r,g,b,a;
-		SDL_GetRenderDrawColor(env->win->rend, &r, &g, &b, &a);
-		printf("Voici la couleur que vous utilisez : %d,%d,%d,%d\n",r,g,b,a);
-		//printf("%f %f %f\n", (int)col->x / (255 * nb_of_lights) , (int)col->y / (255 * nb_of_lights) , (int)col->z / (255 * nb_of_lights));
-	}
 	free(col);
 }
 

@@ -1,0 +1,82 @@
+#include "rtv1.h"
+#include <pthread.h>
+ 
+static int		ft_raytrace(t_th *mlx, t_obj *node, double x, double y)
+{
+	t_obj	*tmp;
+	float	*tab;
+	float	r[3];
+	double	p;
+
+	if (!(tab = (float *)malloc(sizeof(float) * 4)))
+		return (-1);
+	ft_fzero(r, 3);
+	p = 0.0;
+	while (y < mlx->ty + 1 && (x = mlx->tx) > -1)
+	{
+		while (x < mlx->tx + 1 && (p += 1) > 0)
+		{
+			ft_set_ray(mlx, tab, x, y);
+			if ((tmp = ft_intersection(mlx, node, mlx->ray_dir, mlx->cam_pos)))
+				tab = ft_lambert(mlx, tmp, mlx->light, tab);
+			ft_average(r, tab);
+			x = x + (1.0 / mlx->aa);
+		}
+		y = y + (1.0 / mlx->aa);
+	}
+	ft_put_pixel(mlx, mlx->tx, mlx->ty, (((int)(r[0] / p * 255) & 0xff) << 16) +
+		(((int)(r[1] / p * 255) & 0xff) << 8) + ((int)(r[2] / p * 255) & 0xff));
+	free(tab);
+	return (0);
+}
+
+void			*my_thread_process(void *arg)
+{
+	t_tab_th	*tab;
+	t_th		*th;
+	t_obj		*node;
+	double		x;
+	double		y;
+
+	tab = (t_tab_th *)arg;
+	node = tab->mlx->obj;
+	th = (t_th *)malloc(sizeof(t_th));
+	ft_copy(tab->mlx, th);
+	y = 0.0;
+	while (y < WIN_H)
+	{
+		x = WIN_W * tab->i / NB_THREAD;
+		while (x < WIN_W * (tab->i + 1) / NB_THREAD)
+		{
+			th->ty = (int)y;
+			th->tx = (int)x;
+			ft_raytrace(th, node, x++, y);
+		}
+		y++;
+	}
+	ft_free_lists(th->light, th->obj);
+	free(th);
+	pthread_exit(0);
+}
+
+int				ft_draw(t_mlx *mlx)
+{
+	pthread_t	th[NB_THREAD];
+	t_tab_th	tab[NB_THREAD];
+	void		*ret;
+	int			i;
+
+	i = -1;
+	while (++i < NB_THREAD)
+	{
+		tab[i].i = i;
+		tab[i].mlx = mlx;
+		pthread_create(&th[i], NULL, my_thread_process, &tab[i]);
+	}
+	i = -1;
+	while (++i < NB_THREAD)
+		(void)pthread_join(th[i], &ret);
+	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 0, 0);
+	ft_hud(mlx);
+	return (0);
+}
