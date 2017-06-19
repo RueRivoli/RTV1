@@ -12,8 +12,8 @@
 
 NAME = rtv1
 CC = gcc
-OPTI = -g
-CFLAGS_DEBUG = -g3 -O0 -fsanitize=address
+OPTI = -g -O3
+CFLAGS_DEBUG = -g3 -O0
 CFLAGS = -c -Wall -Werror -Wextra -pedantic $(OPTI)
 
 #Headers
@@ -69,7 +69,7 @@ $(NAME): $(OBJECTS)
 $(OBJECTS): $(HEADERS) | $(OBJ_PATH)
 
 $(OBJECTS): $(OBJ_PATH)/%.o: %.c
-	$(CC) -c $(CFLAGS) $< -o $@
+	$(CC) -c $(CFLAGS) $< -fsanitize=address -o $@
 	@-mkdir -p $@
 
 clean:

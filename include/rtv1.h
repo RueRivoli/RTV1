@@ -70,6 +70,7 @@ typedef struct s_win
 }               t_win;
 
 
+
 typedef struct s_env
 {
     t_win           *win;
@@ -79,6 +80,8 @@ typedef struct s_env
     t_obj            *obj;
     int             boucle;
     SDL_Surface     *background;
+    pthread_t       **thread;
+    int             thread_cnt;
     char            *title;
     int             size_x;
     int             size_y;
@@ -87,11 +90,18 @@ typedef struct s_env
     int             z;
 }               t_env;
 
+typedef struct s_arg {
+       t_env *env;
+        int     i;
+}               t_arg;
+
+
+
 void            build_light(t_light *light, t_vect *pos);
 t_light       *add_light(t_light *light, t_vect *pos);
 float           coef_lambert(t_light *light, t_hit_point *h);
 t_vect          *find_color(t_light *light, t_hit_point *hp, t_mater *mat);
-t_env           *init_env(void);
+t_env           *init_env(t_arg *arg);
 void            render(t_env *env);
 int             event(t_env *env);
 t_cam           *new_cam(t_vect *v1, t_vect *trans, float phi, float theta);
@@ -156,18 +166,22 @@ t_mater                 *read_mater(char *line, int fd, char *str);
 t_vect                  *origin0(int to, void *o);
 void		            start_reading(int fd, char *line, t_env *env, int *index);
 
-void        display_camera(t_env *env);
+void                display_camera(t_env *env);
 
-void        display_light(t_env *env);
-void        display_sphere(t_sphere *sp, t_mater *mat);
-void        display_mat(t_mater *mat);
-void        display_plan(t_plan *p, t_mater *mat);
-void        display_cylinder(t_cylinder *cyl, t_mater *mat);
-void        display_cone(t_cone *cone, t_mater *mat);
-void        accord_to_form(t_obj *obj, t_mater *mat);
-void        translation(char *line, void *o, int to);
-void        rotation(char *line, void *o, int to);
-void        rotation_Y(char *line, void *o, int to);
-void        rotation_Z(char *line, void *o, int to);
+void                 display_light(t_env *env);
+void                display_sphere(t_sphere *sp, t_mater *mat);
+void                display_mat(t_mater *mat);
+void                display_plan(t_plan *p, t_mater *mat);
+void                display_cylinder(t_cylinder *cyl, t_mater *mat);
+void                display_cone(t_cone *cone, t_mater *mat);
+void                  accord_to_form(t_obj *obj, t_mater *mat);
+void                  translation(char *line, void *o, int to);
+void                rotation(char *line, void *o, int to);
+void                rotation_Y(char *line, void *o, int to);
+void                rotation_Z(char *line, void *o, int to);
+void                raytrace_thread(t_env *env, int pi, int pf);
+
+pthread_t			**malloc_thread(int count, t_arg *arg, void *a);
+void				redraw(t_env *env, t_arg *arg);
 
 #endif

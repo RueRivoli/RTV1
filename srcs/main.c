@@ -25,6 +25,7 @@ int            find_nearest_inter(t_env *env, t_vect *v, t_hit_point **mem, t_ob
 	t_obj *tmp;
 	t_hit_point *hp;
 	t_ray *r;
+	t_vect  *new_pos_cam;
 	float plus_phi;
 	float plus_theta;
 	//t_vect *new_dir_ray;
@@ -32,7 +33,8 @@ int            find_nearest_inter(t_env *env, t_vect *v, t_hit_point **mem, t_ob
 	float min;
 	tmp = env->obj;
 	min = INFINI;
-	mini = minus_vect(v, env->cam->pos);
+	new_pos_cam = add_vect(env->cam->pos, env->cam->trans);
+	mini = minus_vect(v, new_pos_cam);
 	w = new_vect(0.0, 0.0, 0.0);
 	ray_dir = mini;
 	plus_phi = env->cam->add_phi;
@@ -41,8 +43,9 @@ int            find_nearest_inter(t_env *env, t_vect *v, t_hit_point **mem, t_ob
 	// {
 	/*if (plus_phi != 0 || plus_theta != 0)
 		change_vect(ray_dir, plus_phi, plus_theta);*/
+	//change_vect(ray_dir, plus_phi, plus_theta);
     normed(ray_dir);
-	r = new_ray(env->cam->pos, ray_dir, norm(mini), w);
+	r = new_ray(new_pos_cam, ray_dir, norm(mini), w);
 	//}
 	/*else
 	  {
@@ -137,14 +140,12 @@ void               put_on_light(t_env *env, t_hit_point *mem, t_obj *colore, int
 	free(col);
 }
 
-
-
-void        raytrace(t_env *env)
+void        raytrace_thread(t_env *env, int pi, int pf)
 {
 	t_vect *v;
 	t_obj *colore;
 	t_hit_point *mem;
-    t_vect *pos0;
+    //t_vect *pos0;
     int p;
 	int q;
     int nb_of_lights;
@@ -152,9 +153,53 @@ void        raytrace(t_env *env)
 
 	colore = NULL;
 	mem = NULL;
-    pos0 = env->cam->pos;
-	env->cam->pos = add_vect(pos0, env->cam->trans);
-    free(pos0);
+    //pos0 = env->cam->pos;
+	//env->cam->pos = add_vect(pos0, env->cam->trans);
+    //free(pos0);
+	//mem = (t_hit_point*)malloc(sizeof(t_hit_point*));
+	nb_of_lights = numberoflights(env);
+    //colore = malloc(sizeof(t_obj *));
+	p = pi;
+     
+	while (p < pf)
+	{
+		q = 0;
+		while (q < env->size_y)
+		{   
+			min = INFINI;
+			v = new_vect(p + env->cam->trans->x, q + env->cam->trans->y, env->cam->trans->z);
+			min = find_nearest_inter(env, v, &mem, &colore);
+            free(v);
+			if (min < INFINI && mem)
+			{   
+				nb_of_lights = numberoflights(env);
+				put_on_light(env, mem, colore, p, q);
+				free(mem);
+			}
+			q++;
+		}
+		p++;    
+	}
+   //free(colore);
+}
+
+
+void        raytrace(t_env *env)
+{
+	t_vect *v;
+	t_obj *colore;
+	t_hit_point *mem;
+    //t_vect *pos0;
+    int p;
+	int q;
+    int nb_of_lights;
+	float min;
+
+	colore = NULL;
+	mem = NULL;
+    //pos0 = env->cam->pos;
+	//env->cam->pos = add_vect(pos0, env->cam->trans);
+    //free(pos0);
 	//mem = (t_hit_point*)malloc(sizeof(t_hit_point*));
 	nb_of_lights = numberoflights(env);
     //colore = malloc(sizeof(t_obj *));
@@ -219,9 +264,12 @@ int              main(int argc, char **argv)
 {
 	t_env *env;
 	t_win *win;
+	t_arg *arg;
     int fd;
 
-	if (!(env = init_env()))
+	if (!(arg = (t_arg*)malloc(sizeof(t_arg *) *  NB_THREAD)))
+		return (0);
+	if (!(env = init_env(arg)))
 		return (0);
 	win = env->win;
 	if (argc != 2)
@@ -231,6 +279,8 @@ int              main(int argc, char **argv)
 	}
 	fd = open(argv[1], O_RDONLY);
 
+	
+
 	/*Lecture et affichage de la scene*/
 	if (lecture(fd, env) != 0)
 		display_scene(env);
@@ -238,7 +288,9 @@ int              main(int argc, char **argv)
 
 	//set_virtual_screen(env);
 
-	SDL_CreateWindowAndRenderer(win->width, win->height, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE, &win->handle, &win->rend);
+	env->win->handle = SDL_CreateWindow("Hello World", 100, 200, env->size_x, env->size_y, 0);
+	env->win->rend = SDL_CreateRenderer(env->win->handle, 1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_SOFTWARE);
+	//SDL_CreateWindowAndRenderer(win->width, win->height, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE, &win->handle, &win->rend);
 	SDL_SetRenderDrawColor(env->win->rend, 0, 0, 0, 0);
 	SDL_RenderClear(env->win->rend);
 	SDL_SetWindowTitle(win->handle, "RTV1");
@@ -246,6 +298,8 @@ int              main(int argc, char **argv)
 
 	SDL_RenderClear(env->win->rend);
 	raytrace(env);
+	
+	//redraw(env, arg);
 	SDL_RenderPresent(env->win->rend);
 	while(!env->boucle)
 	{

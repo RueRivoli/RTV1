@@ -12,7 +12,7 @@
 
 #include "../include/rtv1.h"
 
-t_env   *init_env(void)
+t_env   *init_env(t_arg *arg)
 {
 	t_env   *env;
 	t_win   *win;
@@ -25,6 +25,10 @@ t_env   *init_env(void)
 		return (NULL);	
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS) != 0)
 		return (NULL);
+	env->thread_cnt = 8;
+	//env->arg = (t_arg*)malloc(sizeof(t_arg) * env->threat_cnt);
+	if (!(env->thread = malloc_thread(env->thread_cnt, arg, &env)))
+			return (NULL);
 	env->obj = NULL;
 	env->light = NULL;
 	env->screen = NULL;

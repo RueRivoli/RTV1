@@ -1,82 +1,53 @@
 #include "rtv1.h"
 #include <pthread.h>
  
-static int		ft_raytrace(t_th *mlx, t_obj *node, double x, double y)
-{
-	t_obj	*tmp;
-	float	*tab;
-	float	r[3];
-	double	p;
 
-	if (!(tab = (float *)malloc(sizeof(float) * 4)))
-		return (-1);
-	ft_fzero(r, 3);
-	p = 0.0;
-	while (y < mlx->ty + 1 && (x = mlx->tx) > -1)
+pthread_t			**malloc_thread(int count, t_arg *arg, void *a)
+{
+	pthread_t		**thread;
+
+	thread = (pthread_t **)malloc(sizeof(pthread_t *) * (count + 1));
+	thread[count] = NULL;
+	while (--count != -1)
 	{
-		while (x < mlx->tx + 1 && (p += 1) > 0)
-		{
-			ft_set_ray(mlx, tab, x, y);
-			if ((tmp = ft_intersection(mlx, node, mlx->ray_dir, mlx->cam_pos)))
-				tab = ft_lambert(mlx, tmp, mlx->light, tab);
-			ft_average(r, tab);
-			x = x + (1.0 / mlx->aa);
-		}
-		y = y + (1.0 / mlx->aa);
+		thread[count] = (pthread_t *)malloc(sizeof(pthread_t));
+		arg[count].env = a;
+		arg[count].i = count;
 	}
-	ft_put_pixel(mlx, mlx->tx, mlx->ty, (((int)(r[0] / p * 255) & 0xff) << 16) +
-		(((int)(r[1] / p * 255) & 0xff) << 8) + ((int)(r[2] / p * 255) & 0xff));
-	free(tab);
-	return (0);
+	return (thread);
+}
+ 
+static void			*thread_fonc(void *b)
+{
+	t_arg *arg;
+	int pmin;
+	int pmax;
+
+	arg = (t_arg *)b;
+	pmin = (int) (arg->i * (arg->env->size_x / arg->env->thread_cnt));
+	pmax = (int) ((arg->i + 1) * (arg->env->size_x / arg->env->thread_cnt));
+	raytrace_thread(arg->env, pmin, pmax);
+	pthread_exit(NULL);
 }
 
-void			*my_thread_process(void *arg)
+static void			create_thread(pthread_t **thread, int count, t_arg *arg)
 {
-	t_tab_th	*tab;
-	t_th		*th;
-	t_obj		*node;
-	double		x;
-	double		y;
+	int			ret;
 
-	tab = (t_tab_th *)arg;
-	node = tab->mlx->obj;
-	th = (t_th *)malloc(sizeof(t_th));
-	ft_copy(tab->mlx, th);
-	y = 0.0;
-	while (y < WIN_H)
-	{
-		x = WIN_W * tab->i / NB_THREAD;
-		while (x < WIN_W * (tab->i + 1) / NB_THREAD)
-		{
-			th->ty = (int)y;
-			th->tx = (int)x;
-			ft_raytrace(th, node, x++, y);
-		}
-		y++;
-	}
-	ft_free_lists(th->light, th->obj);
-	free(th);
-	pthread_exit(0);
+	while (--count != -1)
+		ret = pthread_create(thread[count], NULL,
+			thread_fonc, &arg[count]);
 }
 
-int				ft_draw(t_mlx *mlx)
+void				redraw(t_env *env, t_arg *arg)
 {
-	pthread_t	th[NB_THREAD];
-	t_tab_th	tab[NB_THREAD];
-	void		*ret;
-	int			i;
+	int		i;
+	void	*ret;
 
 	i = -1;
-	while (++i < NB_THREAD)
-	{
-		tab[i].i = i;
-		tab[i].mlx = mlx;
-		pthread_create(&th[i], NULL, my_thread_process, &tab[i]);
-	}
-	i = -1;
-	while (++i < NB_THREAD)
-		(void)pthread_join(th[i], &ret);
-	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 0, 0);
-	ft_hud(mlx);
-	return (0);
+	ft_putstr("charlot");
+	create_thread(env->thread, env->thread_cnt, arg);
+	
+	while (env->thread[++i])
+		pthread_join(*env->thread[i], &ret);
 }
