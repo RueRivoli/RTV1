@@ -33,6 +33,7 @@ int            find_nearest_inter(t_env *env, t_vect *v, t_hit_point **mem, t_ob
 	float min;
 	tmp = env->obj;
 	min = INFINI;
+	//ft_putstr("CHAT");
 	new_pos_cam = add_vect(env->cam->pos, env->cam->trans);
 	mini = minus_vect(v, new_pos_cam);
 	w = new_vect(0.0, 0.0, 0.0);
@@ -279,8 +280,6 @@ int              main(int argc, char **argv)
 	}
 	fd = open(argv[1], O_RDONLY);
 
-	
-
 	/*Lecture et affichage de la scene*/
 	if (lecture(fd, env) != 0)
 		display_scene(env);
@@ -288,12 +287,12 @@ int              main(int argc, char **argv)
 
 	//set_virtual_screen(env);
 
-	env->win->handle = SDL_CreateWindow("Hello World", 100, 200, env->size_x, env->size_y, 0);
+	env->win->handle = SDL_CreateWindow("RTV1", 100, 200, env->size_x, env->size_y, 0);
 	env->win->rend = SDL_CreateRenderer(env->win->handle, 1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_SOFTWARE);
 	//SDL_CreateWindowAndRenderer(win->width, win->height, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE, &win->handle, &win->rend);
 	SDL_SetRenderDrawColor(env->win->rend, 0, 0, 0, 0);
 	SDL_RenderClear(env->win->rend);
-	SDL_SetWindowTitle(win->handle, "RTV1");
+	//SDL_SetWindowTitle(win->handle, "RTV1");
 
 
 	SDL_RenderClear(env->win->rend);
@@ -307,13 +306,13 @@ int              main(int argc, char **argv)
 			env->boucle = 1;
 	}
 	quit_SDL(env);
-	/*free(env->cam);
+	free(env->cam);
 	free(env->win);
     free(env->light);
     free(env->obj);
     free(env->screen);
     free(env->title);
     free(env->background);
-	free(env);*/
+	free(env);
 	return (0); 
 }

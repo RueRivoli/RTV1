@@ -26,7 +26,7 @@ t_env   *init_env(t_arg *arg)
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS) != 0)
 		return (NULL);
 	env->thread_cnt = 8;
-	//env->arg = (t_arg*)malloc(sizeof(t_arg) * env->threat_cnt);
+	arg = (t_arg*)malloc(sizeof(t_arg) * NB_THREAD);
 	if (!(env->thread = malloc_thread(env->thread_cnt, arg, &env)))
 			return (NULL);
 	env->obj = NULL;

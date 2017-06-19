@@ -24,7 +24,7 @@ INC_FILES = rtv1.h vector.h object.h event.h
 INCS = -I include -I framework/SDL2/include -I ./libft/libft.h
 HEADERS =  $(LIBFT_INC_FILES:%.h=$(LIBFT_INC_PATH)/%.h)
 HEADERS += $(INC_FILES:%.h=$(INC_PATH)/%.h)
-CFLAGS += $(addprefix -I, $(INC_PATH) $(LIBFT_INC_PATH) $(MLX_INC_PATH))
+CFLAGS += $(addprefix -I, $(INC_PATH) $(LIBFT_INC_PATH))
 
 #Sources
 SRC_PATH = srcs/
