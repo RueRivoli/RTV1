@@ -71,6 +71,7 @@ typedef struct s_win
 
 
 
+
 typedef struct s_env
 {
     t_win           *win;
@@ -95,7 +96,10 @@ typedef struct s_arg {
         int     i;
 }               t_arg;
 
-
+typedef struct data {
+    t_env *env ;
+    pthread_mutex_t mutex;
+} data;
 
 void            build_light(t_light *light, t_vect *pos);
 t_light       *add_light(t_light *light, t_vect *pos);

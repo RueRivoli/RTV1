@@ -8,6 +8,7 @@
         "*.sh": "cpp",
         "*.txt": "cpp",
         "*.vcproj": "cpp",
-        "*.vcxproj": "cpp"
+        "*.vcxproj": "cpp",
+        "hashtable": "cpp"
     }
 }

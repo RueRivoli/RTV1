@@ -44,7 +44,7 @@ int            find_nearest_inter(t_env *env, t_vect *v, t_hit_point **mem, t_ob
 	// {
 	/*if (plus_phi != 0 || plus_theta != 0)
 		change_vect(ray_dir, plus_phi, plus_theta);*/
-	//change_vect(ray_dir, plus_phi, plus_theta);
+	change_vect(ray_dir, plus_phi, plus_theta);
     normed(ray_dir);
 	r = new_ray(new_pos_cam, ray_dir, norm(mini), w);
 	//}
@@ -268,7 +268,9 @@ int              main(int argc, char **argv)
 	t_arg *arg;
     int fd;
 
-	if (!(arg = (t_arg*)malloc(sizeof(t_arg *) *  NB_THREAD)))
+	if (!(arg = (t_arg*)malloc(sizeof(t_arg) *  NB_THREAD + 1)))
+		return (0);
+	if (!(arg->env = (t_env*)malloc(sizeof(t_env) *  NB_THREAD + 1)))
 		return (0);
 	if (!(env = init_env(arg)))
 		return (0);
@@ -279,15 +281,22 @@ int              main(int argc, char **argv)
 		return (0);
 	}
 	fd = open(argv[1], O_RDONLY);
-
 	/*Lecture et affichage de la scene*/
-	if (lecture(fd, env) != 0)
+	if (fd > 0 && lecture(fd, env) != 0)
 		display_scene(env);
+	else
+	{
+		error_param();
+		return (0);
+	}
+	
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS) != 0)
+		return (0);
 	/*Placement de l'ecran virtuel*/
 
 	//set_virtual_screen(env);
 
-	env->win->handle = SDL_CreateWindow("RTV1", 100, 200, env->size_x, env->size_y, 0);
+	env->win->handle = SDL_CreateWindow("RTV1", 650, 300, env->size_x, env->size_y, 0);
 	env->win->rend = SDL_CreateRenderer(env->win->handle, 1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_SOFTWARE);
 	//SDL_CreateWindowAndRenderer(win->width, win->height, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE, &win->handle, &win->rend);
 	SDL_SetRenderDrawColor(env->win->rend, 0, 0, 0, 0);
@@ -296,9 +305,9 @@ int              main(int argc, char **argv)
 
 
 	SDL_RenderClear(env->win->rend);
-	raytrace(env);
+	//raytrace(env);
 	
-	//redraw(env, arg);
+	redraw(env, arg);
 	SDL_RenderPresent(env->win->rend);
 	while(!env->boucle)
 	{
