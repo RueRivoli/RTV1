@@ -12,8 +12,6 @@ pthread_t			**malloc_thread(int count, t_arg *arg, void *a)
 	{
 		thread[count] = (pthread_t *)malloc(sizeof(pthread_t));
 		arg[count].env = a;
-		ft_putchar('L');
-		printf("[%d] - ", count);
 		arg[count].i = count;
 	}
 	return (thread);
@@ -29,7 +27,6 @@ static void			*thread_fonc(void *b)
 
 
 	arg = (t_arg *)b;
-	//ft_putnbr(arg->env->thread_cnt);
 	pmin = (int) (arg->i * (arg->env->size_x / NB_THREAD));
 	pmax = (int) ((arg->i + 1) * (arg->env->size_x / NB_THREAD));
 	//pthread_mutex_lock(&new_data.mutex);
@@ -45,11 +42,8 @@ static void			create_thread(pthread_t **thread, int count, t_arg *arg)
 	
 	while (--count != -1)
 	{	
-		ft_putstr(" ct :");
-		ft_putnbr(count);
 		ret = pthread_create(thread[count], NULL,
-			thread_fonc, &arg[count]);
-		ft_putstr("charlot");		
+			thread_fonc, &arg[count]);	
 }
 
 }
@@ -65,7 +59,6 @@ void				redraw(t_env *env, t_arg *arg)
 	
 	while (env->thread[++i])
 	{
-		ft_putstr("MADRID");
 		pthread_join(*env->thread[i], &ret);
 	}
 }

@@ -268,9 +268,9 @@ int              main(int argc, char **argv)
 	t_arg *arg;
     int fd;
 
-	if (!(arg = (t_arg*)malloc(sizeof(t_arg) *  NB_THREAD + 1)))
+	if (!(arg = (t_arg*)malloc(sizeof(t_arg) * NB_THREAD + 1)))
 		return (0);
-	if (!(arg->env = (t_env*)malloc(sizeof(t_env) *  NB_THREAD + 1)))
+	if (!(arg->env = (t_env*)malloc(sizeof(t_env) * NB_THREAD + 1)))
 		return (0);
 	if (!(env = init_env(arg)))
 		return (0);
@@ -311,7 +311,7 @@ int              main(int argc, char **argv)
 	SDL_RenderPresent(env->win->rend);
 	while(!env->boucle)
 	{
-		if (event(env) == 0)
+		if (event(env, arg) == 0)
 			env->boucle = 1;
 	}
 	quit_SDL(env);

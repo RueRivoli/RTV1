@@ -13,11 +13,12 @@
 #include "rtv1.h"
 #include "event.h"
 
-void		refresh(t_env *env)
+void		refresh(t_env *env, t_arg *arg)
 {
 	SDL_SetRenderDrawColor(env->win->rend, 0, 0, 0, 0);
 	SDL_RenderClear(env->win->rend);
-	raytrace(env);
+	//raytrace(env);
+	redraw(env, arg);
 	SDL_RenderPresent(env->win->rend);
 }
 
@@ -46,7 +47,7 @@ int    key_event_bis(t_env *env, SDL_Event event)
     return (b);
 }
 
-void     key_event(t_env *env, SDL_Event event)
+void     key_event(t_env *env, SDL_Event event, t_arg *arg)
 {
     int b;
     b = 1;
@@ -66,10 +67,10 @@ void     key_event(t_env *env, SDL_Event event)
     else if (!key_event_bis(env, event))
         b = 0;
     if (b == 1)
-        refresh(env);
+        refresh(env, arg);
 }
 
-int		event(t_env *env)
+int		event(t_env *env, t_arg *arg)
 {
 	SDL_Event	event;
 	//SDL_KeyboardEvent *key;
@@ -94,7 +95,7 @@ int		event(t_env *env)
 	else if (event.type == SDL_WINDOWEVENT_SIZE_CHANGED)
 		SDL_RenderClear(env->win->rend);
 	else if (event.type == SDL_KEYUP)
-		key_event(env, event);
+		key_event(env, event, arg);
 	//else if (event.type == SDLK_DOWN)
 	//	ft_putnbr(event.key.keysym.scancode);
 	return (1);

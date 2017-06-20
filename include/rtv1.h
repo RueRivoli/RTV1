@@ -69,9 +69,6 @@ typedef struct s_win
     int         height;
 }               t_win;
 
-
-
-
 typedef struct s_env
 {
     t_win           *win;
@@ -91,6 +88,7 @@ typedef struct s_env
     int             z;
 }               t_env;
 
+
 typedef struct s_arg {
        t_env *env;
         int     i;
@@ -107,7 +105,7 @@ float           coef_lambert(t_light *light, t_hit_point *h);
 t_vect          *find_color(t_light *light, t_hit_point *hp, t_mater *mat);
 t_env           *init_env(t_arg *arg);
 void            render(t_env *env);
-int             event(t_env *env);
+int             event(t_env *env, t_arg *arg);
 t_cam           *new_cam(t_vect *v1, t_vect *trans, float phi, float theta);
 t_ray           *new_ray(t_vect *orig, t_vect *dir, float fl, t_vect *color);
 void            quit_SDL(t_env *env);
@@ -145,7 +143,7 @@ int               numberoflights(t_env *env);
 t_vect            *find_color_light(t_light *light, t_hit_point *hp, t_mater *mat, t_vect *v);
 t_vect            *find_color_sha(t_light *light, t_hit_point *hp, t_mater *mat, t_vect *v);
 void                SDL_render(t_env *env);
-void                refresh(t_env *env);
+void                refresh(t_env *env, t_arg *arg);
 void                find_angle(t_env *env, t_ray *ray);
 int                 find_nearest_inter(t_env *env, t_vect *v, t_hit_point **mem, t_obj **colore);
 int                     is_light_reached(t_light *light, t_env *env, t_hit_point *mem, t_obj *colore);
@@ -161,7 +159,7 @@ float                       add_theta(t_env *env);
 void                        change_vect(t_vect *v, float phi, float theta);
 t_vect                    *center_average(t_env *env);
 
-void                    key_event(t_env *env, SDL_Event event);
+void                    key_event(t_env *env, SDL_Event event, t_arg *arg);
 int                     key_event_bis(t_env *env, SDL_Event event);
 
 t_vect                  *read_origin(char *line, int fd, char *str);
