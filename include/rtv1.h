@@ -191,4 +191,5 @@ void                boucle(t_arg *arg, t_env *env);
 void			    malloc_arg(t_arg *arg, void *a);
 t_ray		        *current_ray(t_env *env, t_vect *v);
 void		        rotate_vector(t_env *env, t_vect *ray_dir);
+void	            free_ray(t_ray *ray);
 #endif

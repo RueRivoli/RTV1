@@ -47,6 +47,14 @@ t_ray		*current_ray(t_env *env, t_vect *v)
 	return (r);
 }
 
+void	free_ray(t_ray *ray)
+{
+	free(r->origin);
+	free(r->direction);
+	free(r->color);
+	free(r);
+}
+
 int            find_nearest_inter(t_env *env, t_vect *v, t_hit_point **mem, t_obj **colore)
 {
 	t_ray *r;
@@ -79,10 +87,7 @@ int            find_nearest_inter(t_env *env, t_vect *v, t_hit_point **mem, t_ob
 		}
 		tmp = tmp->next;
 	}
-	free(r->origin);
-	free(r->direction);
-	free(r->color);
-	free(r);
+	free_ray(r);
 	return (min);
 }
 
@@ -117,8 +122,10 @@ int        is_light_reached(t_light *light, t_env *env, t_hit_point *mem, t_obj 
 				free(hr);
 				return (1);
 			}
-			tmp = tmp->next;
-			
+			free(hr->vect);
+			free(hr->normal);
+			free(hr);
+			tmp = tmp->next;	
 		}
 	}
     free(w);
@@ -157,20 +164,12 @@ void        raytrace_thread(t_env *env, int pi, int pf)
 	t_vect *v;
 	t_obj *colore;
 	t_hit_point *mem;
-    //t_vect *pos0;
     int p;
 	int q;
-    int nb_of_lights;
 	float min;
 
 	colore = NULL;
 	mem = NULL;
-    //pos0 = env->cam->pos;
-	//env->cam->pos = add_vect(pos0, env->cam->trans);
-    //free(pos0);
-	//mem = (t_hit_point*)malloc(sizeof(t_hit_point*));
-	nb_of_lights = numberoflights(env);
-    //colore = malloc(sizeof(t_obj *));
 	p = pi;
      
 	while (p < pf)
@@ -184,7 +183,6 @@ void        raytrace_thread(t_env *env, int pi, int pf)
             free(v);
 			if (min < INFINI && mem)
 			{   
-				nb_of_lights = numberoflights(env);
 				put_on_light(env, mem, colore, p, q);
 				free(mem);
 			}
@@ -192,7 +190,6 @@ void        raytrace_thread(t_env *env, int pi, int pf)
 		}
 		p++;    
 	}
-   //free(colore);
 }
 
 
