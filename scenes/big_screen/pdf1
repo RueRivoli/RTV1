@@ -1,0 +1,13 @@
+ # Scene
+
+name Sphere_Centree
+camera origin 600.0 450.0 -900.0
+render size 1200 900
+spot 600.0 450.0 -150.0
+
+# Objects
+
+name sphere 
+origin 600.0 450.0 200.0 
+radius 250.0
+color 0 255 0 0
