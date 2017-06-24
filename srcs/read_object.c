@@ -30,8 +30,9 @@ t_vect      *read_origin(char *line, int fd, char *str)
 {
 	t_vect *vect;
 	char **tab;
-
-	if (get_next_line(fd, &line) && ft_strstr(line, str))
+	char *st;
+	st = ft_strstr(line, str);
+	if (get_next_line(fd, &line) && (st = ft_strstr(line, str)))
 	{
 		tab = ft_strsplit(line, ' ');
 		if (tab[1] && tab[2] && tab[3])
@@ -39,9 +40,11 @@ t_vect      *read_origin(char *line, int fd, char *str)
 		else
 			return (NULL);
 		free(tab);
+		free(st);
 	}
 	else
 		return (NULL);
+	
 	return (vect);
 }
 
@@ -50,8 +53,9 @@ float   read_float(char *line, int fd, char *str)
 {
 	char **tab;
 	float res;
-
-	if (get_next_line(fd, &line) && ft_strstr(line, str))
+	char *st;
+	st = ft_strstr(line, str);
+	if (get_next_line(fd, &line) && (st = ft_strstr(line, str)))
 	{
 		tab = ft_strsplit(line, ' ');
 		if (tab[1])
@@ -59,6 +63,7 @@ float   read_float(char *line, int fd, char *str)
 		else
 			return (0);
 		free(tab);
+		free(st);
 	}
 	else
 		return (0);
@@ -70,8 +75,9 @@ t_mater      *read_mater(char *line, int fd, char *str)
 {
 	t_mater *mat;
 	char **tab;
-
-	if (get_next_line(fd, &line) && ft_strstr(line, str))
+	char *st;
+	st = ft_strstr(line, str);
+	if (get_next_line(fd, &line) && (st = ft_strstr(line, str)))
 	{
 		tab = ft_strsplit(line, ' ');
 		if (tab[1] && tab[2] && tab[3] && tab[4] && ft_atoi(tab[1]) > -1 && ft_atoi(tab[2]) > -1 && ft_atoi(tab[1]) > -1 && ft_atoi(tab[4]) > -1)
@@ -79,6 +85,7 @@ t_mater      *read_mater(char *line, int fd, char *str)
 		else
 			return (NULL);
 		free(tab);
+		free(st);
 	}
 	else
 		return (NULL);

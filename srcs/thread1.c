@@ -16,7 +16,7 @@ int         ThreadFunction(void* addr)
 }
 
 
-void			  malloc_arg(t_arg *arg, void *a)
+void			malloc_arg(t_arg *arg, void *a)
 {
     int ct;
 

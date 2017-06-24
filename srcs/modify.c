@@ -7,26 +7,30 @@ void    translation(char *line, void *o, int to)
     t_vect *v;
 	v = origin(to, o);
     tab = NULL;
-    if (ft_strstr(line, "translationX"))
+	char *st;
+    if ((st = ft_strstr(line, "translationX")))
 		{
 			tab = ft_strsplit(line, ' ');
 			if (tab[1])
 				v->x += ft_atoi(tab[1]);
 				free(tab);
+				free(st);
 		}
-		if (ft_strstr(line, "translationY"))
+		if ((st = ft_strstr(line, "translationY")))
 		{
 			tab = ft_strsplit(line, ' ');
 			if (tab[1])
 				v->y += ft_atoi(tab[1]);
 				free(tab);
+				free(st);
 		}
-		if (ft_strstr(line, "translationZ"))
+		if ((st = ft_strstr(line, "translationZ")))
 		{
 			tab = ft_strsplit(line, ' ');
 			if (tab[1])
 				v->z += ft_atoi(tab[1]);
 			free(tab);
+			free(st);
 		}
 }
 

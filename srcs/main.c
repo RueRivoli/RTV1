@@ -17,46 +17,47 @@
 #include <stdio.h>
 # include <math.h>
 
-int            find_nearest_inter(t_env *env, t_vect *v, t_hit_point **mem, t_obj **colore)
+
+void		rotate_vector(t_env *env, t_vect *ray_dir)
 {
+	float plus_phi;
+	float plus_theta;
+
+	plus_phi = env->cam->add_phi;
+	plus_theta = env->cam->add_theta;
+	change_vect(ray_dir, plus_phi, plus_theta);
+}
+
+t_ray		*current_ray(t_env *env, t_vect *v)
+{
+	t_ray *r;
 	t_vect *mini;
 	t_vect *w;
 	t_vect *ray_dir;
-	t_obj *tmp;
-	t_hit_point *hp;
-	t_ray *r;
 	t_vect  *new_pos_cam;
-	float plus_phi;
-	float plus_theta;
-	//t_vect *new_dir_ray;
-	//t_vect *final;
-	float min;
-	tmp = env->obj;
-	min = INFINI;
-	//ft_putstr("CHAT");
+
 	new_pos_cam = add_vect(env->cam->pos, env->cam->trans);
 	mini = minus_vect(v, new_pos_cam);
 	w = new_vect(0.0, 0.0, 0.0);
 	ray_dir = mini;
-	plus_phi = env->cam->add_phi;
-	plus_theta = env->cam->add_theta;
-	//if (env->cam->pos->x == 600.0 && env->cam->pos->y == 450.0 && env->cam->pos->z == -100.0)
-	// {
-	/*if (plus_phi != 0 || plus_theta != 0)
-		change_vect(ray_dir, plus_phi, plus_theta);*/
-	change_vect(ray_dir, plus_phi, plus_theta);
+
+	rotate_vector(env, ray_dir);
     normed(ray_dir);
 	r = new_ray(new_pos_cam, ray_dir, norm(mini), w);
-	//}
-	/*else
-	  {
-	  new_dir_ray = change_vect(ray_dir, plus_phi, plus_theta);
-	  printf("NR->X  %f ", new_dir_ray->x);
-	  printf("NR->X  %f ", new_dir_ray->y);
-	  printf("NR->X %f  \n", new_dir_ray->z);
-	  final = normed_vect(new_dir_ray);
-	  r = new_ray(env->cam->pos, final, norm(mini), w);
-	  }*/
+	return (r);
+}
+
+int            find_nearest_inter(t_env *env, t_vect *v, t_hit_point **mem, t_obj **colore)
+{
+	t_ray *r;
+	t_obj *tmp;
+	t_hit_point *hp;
+	float min;
+
+	tmp = env->obj;
+	min = INFINI;
+	hp = NULL;
+	r = current_ray(env, v);
 	while (tmp)
 	{   
 		if ((hp = tmp->is_hit(tmp->type, r)))
@@ -73,8 +74,8 @@ int            find_nearest_inter(t_env *env, t_vect *v, t_hit_point **mem, t_ob
 		}
 		tmp = tmp->next;
 	}
-	free(mini);
-	free(w);
+	free(r->origin);
+	free(r->color);
 	free(r);
 	return (min);
 }

@@ -76,8 +76,9 @@ t_vect      *normal(int to, void *o)
 
 void		start_reading(int fd, char *line, t_env *env, int *index)
 {
-	if (ft_strstr(line, "# Scene")!= NULL)
-		{
+	char *st;
+	if ((st = ft_strstr(line, "# Scene")))
+	{
 			*index += *index + 1;
 			get_next_line(fd, &line);
 			if (*index != 1 || read_scene(fd, line,env) < 3)
@@ -85,7 +86,9 @@ void		start_reading(int fd, char *line, t_env *env, int *index)
 				error_param();
 				return;
 			}
-		}
+			
+	}
+	
 }	
 
 int        lecture(int fd, t_env *env)
