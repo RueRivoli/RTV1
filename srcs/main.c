@@ -53,10 +53,12 @@ int            find_nearest_inter(t_env *env, t_vect *v, t_hit_point **mem, t_ob
 	t_obj *tmp;
 	t_hit_point *hp;
 	float min;
+	int p;
 
 	tmp = env->obj;
 	min = INFINI;
 	hp = NULL;
+	p = 0;
 	r = current_ray(env, v);
 	while (tmp)
 	{   
@@ -67,7 +69,10 @@ int            find_nearest_inter(t_env *env, t_vect *v, t_hit_point **mem, t_ob
 			{
 				min = hp->distance_to_cam;
 				*colore = tmp;
+				if (p > 0)
+					free(*mem);
 				*mem = hp;
+				p++;
 			}
 			else
             	free(hp);
@@ -75,6 +80,7 @@ int            find_nearest_inter(t_env *env, t_vect *v, t_hit_point **mem, t_ob
 		tmp = tmp->next;
 	}
 	free(r->origin);
+	free(r->direction);
 	free(r->color);
 	free(r);
 	return (min);
@@ -89,6 +95,7 @@ int        is_light_reached(t_light *light, t_env *env, t_hit_point *mem, t_obj 
 	t_hit_point *hr;
 	int meet_object;
 
+	hr = NULL;
 	meet_object = 0;
 	mini = minus_vect(light->pos, mem->vect);
 	normed(mini);
@@ -104,11 +111,14 @@ int        is_light_reached(t_light *light, t_env *env, t_hit_point *mem, t_obj 
 		else
 		{
 			if (distance(mem->vect, hr->vect) < distance(hr->vect, light->pos))
+			{
+				free(hr->vect);
+				free(hr->normal);
+				free(hr);
 				return (1);
+			}
 			tmp = tmp->next;
-			free(hr->vect);
-			free(hr->normal);
-			free(hr);
+			
 		}
 	}
     free(w);
@@ -127,7 +137,7 @@ void               put_on_light(t_env *env, t_hit_point *mem, t_obj *colore, int
 
 	light = env->light;
 	nb_of_lights = numberoflights(env);
-	col = new_vect(0.0, 0.0, 0.0);
+	col = new_vect(0, 0, 0);
 	while (light)
 	{   
 		meet_object = is_light_reached(light, env, mem, colore);
@@ -267,6 +277,8 @@ int              main(int argc, char **argv)
 	t_env *env;
 	t_win *win;
 	t_arg *arg;
+	t_light *l;
+	t_light *tmp;
     int fd;
 
 	if (!(arg = (t_arg*)malloc(sizeof(t_arg) * NB_THREAD + 1)))
@@ -319,9 +331,17 @@ int              main(int argc, char **argv)
 	free(arg);
 	free(env->cam);
 	free(env->win);
-    free(env->light);
+	l = env->light;
+	while (l)
+	{ 
+		if (l->next)
+			tmp = l->next;
+		free(l);
+		l = tmp;
+	}	
+   // free(env->light);
     free(env->obj);
-    free(env->screen);
+    //free(env->screen->center);
     free(env->title);
     free(env->background);
 	free(env);
