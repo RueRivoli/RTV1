@@ -270,8 +270,8 @@ int              main(int argc, char **argv)
 
 	if (!(arg = (t_arg*)malloc(sizeof(t_arg) * NB_THREAD + 1)))
 		return (0);
-	if (!(arg->env = (t_env*)malloc(sizeof(t_env) * NB_THREAD + 1)))
-		return (0);
+	/*if (!(arg->env = (t_env*)malloc(sizeof(t_env) * NB_THREAD + 1)))
+		return (0);*/
 	if (!(env = init_env(arg)))
 		return (0);
 	win = env->win;
@@ -306,8 +306,8 @@ int              main(int argc, char **argv)
 
 	SDL_RenderClear(env->win->rend);
 	//raytrace(env);
-	
-	redraw(env, arg);
+	boucle(arg, env);
+	//redraw(env, arg);
 	SDL_RenderPresent(env->win->rend);
 	while(!env->boucle)
 	{
@@ -315,6 +315,7 @@ int              main(int argc, char **argv)
 			env->boucle = 1;
 	}
 	quit_SDL(env);
+	free(arg);
 	free(env->cam);
 	free(env->win);
     free(env->light);

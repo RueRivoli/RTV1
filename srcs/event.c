@@ -18,7 +18,8 @@ void		refresh(t_env *env, t_arg *arg)
 	SDL_SetRenderDrawColor(env->win->rend, 0, 0, 0, 0);
 	SDL_RenderClear(env->win->rend);
 	//raytrace(env);
-	redraw(env, arg);
+	//redraw(env, arg);
+	boucle(arg, env);
 	SDL_RenderPresent(env->win->rend);
 }
 

@@ -26,7 +26,7 @@
 #include <stdio.h>
 # include <math.h>      
 # include <unistd.h>
-
+#include <SDL_thread.h>
 
 #define INFINI 100000000.0
 #define PI 3.14159
@@ -185,5 +185,10 @@ void                raytrace_thread(t_env *env, int pi, int pf);
 
 pthread_t			**malloc_thread(int count, t_arg *arg, void *a);
 void				redraw(t_env *env, t_arg *arg);
+
+int                 ThreadFunction(void* addr);
+void                boucle(t_arg *arg, t_env *env);
+void			    malloc_arg(t_arg *arg, void *a);
+
 
 #endif

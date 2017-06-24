@@ -91,12 +91,14 @@ void		start_reading(int fd, char *line, t_env *env, int *index)
 int        lecture(int fd, t_env *env)
 {
 	char *line;
+	char *st;
 	int index;
 	index = 0;
 	while (get_next_line(fd, &line))
 	{
 		start_reading(fd, line, env, &index);
-		if (ft_strstr(line, "# Objects") != NULL)
+		st = ft_strstr(line, "# Objects");
+		if (st != NULL)
 		{
 			index++;
 			get_next_line(fd, &line);
@@ -106,6 +108,7 @@ int        lecture(int fd, t_env *env)
 				return (0);
 			}
 		}
+		free(st);
 		free(line);
 	}
 	if (index < 2)

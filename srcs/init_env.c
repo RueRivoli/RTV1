@@ -23,7 +23,7 @@ t_env   *init_env(t_arg *arg)
 		return (NULL);
 	if (!(env->cam = malloc(sizeof(t_cam))))
 		return (NULL);	
-	env->thread_cnt = 8;
+	env->thread_cnt = NB_THREAD;
 	//arg = (t_arg*)malloc(sizeof(t_arg) * NB_THREAD);
 	if (!(env->thread = malloc_thread(env->thread_cnt, arg, env)))
 			return (NULL);
