@@ -140,15 +140,15 @@ t_vect           *normal(int to, void *o);
 void              modify(void *o, char *line, int fd, int to);
 int               numberoflights(t_env *env);
 
-t_vect            *find_color_light(t_light *light, t_hit_point *hp, t_mater *mat, t_vect *v);
-t_vect            *find_color_sha(t_light *light, t_hit_point *hp, t_mater *mat, t_vect *v);
+void                find_color_light(t_light *light, t_hit_point *hp, t_mater *mat, t_vect *v);
+void                find_color_sha(t_light *light, t_hit_point *hp, t_mater *mat, t_vect *v);
 void                SDL_render(t_env *env);
 void                refresh(t_env *env, t_arg *arg);
-void                find_angle(t_env *env, t_ray *ray);
-int                 find_nearest_inter(t_env *env, t_vect *v, t_hit_point **mem, t_obj **colore);
+void                  find_angle(t_env *env, t_ray *ray);
+int                    find_nearest_inter(t_env *env, t_vect *v, t_hit_point **mem, t_obj **colore);
 int                     is_light_reached(t_light *light, t_env *env, t_hit_point *mem, t_obj *colore);
-void            put_on_light(t_env *env,t_hit_point *mem, t_obj *colore, int p, int q);
-void            choose_color(t_env *env, t_hit_point *mem, t_obj *colore);
+void                   put_on_light(t_env *env,t_hit_point *mem, t_obj *colore, int p, int q);
+void                  choose_color(t_env *env, t_hit_point *mem, t_obj *colore);
 
 t_vect                 *vect_central(t_env *env);
 t_vect                    *vect_basic();
@@ -192,4 +192,5 @@ void			    malloc_arg(t_arg *arg, void *a);
 t_ray		        *current_ray(t_env *env, t_vect *v);
 void		        rotate_vector(t_env *env, t_vect *ray_dir);
 void	            free_ray(t_ray *ray);
+void	            free_hit_point(t_hit_point *hp);
 #endif

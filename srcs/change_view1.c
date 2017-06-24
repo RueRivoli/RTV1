@@ -54,7 +54,6 @@ void    change_vect(t_vect *v, float phi1, float theta1)
     v->y= y;
     v->x = x;
     v->z = z;
-	//return (new_vect(x, y, z));
 }       
 
 float      phi(t_vect *v)

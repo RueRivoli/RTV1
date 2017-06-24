@@ -12,7 +12,7 @@
 
 #include "rtv1.h"
 
-t_vect  *new_vect(float x, float y, float z)
+t_vect  		*new_vect(float x, float y, float z)
 {
 	t_vect  *new;
 	if (!(new = (t_vect*)malloc(sizeof(t_vect))))
@@ -23,22 +23,22 @@ t_vect  *new_vect(float x, float y, float z)
 	return (new);
 }
 
-float       scalar_product(t_vect *v1, t_vect *v2)
+float       	scalar_product(t_vect *v1, t_vect *v2)
 {
 	return (v1->x * v2->x + v1->y * v2->y + v1->z * v2->z);
 }
 
-t_vect *add_vect(t_vect *v1, t_vect *v2)
+t_vect 			*add_vect(t_vect *v1, t_vect *v2)
 {
 	return new_vect(v1->x + v2->x, v1->y + v2->y, v1->z + v2->z);
 }
 
-t_vect *minus_vect(t_vect *v1, t_vect *v2)
+t_vect 			*minus_vect(t_vect *v1, t_vect *v2)
 {
 	return (new_vect(v1->x - v2->x, v1->y - v2->y, v1->z - v2->z));
 }
 
-float       norm(t_vect *v)
+float      	 	norm(t_vect *v)
 {
 	return (sqrt(v->x * v->x + v->y * v->y + v->z * v->z));
 }

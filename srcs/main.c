@@ -49,10 +49,17 @@ t_ray		*current_ray(t_env *env, t_vect *v)
 
 void	free_ray(t_ray *ray)
 {
-	free(r->origin);
-	free(r->direction);
-	free(r->color);
-	free(r);
+	free(ray->origin);
+	free(ray->direction);
+	free(ray->color);
+	free(ray);
+}
+
+void	free_hit_point(t_hit_point *hp)
+{
+	free(hp->vect);
+	free(hp->normal);
+	free(hp);
 }
 
 int            find_nearest_inter(t_env *env, t_vect *v, t_hit_point **mem, t_obj **colore)
@@ -78,7 +85,7 @@ int            find_nearest_inter(t_env *env, t_vect *v, t_hit_point **mem, t_ob
 				min = hp->distance_to_cam;
 				*colore = tmp;
 				if (p > 0)
-					free(*mem);
+					free_hit_point(*mem);
 				*mem = hp;
 				p++;
 			}
@@ -98,14 +105,16 @@ int        is_light_reached(t_light *light, t_env *env, t_hit_point *mem, t_obj 
 	t_ray *r;
 	t_obj *tmp;
 	t_hit_point *hr;
+	t_vect *intersect;
 	int meet_object;
 
 	hr = NULL;
 	meet_object = 0;
-	mini = minus_vect(light->pos, mem->vect);
+	intersect = new_vect(mem->vect->x, mem->vect->y, mem->vect->z);
+	mini = minus_vect(light->pos, intersect);
 	normed(mini);
 	w = new_vect(0.0, 0.0, 0.0);
-	r = new_ray(mem->vect, mini, 0.0, w);
+	r = new_ray(intersect, mini, 0.0, w);
 	tmp = env->obj;
 	while (tmp && !meet_object)
 	{   
@@ -117,20 +126,14 @@ int        is_light_reached(t_light *light, t_env *env, t_hit_point *mem, t_obj 
 		{
 			if (distance(mem->vect, hr->vect) < distance(hr->vect, light->pos))
 			{
-				free(hr->vect);
-				free(hr->normal);
-				free(hr);
+				free_hit_point(hr);
 				return (1);
 			}
-			free(hr->vect);
-			free(hr->normal);
-			free(hr);
-			tmp = tmp->next;	
+				free_hit_point(hr);
+				tmp = tmp->next;	
 		}
 	}
-    free(w);
-	free(r);
-	free(mini);
+	free_ray(r);
 	free(tmp);
 	return (0);
 }
@@ -149,9 +152,9 @@ void               put_on_light(t_env *env, t_hit_point *mem, t_obj *colore, int
 	{   
 		meet_object = is_light_reached(light, env, mem, colore);
 		if (!meet_object)
-			col = find_color_light(light, mem, colore->mater, col);
+			find_color_light(light, mem, colore->mater, col);
 		else
-			col = find_color_sha(light, mem, colore->mater, col);
+			find_color_sha(light, mem, colore->mater, col);
 		light = light->next;
 	}
 	SDL_SetRenderDrawColor(env->win->rend, (int)(col->x / (255 * nb_of_lights)), (int)(col->y / (255 * nb_of_lights)), (int)(col->z / (255 * nb_of_lights)), 255);
@@ -184,6 +187,7 @@ void        raytrace_thread(t_env *env, int pi, int pf)
 			if (min < INFINI && mem)
 			{   
 				put_on_light(env, mem, colore, p, q);
+				free(mem->vect);
 				free(mem);
 			}
 			q++;
@@ -198,20 +202,12 @@ void        raytrace(t_env *env)
 	t_vect *v;
 	t_obj *colore;
 	t_hit_point *mem;
-    //t_vect *pos0;
     int p;
 	int q;
-    int nb_of_lights;
 	float min;
 
 	colore = NULL;
 	mem = NULL;
-    //pos0 = env->cam->pos;
-	//env->cam->pos = add_vect(pos0, env->cam->trans);
-    //free(pos0);
-	//mem = (t_hit_point*)malloc(sizeof(t_hit_point*));
-	nb_of_lights = numberoflights(env);
-    //colore = malloc(sizeof(t_obj *));
 	p = 0;
      
 	while (p < env->size_x)
@@ -225,7 +221,6 @@ void        raytrace(t_env *env)
             free(v);
 			if (min < INFINI && mem)
 			{   
-				nb_of_lights = numberoflights(env);
 				put_on_light(env, mem, colore, p, q);
 				free(mem);
 			}
@@ -233,7 +228,6 @@ void        raytrace(t_env *env)
 		}
 		p++;    
 	}
-   //free(colore);
 }
 
 void            SDL_render(t_env *env)
@@ -276,6 +270,8 @@ int              main(int argc, char **argv)
 	t_arg *arg;
 	t_light *l;
 	t_light *tmp;
+	t_obj *o;
+	t_obj *tp;
     int fd;
 
 	if (!(arg = (t_arg*)malloc(sizeof(t_arg) * NB_THREAD + 1)))
@@ -336,7 +332,14 @@ int              main(int argc, char **argv)
 		free(l);
 		l = tmp;
 	}	
-   // free(env->light);
+	o = env->obj;
+	while (o)
+	{ 
+		if (o->next)
+			tp = o->next;
+		free(o);
+		o = tp;
+	}
     free(env->obj);
     //free(env->screen->center);
     free(env->title);

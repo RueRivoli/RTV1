@@ -55,28 +55,24 @@ float       coef_lambert(t_light *light, t_hit_point *hp)
 	return (res);
 }
 
-t_vect      *find_color_light(t_light *light, t_hit_point *hp, t_mater *mat, t_vect *v)
+void		find_color_light(t_light *light, t_hit_point *hp, t_mater *mat, t_vect *v)
 {
-	t_vect *new_color;
 	float lambert;
 
 	lambert = coef_lambert(light, hp);
-	new_color = new_vect((lambert * mat->ir * light->red) + v->x , (lambert * mat->ig * light->green) + v->y, (lambert * mat->ib * light->blue) + v->z);
-	//new_color = new_vect((lambert * mat->ir * light->red + 0.1 * mat->ir * light->red) / (1.1 * 255) , (lambert * mat->ig * light->green + 0.1 * mat->ig * light->green) / (1.1 * 255), (lambert * mat->ib * light->blue + 0.1 * mat->ib * light->blue) / (1.1 * 255));
-	free(v);
-	return (new_color);
+	v->x = lambert * mat->ir * light->red + v->x;
+	v->y = lambert * mat->ig * light->green + v->y;
+	v->z = lambert * mat->ib * light->blue + v->z;
 }
 
-t_vect      *find_color_sha(t_light *light, t_hit_point *hp, t_mater *mat, t_vect *v)
+void		find_color_sha(t_light *light, t_hit_point *hp, t_mater *mat, t_vect *v)
 {
-	t_vect *new_color;
 	float lambert;
 
 	lambert = coef_lambert(light, hp);
-	new_color = new_vect(((lambert * mat->ir * light->red) / 2.0) + v->x , (lambert * mat->ig * light->green / 2.0) + v->y, (lambert * mat->ib * light->blue / 2.0)+ v->z);
-	//new_color = new_vect((lambert * mat->ir * light->red + 0.1 * mat->ir * light->red) / (1.1 * 255) , (lambert * mat->ig * light->green + 0.1 * mat->ig * light->green) / (1.1 * 255), (lambert * mat->ib * light->blue + 0.1 * mat->ib * light->blue) / (1.1 * 255));
-	free(v);
-	return (new_color);
+	v->x = lambert * mat->ir * (light->red / 2.0) + v->x;
+	v->y = lambert * mat->ig * (light->green / 2.0) + v->y;
+	v->z = lambert * mat->ib * (light->blue / 2.0) + v->z;
 }
 
 int         numberoflights(t_env *env)
