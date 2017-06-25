@@ -44,6 +44,9 @@ t_vect              *normal_sphere(t_sphere *sp, t_vect *p)
 t_hit_point         *hit_sphere(void *o, t_ray *r)
 {
 	t_sphere *sp;
+	t_vect *t;
+	t_hit_point *hp;
+
 	float delta;
 	float  b;
 	float c;
@@ -60,10 +63,14 @@ t_hit_point         *hit_sphere(void *o, t_ray *r)
 		//res -= 0.0001;
 		if (res > 0.0)
 		{
-			return (new_hit_point(new_vect(r->origin->x + res * r->direction->x, \
+			t = new_vect(r->origin->x + res * r->direction->x, \
+			r->origin->y + res * r->direction->y, r->origin->z + res * r->direction->z);
+
+			hp = new_hit_point(new_vect(r->origin->x + res * r->direction->x, \
 			r->origin->y + res * r->direction->y, r->origin->z + res * r->direction->z), \
-			INFINI, normal_sphere(sp, new_vect(r->origin->x + res * r->direction->x, \
-			r->origin->y + res * r->direction->y, r->origin->z + res * r->direction->z)), 1));
+			INFINI, normal_sphere(sp, t), 1);
+			free(t);
+			return (hp);
 		}
 	}
 	return (NULL);

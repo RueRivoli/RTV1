@@ -51,8 +51,8 @@ void    change_vect(t_vect *v, float phi1, float theta1)
 	y = norm(v) * cos(phi0 + phi1);
 	x = norm(v) * sin(phi0 + phi1) * sin(theta1 + theta0);
 	z = norm(v) * sin(phi0 + phi1) * cos(theta1 + theta0);
-    v->y= y;
     v->x = x;
+    v->y = y;
     v->z = z;
 }       
 
@@ -67,7 +67,3 @@ float      theta(t_vect *v)
 	phi0 = phi(v);
 	return (asin(v->x / (norm(v) * sin(phi0))));
 }
-
-
-
-

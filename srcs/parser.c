@@ -1,7 +1,7 @@
 #include "rtv1.h"
 #include <stdio.h>
 
-t_vect *origin0(int to, void *o)
+t_vect 				*origin0(int to, void *o)
 {
 	t_vect *v;
 	if (to == 1)
@@ -21,7 +21,7 @@ t_vect *origin0(int to, void *o)
 	return (NULL);
 }
 
-t_vect      *origin(int to, void *o)
+t_vect      		*origin(int to, void *o)
 {
 	t_vect *v;
 	t_vect *w;
@@ -47,7 +47,7 @@ t_vect      *origin(int to, void *o)
 		return (w);
 }
 
-t_vect      *normal(int to, void *o)
+t_vect     		 *normal(int to, void *o)
 {
 	t_vect *n;
 	n = NULL;
@@ -86,9 +86,8 @@ void		start_reading(int fd, char *line, t_env *env, int *index)
 				error_param();
 				return;
 			}
-			
+			//free(st);
 	}
-	
 }	
 
 int        lecture(int fd, t_env *env)
@@ -110,8 +109,8 @@ int        lecture(int fd, t_env *env)
 				error_param();
 				return (0);
 			}
+			free(st);
 		}
-		free(st);
 		free(line);
 	}
 	if (index < 2)

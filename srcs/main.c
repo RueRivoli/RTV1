@@ -47,21 +47,6 @@ t_ray		*current_ray(t_env *env, t_vect *v)
 	return (r);
 }
 
-void	free_ray(t_ray *ray)
-{
-	free(ray->origin);
-	free(ray->direction);
-	free(ray->color);
-	free(ray);
-}
-
-void	free_hit_point(t_hit_point *hp)
-{
-	free(hp->vect);
-	free(hp->normal);
-	free(hp);
-}
-
 int            find_nearest_inter(t_env *env, t_vect *v, t_hit_point **mem, t_obj **colore)
 {
 	t_ray *r;
@@ -95,6 +80,7 @@ int            find_nearest_inter(t_env *env, t_vect *v, t_hit_point **mem, t_ob
 		tmp = tmp->next;
 	}
 	free_ray(r);
+	free(tmp);
 	return (min);
 }
 
@@ -187,8 +173,7 @@ void        raytrace_thread(t_env *env, int pi, int pf)
 			if (min < INFINI && mem)
 			{   
 				put_on_light(env, mem, colore, p, q);
-				free(mem->vect);
-				free(mem);
+				free_hit_point(mem);
 			}
 			q++;
 		}
@@ -222,7 +207,7 @@ void        raytrace(t_env *env)
 			if (min < INFINI && mem)
 			{   
 				put_on_light(env, mem, colore, p, q);
-				free(mem);
+				free_hit_point(mem);
 			}
 			q++;
 		}
@@ -230,7 +215,7 @@ void        raytrace(t_env *env)
 	}
 }
 
-void            SDL_render(t_env *env)
+/*void            SDL_render(t_env *env)
 {
 	SDL_Event event;
 
@@ -260,7 +245,7 @@ void            SDL_render(t_env *env)
 				return ;
 		}
 	}
-}
+}*/
 
 
 int              main(int argc, char **argv)
@@ -298,19 +283,17 @@ int              main(int argc, char **argv)
 	
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS) != 0)
 		return (0);
+	
 	/*Placement de l'ecran virtuel*/
 
 	//set_virtual_screen(env);
 
-	env->win->handle = SDL_CreateWindow("RTV1", 650, 300, env->size_x, env->size_y, 0);
-	env->win->rend = SDL_CreateRenderer(env->win->handle, 1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_SOFTWARE);
+	win->handle = SDL_CreateWindow("RTV1", 650, 300, env->size_x, env->size_y, 0);
+	win->rend = SDL_CreateRenderer(env->win->handle, 1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_SOFTWARE);
 	//SDL_CreateWindowAndRenderer(win->width, win->height, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE, &win->handle, &win->rend);
 	SDL_SetRenderDrawColor(env->win->rend, 0, 0, 0, 0);
 	SDL_RenderClear(env->win->rend);
-	//SDL_SetWindowTitle(win->handle, "RTV1");
 
-
-	SDL_RenderClear(env->win->rend);
 	//raytrace(env);
 	boucle(arg, env);
 	//redraw(env, arg);
@@ -320,10 +303,20 @@ int              main(int argc, char **argv)
 		if (event(env, arg) == 0)
 			env->boucle = 1;
 	}
+
+	
+	SDL_DestroyWindow(env->win->handle);
+	SDL_DestroyRenderer(env->win->rend);
 	quit_SDL(env);
+
 	free(arg);
 	free(env->cam);
 	free(env->win);
+	 free(env->obj);
+    //free(env->screen->center);
+    free(env->title);
+    free(env->background);
+	free(env);
 	l = env->light;
 	while (l)
 	{ 
@@ -340,10 +333,6 @@ int              main(int argc, char **argv)
 		free(o);
 		o = tp;
 	}
-    free(env->obj);
-    //free(env->screen->center);
-    free(env->title);
-    free(env->background);
-	free(env);
+   
 	return (0); 
 }
