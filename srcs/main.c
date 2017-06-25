@@ -182,7 +182,7 @@ void        raytrace_thread(t_env *env, int pi, int pf)
 }
 
 
-void        raytrace(t_env *env)
+/*void        raytrace(t_env *env)
 {
 	t_vect *v;
 	t_obj *colore;
@@ -214,39 +214,7 @@ void        raytrace(t_env *env)
 		p++;    
 	}
 }
-
-/*void            SDL_render(t_env *env)
-{
-	SDL_Event event;
-
-	SDL_SetRenderDrawColor(env->win->rend, 0, 0, 0, 0);
-	SDL_RenderClear(env->win->rend);
-	raytrace(env);
-	SDL_RenderPresent(env->win->rend);
-	while (1)
-	{
-		while (SDL_PollEvent(&event))
-		{
-			if (event.type == SDL_WINDOWEVENT_RESIZED)
-			{
-				raytrace(env);
-				SDL_RenderClear(env->win->rend);
-				return ;
-			}
-			else if (event.type == SDL_WINDOWEVENT_SIZE_CHANGED)
-			{
-				SDL_RenderClear(env->win->rend);
-				return ;
-			}
-			else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE) {
-				return ;
-			}
-			else if (event.type == SDL_QUIT)
-				return ;
-		}
-	}
-}*/
-
+*/
 
 int              main(int argc, char **argv)
 {
