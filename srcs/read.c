@@ -26,6 +26,7 @@ int         read_objects(int fd, char *line, t_env *env)
 	return (ret);
 }
 
+
 int        read_name(int fd, char *line, t_env *env)
 {
     char *str;
@@ -42,7 +43,7 @@ int        read_name(int fd, char *line, t_env *env)
 			env->title = str;
 			ret++;
 		}
-		free(tab);
+		free_tab(tab);
 		free(st);
 	}
     return (ret);

@@ -14,3 +14,15 @@ void	free_hit_point(t_hit_point *hp)
 	free(hp->normal);
 	free(hp);
 }
+
+
+void	free_tab(char **tab)
+{
+	int i;
+	i = 0;
+	while (tab[i])
+	{
+		free(tab[i]);
+		i++;
+	}
+}

@@ -79,8 +79,10 @@ int            find_nearest_inter(t_env *env, t_vect *v, t_hit_point **mem, t_ob
 		}
 		tmp = tmp->next;
 	}
+	
 	free_ray(r);
 	free(tmp);
+	
 	return (min);
 }
 

@@ -193,4 +193,5 @@ t_ray		        *current_ray(t_env *env, t_vect *v);
 void		        rotate_vector(t_env *env, t_vect *ray_dir);
 void	            free_ray(t_ray *ray);
 void	            free_hit_point(t_hit_point *hp);
+void	            free_tab(char **tab);
 #endif
