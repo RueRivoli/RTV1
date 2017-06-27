@@ -17,7 +17,6 @@
 #include <stdio.h>
 # include <math.h>
 
-
 void		rotate_vector(t_env *env, t_vect *ray_dir)
 {
 	float plus_phi;
@@ -109,7 +108,7 @@ int        is_light_reached(t_light *light, t_env *env, t_hit_point *mem, t_obj 
 	t_hit_point *closest_hpoint;
 	t_vect *intersect;
 	int res;
-
+    
 	intersect = new_vect(mem->vect->x, mem->vect->y, mem->vect->z);
 	mini = minus_vect(light->pos, intersect);
 	normed(mini);
