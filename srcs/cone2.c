@@ -90,7 +90,6 @@ t_hit_point         *hit_cone(void *o, t_ray *r)
 		{
 			v = new_vect(r->origin->x + res * r->direction->x, r->origin->y + res * r->direction->y, r->origin->z + res * r->direction->z);
 			hp = new_hit_point(v, INFINI, normal_cone(cone, v), 4);
-			//free(v);
 			return (hp);
 		}
 	}

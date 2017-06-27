@@ -35,16 +35,20 @@ int        read_name(int fd, char *line, t_env *env)
     int ret;
     ret = 0;
     tab = NULL;
+	
     if (get_next_line(fd, &line) && (st = ft_strstr(line, "name")))
 	{
 		tab = ft_strsplit(line, ' ');
+		
 		if ((str = tab[1]))
 		{
 			env->title = str;
 			ret++;
 		}
-		free_tab(tab);
+		free(str);
+		free(tab);
 		free(st);
+		
 	}
     return (ret);
 }
@@ -70,8 +74,9 @@ int         read_camera(int fd, char *line, t_env *env)
 		trans = new_vect(0.0, 0.0, 0.0);
 		env->cam = new_cam(v, trans, 0.0, 0.0);
         ret++;
-		free(tab);
+		free_tab(tab);
 		free(st);
+		
 	}
     return (ret);
 }
@@ -83,8 +88,10 @@ int        read_render(int fd, char *line, t_env *env)
     char **tab;
 	char *st;
     ret = 0;
+	
     if (get_next_line(fd, &line) && (st = ft_strstr(line, "render")))
 	{
+		
 		tab = ft_strsplit(line, ' ');
 		if (tab[2] != NULL && tab[3] != NULL)
 		{
@@ -94,7 +101,7 @@ int        read_render(int fd, char *line, t_env *env)
 			env->win->width = ft_atoi(tab[2]);
 			ret++;
 		}
-		free(tab);
+		free_tab(tab);
 		free(st);
 	}
     return (ret);
@@ -116,8 +123,9 @@ int        read_spot(int fd, char *line, t_env *env)
             ft_atoi(tab[2]), ft_atoi(tab[3])));
 			ret++;
 		}
-		free(tab);
+		free_tab(tab);
 		free(st);
+		
 	}
 	return (ret);
 }

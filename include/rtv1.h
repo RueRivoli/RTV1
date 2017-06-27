@@ -30,7 +30,7 @@
 
 #define INFINI 100000000.0
 #define PI 3.14159
-#define NB_THREAD 8
+#define NB_THREAD 288
 
 typedef struct s_cam
 {
@@ -145,7 +145,7 @@ void                find_color_sha(t_light *light, t_hit_point *hp, t_mater *mat
 void                SDL_render(t_env *env);
 void                refresh(t_env *env, t_arg *arg);
 void                  find_angle(t_env *env, t_ray *ray);
-int                    find_nearest_inter(t_env *env, t_vect *v, t_hit_point **mem, t_obj **colore);
+float               distance_with_next_intersection(t_env *env, t_vect *v, t_obj **colore);
 int                     is_light_reached(t_light *light, t_env *env, t_hit_point *mem, t_obj *colore);
 void                   put_on_light(t_env *env,t_hit_point *mem, t_obj *colore, int p, int q);
 void                  choose_color(t_env *env, t_hit_point *mem, t_obj *colore);
@@ -194,4 +194,6 @@ void		        rotate_vector(t_env *env, t_vect *ray_dir);
 void	            free_ray(t_ray *ray);
 void	            free_hit_point(t_hit_point *hp);
 void	            free_tab(char **tab);
+t_hit_point		    *nearest_point(t_env *env, t_ray *ray, t_obj **obj_met);
+t_hit_point			*nearest_point_after_object(t_env *env, t_ray *ray, t_hit_point *mem, t_obj *obj_met);
 #endif

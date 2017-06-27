@@ -19,6 +19,7 @@ void		refresh(t_env *env, t_arg *arg)
 	SDL_RenderClear(env->win->rend);
 	//raytrace(env);
 	//redraw(env, arg);
+	//(void)arg;
 	boucle(arg, env);
 	SDL_RenderPresent(env->win->rend);
 }
