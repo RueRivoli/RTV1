@@ -39,7 +39,7 @@ t_vect         *vect_basic()
 	return (inter);
 }
 
-void    change_vect(t_vect *v, float phi1, float theta1)
+t_vect    change_vect(t_vect v, float phi1, float theta1)
 {
 	float phi0;
 	float theta0;
@@ -51,9 +51,10 @@ void    change_vect(t_vect *v, float phi1, float theta1)
 	y = norm(v) * cos(phi0 + phi1);
 	x = norm(v) * sin(phi0 + phi1) * sin(theta1 + theta0);
 	z = norm(v) * sin(phi0 + phi1) * cos(theta1 + theta0);
-    v->x = x;
-    v->y = y;
-    v->z = z;
+    v.x = x;
+    v.y = y;
+    v.z = z;
+	return(v);
 }       
 
 float      phi(t_vect *v)

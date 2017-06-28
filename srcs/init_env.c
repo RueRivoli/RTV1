@@ -38,6 +38,7 @@ t_env   *init_env(t_arg *arg)
 	env->x = 0;
 	env->y = 0;
 	env->z = 0;
+	env->nb_of_lights = 0;
 	env->cam = NULL;
 	return (env);
 }

@@ -79,13 +79,11 @@ void		start_reading(int fd, char *line, t_env *env, int *index)
 	char *st;
 	if ((st = ft_strstr(line, "# Scene")))
 	{
-		
 			*index += *index + 1;
 			get_next_line(fd, &line);
 			
 			if (*index != 1 || read_scene(fd, line,env) < 3)
 			{
-				
 				error_param();
 				return;
 			}
@@ -102,8 +100,7 @@ int        lecture(int fd, t_env *env)
 	index = 0;
 	
 	while (get_next_line(fd, &line))
-	{
-		
+	{	
 		start_reading(fd, line, env, &index);
 		st = ft_strstr(line, "# Objects");
 		if (st != NULL)

@@ -12,11 +12,6 @@
 
 #include "rtv1.h"
 
-t_vect  *product_vect(t_vect *u, t_vect *v)
-{
-	return (new_vect(u->y * v->z - u->z * v->y, u->z * v->x - u->x * v->z, u->x * v->y - u->y * v->x));
-}
-
 float       min(float r, float s)
 {
 	if (r < s)

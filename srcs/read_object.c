@@ -32,7 +32,7 @@ int        read_scene(int fd, char *line, t_env *env)
 
 t_vect      *read_origin(char *line, int fd, char *str)
 {
-	t_vect *vect;
+	t_vect vect;
 	char **tab;
 	char *st;
 	st = ft_strstr(line, str);
@@ -49,7 +49,7 @@ t_vect      *read_origin(char *line, int fd, char *str)
 	else
 		return (NULL);
 	
-	return (vect);
+	return (&vect);
 }
 
 
@@ -71,7 +71,6 @@ float   read_float(char *line, int fd, char *str)
 	}
 	else
 		return (0);
-	//free(line);
 	return (res);
 }
 

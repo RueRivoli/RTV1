@@ -57,8 +57,7 @@ int         read_camera(int fd, char *line, t_env *env)
 {
     int     ret;
     char    **tab;
-    t_vect *v;
-    t_vect  *trans;
+    t_vect 		v;
 	char *st;
     ret = 0;
     v = NULL;
@@ -71,12 +70,10 @@ int         read_camera(int fd, char *line, t_env *env)
 			v = new_vect(ft_atoi(tab[2]),ft_atoi(tab[3]), ft_atoi(tab[4]));
 			ret++;
 		}
-		trans = new_vect(0.0, 0.0, 0.0);
-		env->cam = new_cam(v, trans, 0.0, 0.0);
+		env->cam = new_cam(&v, trans, 0.0, 0.0);
         ret++;
 		free_tab(tab);
 		free(st);
-		
 	}
     return (ret);
 }
@@ -91,7 +88,6 @@ int        read_render(int fd, char *line, t_env *env)
 	
     if (get_next_line(fd, &line) && (st = ft_strstr(line, "render")))
 	{
-		
 		tab = ft_strsplit(line, ' ');
 		if (tab[2] != NULL && tab[3] != NULL)
 		{
@@ -119,7 +115,7 @@ int        read_spot(int fd, char *line, t_env *env)
 		tab = ft_strsplit(line, ' ');
 		if (tab[1] && tab[2] && tab[3])
 		{
-			env->light = add_light(env->light, new_vect(ft_atoi(tab[1]), \
+			env->light = add_light(env->light, &new_vect(ft_atoi(tab[1]), \
             ft_atoi(tab[2]), ft_atoi(tab[3])));
 			ret++;
 		}

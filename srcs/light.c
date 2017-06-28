@@ -13,7 +13,7 @@
 #include "rtv1.h"
 
 
-t_light       *add_light(t_light *light, t_vect *pos)
+t_light       *add_light(t_light *light, t_vect pos)
 {
 	t_light *tmp;
 	t_light *new;
@@ -35,44 +35,46 @@ t_light       *add_light(t_light *light, t_vect *pos)
 	return (light);
 }
 
-float       coef_lambert(t_light *light, t_hit_point *hp)
+float       coef_lambert(t_light *light, t_hit_point hp)
 {
-	t_vect *v;
-	t_vect *min;
+	t_vect v;
+	t_vect min;
 	float res;
 
-	min = minus_vect(light->pos, hp->vect);
-	normed(min);
+	min = min_vect(light->pos, hp.vect);
+	min = normed(min);
 	v = multiply_scalar(min, 1.0);
-	normed(hp->normal);
+	hp.normal= normed(hp.normal);
 	res = scalar_product(hp->normal, v);
-	free(v);
-	free(min);
-	if (hp->form == 2)
+	//free(v);
+	//free(min);
+	if (hp.form == 2)
 		res = max(max(-res, res), 0.0);
 	else
 		res = max(res, 0.0);
 	return (res);
 }
 
-void		find_color_light(t_light *light, t_hit_point *hp, t_mater *mat, t_vect *v)
+t_vect		find_color_light(t_light *light, t_hit_point hp, t_mater *mat, t_vect v)
 {
 	float lambert;
 
 	lambert = coef_lambert(light, hp);
-	v->x = lambert * mat->ir * light->red + v->x;
-	v->y = lambert * mat->ig * light->green + v->y;
-	v->z = lambert * mat->ib * light->blue + v->z;
+	v.x = lambert * mat->ir * light->red + v.x;
+	v.y = lambert * mat->ig * light->green + v.y;
+	v.z = lambert * mat->ib * light->blue + v.z;
+	return (v);
 }
 
-void		find_color_sha(t_light *light, t_hit_point *hp, t_mater *mat, t_vect *v)
+t_vect		find_color_sha(t_light *light, t_hit_point *hp, t_mater *mat, t_vect v)
 {
 	float lambert;
 
 	lambert = coef_lambert(light, hp);
-	v->x = lambert * mat->ir * (light->red / 2.0) + v->x;
-	v->y = lambert * mat->ig * (light->green / 2.0) + v->y;
-	v->z = lambert * mat->ib * (light->blue / 2.0) + v->z;
+	v.x = lambert * mat->ir * (light->red / 2.0) + v.x;
+	v.y = lambert * mat->ig * (light->green / 2.0) + v.y;
+	v.z = lambert * mat->ib * (light->blue / 2.0) + v.z;
+	return (v);
 }
 
 int         numberoflights(t_env *env)

@@ -22,30 +22,19 @@ t_sphere    *new_sphere(t_vect *v1, float rad)
 	return (v);
 }
 
-int         belong_to_sphere(t_sphere *sp, t_vect *v)
+t_vect              normal_sphere(t_sphere *sp, t_vect p)
 {
-	float f;
-
-	f = sqrt((v->x - sp->origin->x) * (v->x - sp->origin->x) + \
-			(v->y - sp->origin->y) * (v->y - sp->origin->y) + (v->z - sp->origin->z) * (v->z - sp->origin->z));
-	if (f < sp->radius)
-		return (1);
-	return (0);
-}
-
-t_vect              *normal_sphere(t_sphere *sp, t_vect *p)
-{
-	t_vect *min;
-	min = minus_vect(p, sp->origin);
-	normed(min);
+	t_vect min;
+	min = min_vect(p, sp->origin);
+	min = normed(min);
 	return (min);
 }
 
-t_hit_point         *hit_sphere(void *o, t_ray *r)
+t_hit_point         hit_sphere(void *o, t_ray r)
 {
 	t_sphere *sp;
-	t_vect *t;
-	t_hit_point *hp;
+	t_vect t;
+	t_hit_point hp;
 
 	float delta;
 	float  b;
@@ -53,8 +42,8 @@ t_hit_point         *hit_sphere(void *o, t_ray *r)
 	float res;
 	
 	sp = (void *)o;
-	b = 2 * ((r->origin->x - sp->origin->x) * r->direction->x +  (r->origin->y - sp->origin->y) * r->direction->y + (r->origin->z - sp->origin->z) * r->direction->z);
-	c = pow(r->origin->x - sp->origin->x, 2) +  pow(r->origin->y - sp->origin->y, 2) + pow(r->origin->z - sp->origin->z, 2) - pow(sp->radius, 2);
+	b = 2 * ((r.origin.x - sp->origin->x) * r.direction.x +  (r.origin.y - sp->origin->y) * r.direction.y + (r.origin.z - sp->origin->z) * r.direction.z);
+	c = pow(r.origin.x - sp->origin->x, 2) +  pow(r.origin.y - sp->origin->y, 2) + pow(r.origin.z - sp->origin->z, 2) - pow(sp->radius, 2);
 	delta = pow(b, 2) - 4 * 1.0 * c;
 	
 	if (delta >= 0.0)
@@ -63,13 +52,13 @@ t_hit_point         *hit_sphere(void *o, t_ray *r)
 		//res -= 0.0001;
 		if (res > 0.0)
 		{
-			t = new_vect(r->origin->x + res * r->direction->x, \
-			r->origin->y + res * r->direction->y, r->origin->z + res * r->direction->z);
+			t = new_vect(r.origin.x + res * r.direction.x, \
+			r.origin.y + res * r.direction.y, r.origin.z + res * r.direction.z);
 
-			hp = new_hit_point(new_vect(r->origin->x + res * r->direction->x, \
-			r->origin->y + res * r->direction->y, r->origin->z + res * r->direction->z), \
+			hp = new_hit_point(new_vect(r.origin.x + res * r.direction.x, \
+			r.origin.y + res * r.direction.y, r.origin.z + res * r.direction.z), \
 			INFINI, normal_sphere(sp, t), 1);
-			free(t);
+			//free(t);
 			return (hp);
 		}
 	}

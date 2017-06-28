@@ -15,8 +15,7 @@
 t_cam           *new_cam(t_vect *v1, t_vect *v2, float phi, float theta)
 {
 	t_cam *c;
-	if (!(c = (t_cam*)malloc(sizeof(t_cam))))
-		return (NULL);
+	if (!(c = (t_cam *)malloc(sizeof(t_cam*)))
 	c->pos = v1;
 	c->trans = v2;
 	c->add_phi = phi;
@@ -27,8 +26,7 @@ t_cam           *new_cam(t_vect *v1, t_vect *v2, float phi, float theta)
 t_mater         *new_mater(float f, int r, int g, int b)
 {
 	t_mater *mat;
-	if (!(mat = (t_mater*)malloc(sizeof(t_mater))))
-		return (NULL);
+	if (!(mat = (t_mat *)malloc(sizeof(t_mat*)))
 	mat->alpha = f;
 	mat->ir = r;
 	mat->ig = g;
@@ -36,31 +34,27 @@ t_mater         *new_mater(float f, int r, int g, int b)
 	return (mat);
 }
 
-t_hit_point     *new_hit_point(t_vect *vect, float dist_to_cam, t_vect *normal, int form)
+t_hit_point     new_hit_point(t_vect vect, float dist_to_cam, t_vect normal, int form)
 {
-	t_hit_point *ht;
-	if (!(ht = (t_hit_point*)malloc(sizeof(t_hit_point))))
-		return (NULL);
-	ht->vect = vect;
-	ht->distance_to_cam = dist_to_cam;
-	ht->normal = normal;
-	ht->form = form;
+	t_hit_point ht;
+	ht.vect = vect;
+	ht.distance_to_cam = dist_to_cam;
+	ht.normal = normal;
+	ht.form = form;
 	return (ht);
 }
 
-t_ray           *new_ray(t_vect *orig, t_vect *dir, float fl, t_vect *color)
+t_ray           new_ray(t_vect orig, t_vect dir, float fl, t_vect color)
 {
-	t_ray *r;
-	if (!(r = (t_ray*)malloc(sizeof(t_ray))))
-		return (NULL);
-	r->origin = orig;
-	r->direction = dir;
-	r->dist_to_screen = fl;
-	r->color = color;
+	t_ray r;
+	r.origin = orig;
+	r.direction = dir;
+	r.dist_to_screen = fl;
+	r.color = color;
 	return (r);
 }
 
-t_obj       *add_obj(t_obj *obj, int obj_type, t_mater *mater, void *type)
+t_obj       *add_obj(t_obj *obj, int obj_type, t_mater mater, void *type)
 {
 	t_obj *tmp;
 	t_obj  *new;

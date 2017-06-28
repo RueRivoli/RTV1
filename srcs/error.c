@@ -26,9 +26,9 @@ void		    build_obj(t_obj *obj, int obj_type, t_mater *mater, void *type)
 		obj->next = NULL;
 }
 
-void		build_light(t_light *light, t_vect *pos)
+void		build_light(t_light *light, t_vect pos)
 {
-		light->pos = pos;
+		light->pos = &pos;
 		light->red = 255;
 		light->green = 255;
 		light->blue = 255;
