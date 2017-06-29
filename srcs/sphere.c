@@ -12,7 +12,7 @@
 
 #include "rtv1.h"
 
-t_sphere    *new_sphere(t_vect *v1, float rad)
+t_sphere    *new_sphere(t_vect v1, float rad)
 {
 	t_sphere *v;
 	if (!(v = (t_sphere*)malloc(sizeof(t_sphere))))
@@ -35,15 +35,14 @@ t_hit_point         hit_sphere(void *o, t_ray r)
 	t_sphere *sp;
 	t_vect t;
 	t_hit_point hp;
-
 	float delta;
 	float  b;
 	float c;
 	float res;
-	
+
 	sp = (void *)o;
-	b = 2 * ((r.origin.x - sp->origin->x) * r.direction.x +  (r.origin.y - sp->origin->y) * r.direction.y + (r.origin.z - sp->origin->z) * r.direction.z);
-	c = pow(r.origin.x - sp->origin->x, 2) +  pow(r.origin.y - sp->origin->y, 2) + pow(r.origin.z - sp->origin->z, 2) - pow(sp->radius, 2);
+	b = 2 * ((r.origin.x - sp->origin.x) * r.direction.x +  (r.origin.y - sp->origin.y) * r.direction.y + (r.origin.z - sp->origin.z) * r.direction.z);
+	c = pow(r.origin.x - sp->origin.x, 2) +  pow(r.origin.y - sp->origin.y, 2) + pow(r.origin.z - sp->origin.z, 2) - pow(sp->radius, 2);
 	delta = pow(b, 2) - 4 * 1.0 * c;
 	
 	if (delta >= 0.0)
@@ -62,5 +61,5 @@ t_hit_point         hit_sphere(void *o, t_ray r)
 			return (hp);
 		}
 	}
-	return (NULL);
+	return (hp_null());
 }

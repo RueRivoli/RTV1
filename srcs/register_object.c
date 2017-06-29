@@ -15,7 +15,7 @@
 
 int         register_sphere(char *line, t_env *env, int fd)
 {
-	t_vect *vect;
+	t_vect vect;
 	float rad;
 	t_mater *mat;
 	t_sphere *sp;
@@ -36,11 +36,11 @@ int         register_sphere(char *line, t_env *env, int fd)
 
 int         register_plan(char *line, t_env *env, int fd)
 {
-	t_vect *vect;
-	t_vect *norm;
+	t_vect vect;
+	t_vect norm;
 	t_mater *mat;
 	t_plan *p;
-	t_vect *norme;
+	t_vect norme;
 
 	if (!(vect = read_origin(line, fd, "origin")))
 		return (0);
@@ -48,8 +48,8 @@ int         register_plan(char *line, t_env *env, int fd)
 		return (0);
 	if (!(mat = read_mater(line, fd, "color")))
 		return (0);
-	norme = normed_vect(norm);
-	free(norm);
+	norme = normed(norm);
+	//free(norm);
 	p = new_plan(vect, norme);
 	modify((void*)p, line, fd, 2);
 	env->obj = add_obj(env->obj, 2, mat, (void*)p);
@@ -58,8 +58,8 @@ int         register_plan(char *line, t_env *env, int fd)
 
 int         register_cylinder(char *line, t_env *env, int fd)
 {
-	t_vect *vect;
-	t_vect *norm;
+	t_vect vect;
+	t_vect norm;
 	float rad;
 	t_mater *mat;
 	t_cylinder *cyl;
@@ -79,8 +79,8 @@ int         register_cylinder(char *line, t_env *env, int fd)
 
 int         register_cone(char *line, t_env *env, int fd)
 {
-	t_vect *vect;
-	t_vect *axis;
+	t_vect vect;
+	t_vect axis;
 	float angle;
 	t_mater *mat;
 	t_cone *cone;

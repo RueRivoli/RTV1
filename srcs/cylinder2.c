@@ -15,9 +15,9 @@
 float           cylinder_term_a(float expr, t_cylinder *cyl, t_ray r)
 {
     float res;
-    res = pow(alpha_cylinder(expr, cyl->normal->x, r.direction.x), 2) + \
-        pow(alpha_cylinder(expr, cyl->normal->y, r.direction.y), 2) +\
-		 pow(alpha_cylinder(expr, cyl->normal->z, r.direction.z), 2);
+    res = pow(alpha_cylinder(expr, cyl->normal.x, r.direction.x), 2) + \
+        pow(alpha_cylinder(expr, cyl->normal.y, r.direction.y), 2) +\
+		 pow(alpha_cylinder(expr, cyl->normal.z, r.direction.z), 2);
     return (res);
 }
 
@@ -25,21 +25,21 @@ float           cylinder_term_b(float expr, float expr2, t_cylinder *cyl, t_ray 
 {
     float res;
 
-     res = term(alpha_cylinder(expr, cyl->normal->x, r.direction.x), \
-     beta_cylinder(expr2, cyl->normal->x, r.origin.x, cyl->origin->x))+\
-		term(alpha_cylinder(expr, cyl->normal->y, r.direction.y), \
-        beta_cylinder(expr2, cyl->normal->y, r.origin.y, cyl->origin->y))+\
-		term(alpha_cylinder(expr, cyl->normal->z, r.direction.z), \
-        beta_cylinder(expr2, cyl->normal->z, r.origin.z, cyl->origin->z));
+     res = term(alpha_cylinder(expr, cyl->normal.x, r.direction.x), \
+     beta_cylinder(expr2, cyl->normal.x, r.origin.x, cyl->origin.x))+\
+		term(alpha_cylinder(expr, cyl->normal.y, r.direction.y), \
+        beta_cylinder(expr2, cyl->normal.y, r.origin.y, cyl->origin.y))+\
+		term(alpha_cylinder(expr, cyl->normal.z, r.direction.z), \
+        beta_cylinder(expr2, cyl->normal.z, r.origin.z, cyl->origin.z));
         return (res);
 }
 
 float           cylinder_term_c(float expr2, t_cylinder *cyl, t_ray r)
 {
     float res;
-    res = pow(beta_cylinder(expr2, cyl->normal->x, r.origin.x, cyl->origin->x), 2) +\
-		pow(beta_cylinder(expr2, cyl->normal->y, r.origin.y, cyl->origin->y), 2) +\
-		pow(beta_cylinder(expr2, cyl->normal->z, r.origin.z, cyl->origin->z), 2) - \
+    res = pow(beta_cylinder(expr2, cyl->normal.x, r.origin.x, cyl->origin.x), 2) +\
+		pow(beta_cylinder(expr2, cyl->normal.y, r.origin.y, cyl->origin.y), 2) +\
+		pow(beta_cylinder(expr2, cyl->normal.z, r.origin.z, cyl->origin.z), 2) - \
         pow(cyl->radius, 2);
     return (res);
 }
@@ -61,7 +61,7 @@ t_hit_point         inter_colin(t_cylinder *cyl, t_ray r)
 		hp = new_hit_point(new_vect (INFINI - 1, INFINI - 1, INFINI - 1), -1.0, new_vect(0,0,0), 3);
 		return (hp);
 	}
-    return (NULL);
+    return (hp_null());
 }
 
 t_hit_point         hit_cylinder(void *o, t_ray r)
@@ -75,9 +75,9 @@ t_hit_point         hit_cylinder(void *o, t_ray r)
 	float res;
 
 	cyl = (t_cylinder*)o;
-	expr = cyl->normal->x * r.direction.x + cyl->normal->y * r.direction.y + cyl->normal->z * r.direction.z;
-	expr2 = (r.origin.x - cyl->origin->x) * cyl->normal->x + (r.origin.y - cyl->origin->y) * cyl->normal->y +\
-			(r.origin.z - cyl->origin->z) * cyl->normal->z;
+	expr = cyl->normal.x * r.direction.x + cyl->normal.y * r.direction.y + cyl->normal.z * r.direction.z;
+	expr2 = (r.origin.x - cyl->origin.x) * cyl->normal.x + (r.origin.y - cyl->origin.y) * cyl->normal.y +\
+			(r.origin.z - cyl->origin.z) * cyl->normal.z;
 
 	delta = pow(cylinder_term_b(expr, expr2, cyl, r), 2) - 4 * cylinder_term_a(expr, cyl, r) * cylinder_term_c(expr2, cyl, r);
 	if (colin(r.direction, *cyl->normal) == 1)
@@ -96,7 +96,7 @@ t_hit_point         hit_cylinder(void *o, t_ray r)
 			return (hp);
 		}
 		else 
-			return (NULL);
+			return (hp_null());
 	}
-	return (NULL);
+	return (hp_null());
 }

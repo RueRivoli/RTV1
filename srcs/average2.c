@@ -28,7 +28,7 @@ void	add_coord2(t_obj *obj, float *x, float *y, float *z)
 	}
 }
 
-t_vect      *center_average(t_env *env)
+t_vect      center_average(t_env *env)
 {   
 	t_obj *obj;
 	float x;

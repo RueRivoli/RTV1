@@ -12,7 +12,7 @@
 
 #include "rtv1.h"
 
-void    rotation_z(t_vect *v, float angle)
+void    rotation_z(t_vect v, float angle)
 {
 	float mem;
 	mem = v.x;
@@ -49,5 +49,42 @@ void    find_angle(t_env *env, t_ray ray)
 	ray.direction.x = n * sin(phi + (add_phi * M_PI / 180)) * sin(theta + (add_theta * M_PI / 180));
 	ray.direction.y = n * cos(phi + (add_phi * M_PI / 180));
 	ray.direction.z = n * sin(phi + (add_phi * M_PI / 180)) * cos(theta + (add_theta * M_PI / 180));
-	ray.direction = new_vect(- ray.direction->x, -ray.direction->y, ray.direction->z);
+	ray.direction = new_vect(-ray.direction.x, -ray.direction.y, ray.direction.z);
 }
+
+t_vect 		vect_null(void)
+{
+	t_vect v;
+	v.x = 0.0;
+	v.y = 0.0;
+	v.z = 0.0;
+	return (v);
+}
+
+t_hit_point 		hp_null(void)
+{
+	t_hit_point hp;
+	hp.vect = vect_null();
+	hp.distance_to_cam = 0.0;
+	hp.normal = vect_null();
+	hp.form = 0;
+	return (hp);
+}
+
+int		equals_vect(t_vect v1, t_vect v2)
+{
+	if (v1.x == v2.x && v1.y == v2.y && v1.z == v2.z)
+		return (1);
+	else
+		return (0);
+}
+
+int		equals_hp(t_hit_point h1, t_hit_point h2)
+{
+	if (equals_vect(h1.vect, h2.vect) && h1.distance_to_cam == h2.distance_to_cam && equals_vect(h1.normal, h2.normal) && h1.form == h2.form)
+		return (1);
+	else
+		return (0);
+
+}
+

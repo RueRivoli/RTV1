@@ -12,7 +12,7 @@
 
 #include "rtv1.h"
 
-t_plan  	*new_plan(t_vect *origin, t_vect *normal)
+t_plan  	*new_plan(t_vect origin, t_vect normal)
 {
 	t_plan      *plan;
 
@@ -28,9 +28,9 @@ t_hit_point			hit_ortho(t_ray r, t_plan *p, t_vect min)
 	if (scalar_product(min, p->normal) == 0.0)
 	{
 			//free(min);
-			return (new_hit_point(new_vect(r.origin.x, r.origin.y, r.origin.z), 0.0, normed_vect(p->normal), 2));
+			return (new_hit_point(new_vect(r.origin.x, r.origin.y, r.origin.z), 0.0, normed(p->normal), 2));
 	}
-	return (NULL);
+	return (hp_null());
 }
 
 t_hit_point         hit_plan(void *o, t_ray r)
@@ -43,20 +43,18 @@ t_hit_point         hit_plan(void *o, t_ray r)
 
 	p = (t_plan *)o;
 	min = min_vect(p->origin, r.origin);
-	res = scalar_product(*p->normal, min);
-	den = scalar_product(*p->normal, r.direction);
+	res = scalar_product(p->normal, min);
+	den = scalar_product(p->normal, r.direction);
 	if (den == 0.0)
 		return (hit_ortho(r, p, min));
 	else if (fabsf(den) > 1e-6)
 	{
 		res /= den;
-		free(min);
+		//free(min);
 		//traj = multiply_scalar(r.direction, res);
 		if (res > 0.0)
 			 return (new_hit_point(new_vect(r.origin.x + res * r.direction.x, r.origin.y + res * r.direction.y, r.origin.z + res * r.direction.z)\
-			, 0.0, normed_vect(p->normal), 2));
+			, 0.0, normed(p->normal), 2));
 	}
-	else
-		free(min);
-	return (NULL);
+	return (hp_null());
 }

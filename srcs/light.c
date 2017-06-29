@@ -45,7 +45,7 @@ float       coef_lambert(t_light *light, t_hit_point hp)
 	min = normed(min);
 	v = multiply_scalar(min, 1.0);
 	hp.normal= normed(hp.normal);
-	res = scalar_product(hp->normal, v);
+	res = scalar_product(hp.normal, v);
 	//free(v);
 	//free(min);
 	if (hp.form == 2)
@@ -66,7 +66,7 @@ t_vect		find_color_light(t_light *light, t_hit_point hp, t_mater *mat, t_vect v)
 	return (v);
 }
 
-t_vect		find_color_sha(t_light *light, t_hit_point *hp, t_mater *mat, t_vect v)
+t_vect		find_color_sha(t_light *light, t_hit_point hp, t_mater *mat, t_vect v)
 {
 	float lambert;
 

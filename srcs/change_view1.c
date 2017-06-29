@@ -12,30 +12,27 @@
 
 #include "rtv1.h"
 
-t_vect    *vect_central(t_env *env)
+t_vect    vect_central(t_env *env)
 {
-	t_vect *dir;
-	t_vect *min;
+	t_vect dir;
+	t_vect min;
 
 	dir = center_average(env);
-	min = minus_vect(dir, env->cam->pos);
-	free(dir);
-	normed(min);
+	min = min_vect(dir, env->cam->pos);
+	min = normed(min);
 	return (min);
 }
 
-t_vect         *vect_basic()
+t_vect         vect_basic(void)
 {
-	t_vect *inter;
-	t_vect *eye_center;
-	t_vect *pix_center;
+	t_vect inter;
+	t_vect eye_center;
+	t_vect pix_center;
 
 	eye_center = new_vect(600.0, 450.0, -100.0);
 	pix_center = new_vect(600.0, 450.0, 0.0);
-	inter = minus_vect(pix_center, eye_center);
-	free(eye_center);
-	free(pix_center);
-	normed(inter);
+	inter = min_vect(pix_center, eye_center);
+	inter = normed(inter);
 	return (inter);
 }
 
@@ -57,12 +54,12 @@ t_vect    change_vect(t_vect v, float phi1, float theta1)
 	return(v);
 }       
 
-float      phi(t_vect *v)
+float      phi(t_vect v)
 {
 	return (acos(v->y / norm(v)));
 }
 
-float      theta(t_vect *v)
+float      theta(t_vect v)
 {
 	float phi0;
 	phi0 = phi(v);

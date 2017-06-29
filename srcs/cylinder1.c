@@ -12,14 +12,14 @@
 
 #include "rtv1.h"
 
-t_cylinder  *new_cylinder(t_vect *origin, t_vect *normal, float radius)
+t_cylinder  *new_cylinder(t_vect origin, t_vect normal, float radius)
 {
 	t_cylinder      *cyl;
 
 	if (!(cyl = (t_cylinder *)malloc(sizeof(t_cylinder))))
 		return (NULL);
 	cyl->origin = origin;
-	cyl->normal = normed_vect(normal); 
+	cyl->normal = normed(normal); 
 	cyl->radius = radius;
 	return (cyl);
 }
@@ -43,17 +43,11 @@ t_vect              normal_cylinder(t_cylinder *cyl, t_vect p)
 	t_vect n;
 	t_vect min;
 	t_vect ad;
-	n = normed_vect(cyl->normal);
+	n = normed(cyl->normal);
 	om = min_vect(p, cyl->origin);
-	h = multiply_scalar(n , scalar_product(om, n));
+	h = multiply_scalar(n, scalar_product(om, n));
 	ad = add_vect(cyl->origin, h);
 	min = min_vect(p, ad);
-	v = normed_vect(min);
-	/*free(p);
-	free(h);
-	free(om);
-	free(n);
-	free(ad);
-	free(min);*/
+	v = normed(min);
 	return (v);
 }

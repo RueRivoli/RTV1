@@ -14,7 +14,7 @@
 
 int     colin(t_vect v, t_vect w)
 {
-	if (v->x * w->y == v->y * w->x && v->y * w->z == v->z * w->y && v->x * w->z == v->z * w->x)
+	if (v.x * w.y == v.y * w.x && v.y * w.z == v.z * w.y && v.x * w.z == v.z * w.x)
 		return (1);  
 	return (0);
 }
@@ -23,9 +23,9 @@ t_vect        normed(t_vect v)
 {
     float nor;
     nor = norm(v);
-    v->x = v->x / nor;
-    v->y = v->y / nor;
-    v->z = v->z / nor;
+    v.x = v.x / nor;
+    v.y = v.y / nor;
+    v.z = v.z / nor;
 	return (v);
 }
 
@@ -33,7 +33,7 @@ t_vect      normed_vect(t_vect v1)
 {
 	float nor;
 	nor = norm(v1);
-	return (new_vect(v1->x / (float)nor, v1->y / (float)nor, v1->z / (float)nor));
+	return (new_vect(v1.x / (float)nor, v1.y / (float)nor, v1.z / (float)nor));
 }
 
 float   distance(t_vect v1, t_vect v2)

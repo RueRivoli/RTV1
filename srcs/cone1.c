@@ -12,7 +12,7 @@
 
 #include "rtv1.h"
 
-t_cone      *new_cone(t_vect *summit, t_vect *axis, float angle)
+t_cone      *new_cone(t_vect summit, t_vect axis, float angle)
 {
 	t_cone      *c;
 

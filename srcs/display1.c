@@ -3,17 +3,17 @@
 
 void        display_camera(t_env *env)
 {
-    t_vect *camera;
+    t_vect camera;
     camera = env->cam->pos;
 	ft_putstr("Cadre \n\n");
 	ft_putstr(env->title);
 	ft_putstr("\n");
 	ft_putstr("Camera : ");
-	ft_putnbr(camera->x);
+	ft_putnbr(camera.x);
 	ft_putstr(", ");
-	ft_putnbr(camera->y);
+	ft_putnbr(camera.y);
 	ft_putstr(", ");
-	ft_putnbr(camera->z);
+	ft_putnbr(camera.z);
 	ft_putstr("\n");
 	ft_putstr("Taille : ");
 	ft_putnbr(env->size_x);
@@ -29,11 +29,11 @@ void        display_light(t_env *env)
     ft_putstr("Light : ");
 	while (light)
 	{
-		ft_putnbr(light->pos->x);
+		ft_putnbr(light->pos.x);
 		ft_putstr(", ");
-		ft_putnbr(light->pos->y);
+		ft_putnbr(light->pos.y);
 		ft_putstr(", ");
-		ft_putnbr(light->pos->z);
+		ft_putnbr(light->pos.z);
 		ft_putstr("\n");
 		light = light->next;
 	}
@@ -44,11 +44,11 @@ void        display_sphere(t_sphere *sp, t_mater *mat)
 {
     ft_putstr("Sphere \n");
 	ft_putstr("Centre : ");
-	ft_putnbr(sp->origin->x);
+	ft_putnbr(sp->origin.x);
 	ft_putstr(", ");
-	ft_putnbr(sp->origin->y);
+	ft_putnbr(sp->origin.y);
 	ft_putstr(", ");
-	ft_putnbr(sp->origin->z);
+	ft_putnbr(sp->origin.z);
 	ft_putstr("\n");
 	ft_putstr("Radius : ");
 	ft_putnbr(sp->radius);
@@ -74,18 +74,18 @@ void        display_plan(t_plan *p, t_mater *mat)
 {
     ft_putstr("Plan \n");
 	ft_putstr("Origin : ");
-	ft_putnbr(p->origin->x);
+	ft_putnbr(p->origin.x);
 	ft_putstr(", ");
-	ft_putnbr(p->origin->y);
+	ft_putnbr(p->origin.y);
 	ft_putstr(", ");
-	ft_putnbr(p->origin->z);
+	ft_putnbr(p->origin.z);
 	ft_putstr("\n");
 	ft_putstr("Normal : ");
-	ft_putnbr(p->normal->x);
+	ft_putnbr(p->normal.x);
 	ft_putstr(", ");
-	ft_putnbr(p->normal->y);
+	ft_putnbr(p->normal.y);
 	ft_putstr(", ");
-	ft_putnbr(p->normal->z);
+	ft_putnbr(p->normal.z);
     ft_putstr("\n");
 	display_mat(mat);
 }

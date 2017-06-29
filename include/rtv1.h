@@ -34,8 +34,8 @@
 
 typedef struct s_cam
 {
-    t_vect      *pos;
-    t_vect      *trans;
+    t_vect      pos;
+    t_vect      trans;
     float       add_phi;
     float       add_theta;
 }               t_cam;
@@ -52,8 +52,7 @@ typedef struct s_screen
 
 typedef struct s_light 
 {
-    t_vect          *pos;
-    //t_vect          *direction;
+    t_vect          pos;
     float           red;
     float           green;
      float           blue;
@@ -101,6 +100,9 @@ typedef struct data {
 } data;
 
 
+/*creation.c*/
+
+t_hit_point 		hp_null(void);
 
 /*display1.c*/
 
@@ -118,7 +120,7 @@ void                display_cone(t_cone *cone, t_mater *mat);
 
 /*error.c*/
 
-void                  error_param();
+void                    error_param();
 void                    build_light(t_light *light, t_vect pos);
 float                  term(float alpha, float beta);
 int                    event(t_env *env, t_arg *arg);
@@ -132,10 +134,6 @@ void                    key_event(t_env *env, SDL_Event event, t_arg *arg);
 void                    quit_SDL(t_env *env);
 
 /*free.c*/
-
-void	            free_ray(t_ray *ray);
-void	            free_hit_point(t_hit_point *hp);
-void	            free_tab(char **tab);
 
 /*init_env.c*/
 
@@ -156,11 +154,11 @@ t_ray		        current_ray(t_env *env, t_vect v);
 void                  raytrace(t_env *env);
 
 t_hit_point		    nearest_point(t_env *env, t_ray ray, t_obj **obj_met);
-t_hit_point			nearest_point_after_object(t_env *env, t_ray ray, t_hit_point *mem, t_obj *obj_met);
+t_hit_point			nearest_point_after_object(t_env *env, t_ray ray, t_hit_point mem, t_obj *obj_met);
 
-float               distance_with_next_intersection(t_env *env, t_vect *v, t_obj **colore);
-int                     is_light_reached(t_light *light, t_env *env, t_hit_point *mem, t_obj *colore);
-void                   put_on_light(t_env *env,t_hit_point *mem, t_obj *colore, int p, int q);
+float               distance_with_next_intersection(t_env *env, t_vect v, t_obj **colore);
+int                     is_light_reached(t_light *light, t_env *env, t_hit_point mem, t_obj *colore);
+void                   put_on_light(t_env *env, t_hit_point mem, t_obj *colore, int p, int q);
 void                raytrace_thread(t_env *env, int pi, int pf);
 
 /*modify.c*/
@@ -173,13 +171,12 @@ void               modify(void *o, char *line, int fd, int to);
 
 /*object.c*/
 
-t_hit_point         *(*get_obj_collider(int id))(void *o, t_ray *r);
 float               distance_with_cam(t_env *env, t_hit_point hp);
 
 /*parser.c*/
-t_vect 				*origin0(int to, void *o);
-t_vect      		*origin(int to, void *o);
-t_vect     	    	 *normal(int to, void *o);
+t_vect 				origin0(int to, void *o);
+t_vect      		origin(int to, void *o);
+t_vect     	    	 normal(int to, void *o);
 void	        	start_reading(int fd, char *line, t_env *env, int *index);
 int                  lecture(int fd, t_env *env);
 
@@ -223,13 +220,13 @@ void                boucle(t_arg *arg, t_env *env);
 /**/
 
 /*creation.c*/
-t_cam                   *new_cam(t_vect *v1, t_vect *trans, float phi, float theta);
+t_cam                   *new_cam(t_vect v1, t_vect v2, float phi, float theta);
 t_hit_point             new_hit_point(t_vect vect, float dist_to_cam, t_vect normal, int form);
 t_ray                   new_ray(t_vect orig, t_vect dir, float fl, t_vect color);
 
 
 
-t_vect               *find_color(t_light *light, t_hit_point *hp, t_mater *mat);
+t_vect               find_color(t_light *light, t_hit_point *hp, t_mater *mat);
 
 void                  render(t_env *env);
 
@@ -246,47 +243,45 @@ int                    registering(int to, char *line, t_env *env, int fd);
 int                    lecture(int fd, t_env *env);
 void                  display_scene(t_env *env);
 int                 read_objects(int fd, char *line, t_env *env);
-t_vect               *center_average(t_env *env);
+t_vect               center_average(t_env *env);
 
 void                 set_virtual_screen(t_env *env);
 
 
-int                   colin(t_vect *v, t_vect *w);
 float                 calcul(t_env *env, t_hit_point *hp);
 
-t_vect                  *origin(int to, void *o);
-t_vect                   *normal(int to, void *o);
+t_vect                  origin(int to, void *o);
+t_vect                   normal(int to, void *o);
 
 
 
 
 void                SDL_render(t_env *env);
 
-void                  find_angle(t_env *env, t_ray *ray);
+void                  find_angle(t_env *env, t_ray ray);
 
 void                  choose_color(t_env *env, t_hit_point *mem, t_obj *colore);
 
-t_vect                 *vect_central(t_env *env);
-t_vect                    *vect_basic();
-float                  phi(t_vect *v);
-float                  theta(t_vect *v);
+t_vect                 vect_central(t_env *env);
+t_vect                    vect_basic(void);
+float                  phi(t_vect v);
+float                  theta(t_vect v);
 float                  add_phi(t_env *env);
 float                       add_theta(t_env *env);
 t_vect                    change_vect(t_vect v, float phi, float theta);
-t_vect                    *center_average(t_env *env);
 
 
 
-t_vect                  *read_origin(char *line, int fd, char *str);
+t_vect                  read_origin(char *line, int fd, char *str);
 float                   read_float(char *line, int fd, char *str);
 t_mater                 *read_mater(char *line, int fd, char *str);
-t_vect                  *origin0(int to, void *o);
+t_vect                  origin0(int to, void *o);
 void		            start_reading(int fd, char *line, t_env *env, int *index);
 
 void                  accord_to_form(t_obj *obj, t_mater *mat);
 
 
-
+int		        equals_hp(t_hit_point h1, t_hit_point h2);  
 
 
 

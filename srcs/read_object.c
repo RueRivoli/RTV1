@@ -30,7 +30,7 @@ int        read_scene(int fd, char *line, t_env *env)
     return (ret);
 }
 
-t_vect      *read_origin(char *line, int fd, char *str)
+t_vect      read_origin(char *line, int fd, char *str)
 {
 	t_vect vect;
 	char **tab;
@@ -42,14 +42,14 @@ t_vect      *read_origin(char *line, int fd, char *str)
 		if (tab[1] && tab[2] && tab[3])
 			vect = new_vect(ft_atoi(tab[1]), ft_atoi(tab[2]), ft_atoi(tab[3]));
 		else
-			return (NULL);
+			return (vect_null());
 		free(tab);
 		free(st);
 	}
 	else
-		return (NULL);
+		return (vect_null());
 	
-	return (&vect);
+	return (vect);
 }
 
 

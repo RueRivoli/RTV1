@@ -1,9 +1,9 @@
 #include "rtv1.h"
 #include <stdio.h>
 
-t_vect 				*origin0(int to, void *o)
+t_vect 				origin0(int to, void *o)
 {
-	t_vect *v;
+	t_vect v;
 	if (to == 1)
 	{   
 		t_sphere *sp;
@@ -18,15 +18,15 @@ t_vect 				*origin0(int to, void *o)
 		v = p->origin;
 		return (v);
 	}
-	return (NULL);
+	return (vect_null());
 }
 
-t_vect      		*origin(int to, void *o)
+t_vect      		origin(int to, void *o)
 {
-	t_vect *v;
-	t_vect *w;
+	t_vect v;
+	t_vect w;
 	w = origin0(to, o);
-	if (!w)
+	if (equals_vect(w, vect_null()))
 	{
 		if (to == 3)
 		{   
@@ -47,10 +47,10 @@ t_vect      		*origin(int to, void *o)
 		return (w);
 }
 
-t_vect     		 *normal(int to, void *o)
+t_vect     		 normal(int to, void *o)
 {
-	t_vect *n;
-	n = NULL;
+	t_vect n;
+	n = vect_null();
 	if (to == 2)
 	{   
 		t_plan *p;
