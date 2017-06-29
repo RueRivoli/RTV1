@@ -41,13 +41,14 @@ float       coef_lambert(t_light *light, t_hit_point hp)
 	t_vect min;
 	float res;
 
+	v = vect_null();
+	min = vect_null();
+	res = 0.0;
 	min = min_vect(light->pos, hp.vect);
 	min = normed(min);
 	v = multiply_scalar(min, 1.0);
-	hp.normal= normed(hp.normal);
+	hp.normal = normed(hp.normal);
 	res = scalar_product(hp.normal, v);
-	//free(v);
-	//free(min);
 	if (hp.form == 2)
 		res = max(max(-res, res), 0.0);
 	else
@@ -59,10 +60,11 @@ t_vect		find_color_light(t_light *light, t_hit_point hp, t_mater *mat, t_vect v)
 {
 	float lambert;
 
+	lambert = 0.0;
 	lambert = coef_lambert(light, hp);
-	v.x = lambert * mat->ir * light->red + v.x;
-	v.y = lambert * mat->ig * light->green + v.y;
-	v.z = lambert * mat->ib * light->blue + v.z;
+	v.x += lambert * mat->ir * light->red;
+	v.y += lambert * mat->ig * light->green;
+	v.z += lambert * mat->ib * light->blue;
 	return (v);
 }
 
@@ -70,10 +72,11 @@ t_vect		find_color_sha(t_light *light, t_hit_point hp, t_mater *mat, t_vect v)
 {
 	float lambert;
 
+	lambert = 0.0;
 	lambert = coef_lambert(light, hp);
-	v.x = lambert * mat->ir * (light->red / 2.0) + v.x;
-	v.y = lambert * mat->ig * (light->green / 2.0) + v.y;
-	v.z = lambert * mat->ib * (light->blue / 2.0) + v.z;
+	v.x += lambert * mat->ir * (light->red / 2.0);
+	v.y += lambert * mat->ig * (light->green / 2.0);
+	v.z += lambert * mat->ib * (light->blue / 2.0);
 	return (v);
 }
 

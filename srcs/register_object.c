@@ -22,7 +22,8 @@ int         register_sphere(char *line, t_env *env, int fd)
 
 	mat = NULL;
 
-	if (!(vect = read_origin(line, fd, "origin")))
+	vect = read_origin(line, fd, "origin");
+	if (equals_vect(vect, vect_null()))
 		return (0);
 	if (!(rad = read_float(line, fd, "radius")))
 		return (0);
@@ -42,9 +43,11 @@ int         register_plan(char *line, t_env *env, int fd)
 	t_plan *p;
 	t_vect norme;
 
-	if (!(vect = read_origin(line, fd, "origin")))
+	vect = read_origin(line, fd, "origin");
+	if (equals_vect(vect, vect_null()))
 		return (0);
-	if (!(norm = read_origin(line, fd, "normal")))
+	norm = read_origin(line, fd, "normal");
+	if (equals_vect(norm, vect_null()))
 		return (0);
 	if (!(mat = read_mater(line, fd, "color")))
 		return (0);
@@ -63,9 +66,11 @@ int         register_cylinder(char *line, t_env *env, int fd)
 	float rad;
 	t_mater *mat;
 	t_cylinder *cyl;
-	if (!(vect = read_origin(line, fd, "origin")))
+	vect = read_origin(line, fd, "origin");
+	if (equals_vect(vect, vect_null()))
 		return (0);
-	if (!(norm = read_origin(line, fd, "normal")))
+	norm = read_origin(line, fd, "normal");
+	if (equals_vect(norm, vect_null()))
 		return (0);
 	if (!(rad = read_float(line, fd, "radius")))
 		return (0);
@@ -84,9 +89,11 @@ int         register_cone(char *line, t_env *env, int fd)
 	float angle;
 	t_mater *mat;
 	t_cone *cone;
-	if (!(vect = read_origin(line, fd, "summit")))
+	vect = read_origin(line, fd, "summit");
+	if (equals_vect(vect, vect_null()))
 		return (0);
-	if (!(axis = read_origin(line, fd, "axis")))
+	axis = read_origin(line, fd, "axis");
+	if (equals_vect(axis, vect_null()))
 		return (0);
 	if (!(angle = read_float(line, fd, "angle")))
 		return (0);

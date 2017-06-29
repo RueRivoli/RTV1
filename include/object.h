@@ -79,15 +79,15 @@ typedef struct s_obj
 /*creation.c*/
 
 t_mater                      *new_mater(float f, int r, int g, int b);
-t_obj                      *add_obj(t_obj *obj, int obj_type, t_mater *mater, void *type);
+t_obj                        *add_obj(t_obj *obj, int obj_type, t_mater *mater, void *type);
 
 /*cone1.c*/
 
-t_cone                      *new_cone(t_vect summit, t_vect axis, float angle);
-float                       alpha_cone(float expr, float n, float dir);
-float                         beta_cone(float expr2, float n, float a, float o);
+t_cone                       *new_cone(t_vect summit, t_vect axis, float angle);
+float                        alpha_cone(float expr, float n, float dir);
+float                          beta_cone(float expr2, float n, float a, float o);
 float                           alpha2cone(float expr, float n, float angle);
-float                        beta2cone(float expr2, float n, float angle);
+float                            beta2cone(float expr2, float n, float angle);
 
 /*cone2.c*/
 

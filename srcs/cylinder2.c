@@ -51,8 +51,8 @@ t_hit_point         inter_colin(t_cylinder *cyl, t_ray r)
     float oh;
     float oa;
 
-    w = min_vect(r.origin, *cyl->origin);
-	oh = scalar_product(w, *cyl->normal);
+    w = min_vect(r.origin, cyl->origin);
+	oh = scalar_product(w, cyl->normal);
 	oa = norm(w);
 	//free(w);
 
@@ -80,7 +80,7 @@ t_hit_point         hit_cylinder(void *o, t_ray r)
 			(r.origin.z - cyl->origin.z) * cyl->normal.z;
 
 	delta = pow(cylinder_term_b(expr, expr2, cyl, r), 2) - 4 * cylinder_term_a(expr, cyl, r) * cylinder_term_c(expr2, cyl, r);
-	if (colin(r.direction, *cyl->normal) == 1)
+	if (colin(r.direction, cyl->normal) == 1)
         return (inter_colin(cyl, r));
 	else if (delta >= 0.0)
 	{

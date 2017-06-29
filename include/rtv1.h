@@ -42,9 +42,9 @@ typedef struct s_cam
 
 typedef struct s_screen 
 {
-    t_vect      *center;
-    t_vect      *v;
-    t_vect      *w;
+    t_vect      center;
+    t_vect      v;
+    t_vect      w;
     int         nx;
     int         ny;
 
@@ -134,6 +134,8 @@ void                    key_event(t_env *env, SDL_Event event, t_arg *arg);
 void                    quit_SDL(t_env *env);
 
 /*free.c*/
+
+void                     free_tab(char **tab);
 
 /*init_env.c*/
 
@@ -281,7 +283,7 @@ void		            start_reading(int fd, char *line, t_env *env, int *index);
 void                  accord_to_form(t_obj *obj, t_mater *mat);
 
 
-int		        equals_hp(t_hit_point h1, t_hit_point h2);  
+int		                 equals_hp(t_hit_point h1, t_hit_point h2);  
 
 
 

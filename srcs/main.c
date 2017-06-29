@@ -53,14 +53,16 @@ t_hit_point			nearest_point(t_env *env, t_ray ray, t_obj **obj_met)
 	t_obj	*tmp;
 	t_hit_point hp;
 	t_hit_point	nearest_hp;
+	t_hit_point hp_0;
 	float minimum;
 
 	tmp = env->obj;
 	minimum = INFINI;
-	
+	hp_0 = hp_null();
 	while (tmp)
 	{
-		if ((hp = tmp->is_hit(tmp->type, ray)))
+		hp = tmp->is_hit(tmp->type, ray);
+		if (equals_hp(hp, hp_0) == 0)
 		{
 			hp.distance_to_cam = distance_with_cam(env, hp);
 			if (hp.distance_to_cam < minimum)
@@ -80,20 +82,22 @@ t_hit_point			nearest_point_after_object(t_env *env, t_ray ray, t_hit_point mem,
 {
 	t_obj	*tmp;
 	t_hit_point hp;
+	t_hit_point hp_0;
 	t_hit_point	nearest_hp;
 	float minimum;
 	int a;
 	tmp = env->obj;
 	minimum = INFINI;
 	nearest_hp = hp_null();
+	hp_0 = hp_null();
 	a = 0;
 	
 	while (tmp)
 	{
-		
+		hp = tmp->is_hit(tmp->type, ray);
 		if (tmp == obj_met)
 			tmp = tmp->next;
-		else if ((hp = tmp->is_hit(tmp->type, ray)))
+		else if (equals_hp(hp,hp_0) == 0)
 		{
 			if (distance(mem.vect, hp.vect) < minimum)
 			{
@@ -117,9 +121,13 @@ float            distance_with_next_intersection(t_env *env, t_vect v, t_obj **o
 	t_hit_point nearest_hp;
 	t_hit_point hp_0;
 	float distance;
+
+	r = new_ray(vect_null(), vect_null(), 0.0, vect_null());
 	tmp = env->obj;
-	distance = INFINI;
+	nearest_hp = hp_null();
 	hp_0 = hp_null();
+	distance = INFINI;
+	
 	r = current_ray(env, v);
 	nearest_hp = nearest_point(env, r, obj_met);
 	 if (equals_hp(nearest_hp, hp_0) == 0)
@@ -131,20 +139,18 @@ int        is_light_reached(t_light *light, t_env *env, t_hit_point mem, t_obj *
 {
 	t_hit_point nearest_pt;
 	t_ray r;
-	t_vect intersect;
 	t_vect mini;
 	t_vect w;
 	float diff;
 
-	
-	intersect = new_vect(mem.vect.x, mem.vect.y, mem.vect.z);
-	mini = min_vect(light->pos, intersect);
+	nearest_pt = hp_null();
+	mini = min_vect(light->pos, mem.vect);
 	mini = normed(mini);
-	w = new_vect(0.0, 0.0, 0.0);
-	r = new_ray(intersect, mini, 0.0, w);
-	nearest_pt = nearest_point_after_object(env, r, mem, obj_met);
-
+	w = vect_null();
+	diff = 0.0;
+	r = new_ray(mem.vect, mini, 0.0, w);
 	
+	nearest_pt = nearest_point_after_object(env, r, mem, obj_met);
 	diff = distance(mem.vect, light->pos) - distance(mem.vect, nearest_pt.vect);
 	if (diff > 0)
 		return (0);
@@ -157,7 +163,7 @@ void               put_on_light(t_env *env, t_hit_point hp, t_obj *colore, int p
 	t_vect col;
 
 	light = env->light;
-	col = new_vect(0, 0, 0);
+	col = vect_null();
 	
 	while (light)
 	{
@@ -181,10 +187,14 @@ void        raytrace_thread(t_env *env, int pi, int pf)
     int p;
 	int q;
 	float min;
-
+	
+	v = vect_null();
+	nearest_hp = hp_null();
+	hp_0 = hp_null();
 	obj_met = NULL;
 	hp_0 = hp_null();
 	p = pi;
+	
 	while (p < pf)
 	{
 		q = 0;
@@ -215,8 +225,13 @@ void        raytrace(t_env *env)
 	int q;
 	float min;
 
+	
 	obj_met = NULL;
+	hp_0 = hp_null();
 	p = 0;
+	v = vect_null();
+	nearest_hp = hp_null();
+	r = new_ray(vect_null(), vect_null(), 0.0, vect_null());
 	
 	while (p < 1200)
 	{
@@ -225,13 +240,17 @@ void        raytrace(t_env *env)
 		{   
 			
 			min = INFINI;
+			ft_putnbr(p + env->cam->trans.x);
 			v = new_vect(p + env->cam->trans.x, q + env->cam->trans.y, env->cam->trans.z);
 			
 			min = distance_with_next_intersection(env, v, &obj_met);
 			r = current_ray(env, v);
+			
 			 nearest_hp = nearest_point(env, r, &obj_met);
+			
 			if (min < INFINI && equals_hp(nearest_hp, hp_0) == 0)
 				put_on_light(env, nearest_hp, obj_met, p, q);
+			ft_putstr("CHAMPION");
 			q++;
 		}
 		p++;    
@@ -252,6 +271,7 @@ int              main(int argc, char **argv)
 	if (!(env = init_env(arg)))
 		return (0);
 	win = env->win;
+
 	if (argc != 2)
 	{
 		error_param();
@@ -259,7 +279,7 @@ int              main(int argc, char **argv)
 	}
 		
 	fd = open(argv[1], O_RDONLY);
-
+	
 	/*Lecture et affichage de la scene*/
 	
 	if (fd > 0 && lecture(fd, env) != 0)
@@ -269,8 +289,7 @@ int              main(int argc, char **argv)
 		error_param();
 		return (0);
 	}
-
-	env->nb_of_lights =  numberoflights(env);
+	env->nb_of_lights = numberoflights(env);
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS) != 0)
 		return (0);
 	
@@ -280,11 +299,12 @@ int              main(int argc, char **argv)
 	SDL_SetRenderDrawColor(env->win->rend, 0, 0, 0, 0);
 	SDL_RenderClear(env->win->rend);
 
-	//raytrace(env);
+	raytrace(env);
 	
 	//boucle(arg, env);
-	redraw(env, arg);
-
+	
+	//redraw(env, arg);
+	
 	SDL_RenderPresent(env->win->rend);
 	while(!env->boucle)
 	{

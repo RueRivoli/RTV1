@@ -38,16 +38,16 @@ void    set_virtual_screen(t_env *env)
 	t_vect w;
 
 	aver = center_average(env);
-	v = min_vect(aver, *env->cam->pos);
+	v = min_vect(aver, env->cam->pos);
 	//free(aver);
 	n = normed(v);
 	//free(v);
 	v = multiply_scalar(n, 100);
 	//free(n);
-	w = add_vect(*env->cam->pos, v);
+	w = add_vect(env->cam->pos, v);
 	if (!(env->screen = (t_screen*)malloc(sizeof(t_screen))))
 		return ;
-	env->screen->center = &v;
-	env->screen->v = &(vectv(n));
-	env->screen->w = &(vectw(n));
+	env->screen->center = v;
+	env->screen->v = vectv(n);
+	env->screen->w = vectw(n);
 }

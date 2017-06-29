@@ -29,8 +29,8 @@ float       distance_with_cam(t_env *env, t_hit_point hp)
 {
 	t_vect diff;
 	float dis;
-	/*if (!hp)
-		return (INFINI); */
+	if (equals_hp(hp, hp_null()) == 1)
+		return (INFINI);
 	if (hp.distance_to_cam == -1.0)
 		return (0.0);
 	diff = min_vect(env->cam->pos, hp.vect);

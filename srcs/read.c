@@ -58,10 +58,12 @@ int         read_camera(int fd, char *line, t_env *env)
     int     ret;
     char    **tab;
     t_vect 		v;
+	t_vect 		trans;
 	char *st;
     ret = 0;
     v = vect_null();
     tab = NULL;
+	trans = vect_null();
     if (get_next_line(fd, &line) && (st = ft_strstr(line, "camera")))
 	{
 		tab = ft_strsplit(line, ' ');

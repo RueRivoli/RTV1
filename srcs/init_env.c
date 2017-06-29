@@ -25,9 +25,6 @@ t_env   *init_env(t_arg *arg)
 		return (NULL);	
 	env->thread_cnt = NB_THREAD;
 	(void)arg;
-	//arg = (t_arg*)malloc(sizeof(t_arg) * NB_THREAD);
-	/*if (!(env->thread = malloc_thread(env->thread_cnt, arg, env)))
-			return (NULL);*/
 	env->obj = NULL;
 	env->light = NULL;
 	env->screen = NULL;
@@ -39,6 +36,6 @@ t_env   *init_env(t_arg *arg)
 	env->y = 0;
 	env->z = 0;
 	env->nb_of_lights = 0;
-	env->cam = NULL;
+	//env->cam = NULL;
 	return (env);
 }

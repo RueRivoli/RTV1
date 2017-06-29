@@ -26,7 +26,8 @@ t_cam           *new_cam(t_vect v1, t_vect v2, float phi, float theta)
 t_mater         *new_mater(float f, int r, int g, int b)
 {
 	t_mater *mat;
-	if (!(mat = (t_mat *)malloc(sizeof(t_mat*)))
+	if (!(mat = (t_mater *)malloc(sizeof(t_mater*))))
+		return (NULL);
 	mat->alpha = f;
 	mat->ir = r;
 	mat->ig = g;
@@ -44,14 +45,6 @@ t_hit_point     new_hit_point(t_vect vect, float dist_to_cam, t_vect normal, int
 	return (ht);
 }
 
-t_hit_point		hp_null(void)
-{
-	t_vect v;
-
-	v = new_vect(0,0,0);
-	hp = new_hit_point(v, 0.0, v, 0);
-	return (hp);
-}
 
 t_ray           new_ray(t_vect orig, t_vect dir, float fl, t_vect color)
 {

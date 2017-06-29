@@ -9,6 +9,15 @@
         "*.txt": "cpp",
         "*.vcproj": "cpp",
         "*.vcxproj": "cpp",
-        "hashtable": "cpp"
+        "hashtable": "cpp",
+        "object.h": "c",
+        "rtv1.h": "c",
+        "sdl_sysjoystick_c.h": "c",
+        "stl_algobase.h": "c",
+        "task_info.h": "c",
+        "sdl_messagebox.h": "c",
+        "sdl_pixels.h": "c",
+        "sdl_sysrender.h": "c",
+        "sdl_blit.h": "c"
     }
 }

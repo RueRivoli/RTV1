@@ -56,12 +56,12 @@ t_vect    change_vect(t_vect v, float phi1, float theta1)
 
 float      phi(t_vect v)
 {
-	return (acos(v->y / norm(v)));
+	return (acos(v.y / norm(v)));
 }
 
 float      theta(t_vect v)
 {
 	float phi0;
 	phi0 = phi(v);
-	return (asin(v->x / (norm(v) * sin(phi0))));
+	return (asin(v.x / (norm(v) * sin(phi0))));
 }

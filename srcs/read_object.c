@@ -48,7 +48,6 @@ t_vect      read_origin(char *line, int fd, char *str)
 	}
 	else
 		return (vect_null());
-	
 	return (vect);
 }
 

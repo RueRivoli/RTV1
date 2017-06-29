@@ -30,9 +30,9 @@ int    key_event_bis(t_env *env, SDL_Event event)
     b = 1;
     if (event.key.keysym.scancode == RESET)
     {
-		env->cam->trans->x = 0.0;
-		env->cam->trans->y = 0.0;
-		env->cam->trans->z = 0.0;
+		env->cam->trans.x = 0.0;
+		env->cam->trans.y = 0.0;
+		env->cam->trans.z = 0.0;
 		env->cam->add_phi = 0.0;
 		env->cam->add_theta = 0.0;
     }
@@ -55,17 +55,17 @@ void     key_event(t_env *env, SDL_Event event, t_arg *arg)
     b = 1;
     ft_putnbr(event.key.keysym.scancode);
 	if (event.key.keysym.scancode == RIGHT)
-		env->cam->trans->x += 125.0;
+		env->cam->trans.x += 125.0;
 	else if (event.key.keysym.scancode == LEFT)
-		env->cam->trans->x -= 125.0;
+		env->cam->trans.x -= 125.0;
 	else if (event.key.keysym.scancode == UP)
-		env->cam->trans->y -= 125.0;
+		env->cam->trans.y -= 125.0;
 	else if (event.key.keysym.scancode == DOWN)
-		env->cam->trans->y += 125.0;
+		env->cam->trans.y += 125.0;
 	else if (event.key.keysym.scancode == Z_PLUS)
-		env->cam->trans->z += 125.0;
+		env->cam->trans.z += 125.0;
 	else if (event.key.keysym.scancode == Z_LESS)
-		env->cam->trans->z -= 125.0;
+		env->cam->trans.z -= 125.0;
     else if (!key_event_bis(env, event))
         b = 0;
     if (b == 1)
