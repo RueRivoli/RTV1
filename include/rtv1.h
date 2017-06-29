@@ -101,15 +101,67 @@ typedef struct data {
 } data;
 
 
+
+/*display1.c*/
+
+
+void                display_camera(t_env *env);
+void                 display_light(t_env *env);
+void                display_sphere(t_sphere *sp, t_mater *mat);
+void                display_mat(t_mater *mat);
+void                display_plan(t_plan *p, t_mater *mat);
+
+/*display2.c*/
+
+void                display_cylinder(t_cylinder *cyl, t_mater *mat);
+void                display_cone(t_cone *cone, t_mater *mat);
+
+/*error.c*/
+
+void                  error_param();
+void                    build_light(t_light *light, t_vect pos);
+float                  term(float alpha, float beta);
+int                    event(t_env *env, t_arg *arg);
+
+
+/*event.c*/
+
+void                     refresh(t_env *env, t_arg *arg);
+int                     key_event_bis(t_env *env, SDL_Event event);
+void                    key_event(t_env *env, SDL_Event event, t_arg *arg);
+void                    quit_SDL(t_env *env);
+
+/*free.c*/
+
+void	            free_ray(t_ray *ray);
+void	            free_hit_point(t_hit_point *hp);
+void	            free_tab(char **tab);
+
+/*init_env.c*/
+
+t_env                *init_env(t_arg *arg);
+
 /*light.c*/
 
 t_light             *add_light(t_light *light, t_vect pos);
 float                coef_lambert(t_light *light, t_hit_point hp);
-void                    build_light(t_light *light, t_vect pos);
+
 t_vect                find_color_light(t_light *light, t_hit_point hp, t_mater *mat, t_vect v);
 t_vect               find_color_sha(t_light *light, t_hit_point hp, t_mater *mat, t_vect v);
 int                   numberoflights(t_env *env);
 
+/*main.c*/
+t_vect		        rotate_vector(t_env *env, t_vect ray_dir);
+t_ray		        current_ray(t_env *env, t_vect v);
+void                  raytrace(t_env *env);
+
+t_hit_point		    nearest_point(t_env *env, t_ray ray, t_obj **obj_met);
+t_hit_point			nearest_point_after_object(t_env *env, t_ray ray, t_hit_point *mem, t_obj *obj_met);
+
+float               distance_with_next_intersection(t_env *env, t_vect *v, t_obj **colore);
+int                     is_light_reached(t_light *light, t_env *env, t_hit_point *mem, t_obj *colore);
+void                   put_on_light(t_env *env,t_hit_point *mem, t_obj *colore, int p, int q);
+void                raytrace_thread(t_env *env, int pi, int pf);
 
 /*modify.c*/
 
@@ -117,57 +169,101 @@ void                  translation(char *line, void *o, int to);
 void                rotation(char *line, void *o, int to);
 void                rotation_Y(char *line, void *o, int to);
 void                rotation_Z(char *line, void *o, int to);
-void              modify(void *o, char *line, int fd, int to);
+void               modify(void *o, char *line, int fd, int to);
 
 /*object.c*/
 
 t_hit_point         *(*get_obj_collider(int id))(void *o, t_ray *r);
+float               distance_with_cam(t_env *env, t_hit_point hp);
 
-float           distance_with_cam(t_env *env, t_hit_point hp);
+/*parser.c*/
+t_vect 				*origin0(int to, void *o);
+t_vect      		*origin(int to, void *o);
+t_vect     	    	 *normal(int to, void *o);
+void	        	start_reading(int fd, char *line, t_env *env, int *index);
+int                  lecture(int fd, t_env *env);
 
-t_vect               *find_color(t_light *light, t_hit_point *hp, t_mater *mat);
-t_env                *init_env(t_arg *arg);
-void                  render(t_env *env);
-int                    event(t_env *env, t_arg *arg);
-t_cam                   *new_cam(t_vect *v1, t_vect *trans, float phi, float theta);
-t_ray                   new_ray(t_vect orig, t_vect dir, float fl, t_vect color);
-void                   quit_SDL(t_env *env);
-float                  term(float alpha, float beta);
-void                  error_param();
-t_hit_point          *new_hit_point(t_vect *vect, float dist_to_cam, t_vect *normal, int form);
+
+/*read_object.c*/
+
 
 int                  type_objects(char *str);
+int                    read_scene(int fd, char *line, t_env *env);
 
-int                     register_sphere(char *line, t_env *env, int fd);
-int                     read_camera(int fd, char *line, t_env *env);
+/*read.c*/
+
 int                    read_name(int fd, char *line, t_env *env);
+int                     read_camera(int fd, char *line, t_env *env);
 int                    read_render(int fd, char *line, t_env *env);
 int                    read_spot(int fd, char *line, t_env *env);
+
+
+/*register_object.c*/
+
+int                     register_sphere(char *line, t_env *env, int fd);
+
+
+
+/*thread.c*/
+
+
+pthread_t			**malloc_thread(int count, t_arg *arg, void *a);
+void				redraw(t_env *env, t_arg *arg);
+
+/*thread1.c*/
+
+int                 ThreadFunction(void* addr);
+void			    fill_arg(t_arg *arg, void *a);
+void                boucle(t_arg *arg, t_env *env);
+
+
+/*virtual_screen.c*/
+
+
+/**/
+
+/*creation.c*/
+t_cam                   *new_cam(t_vect *v1, t_vect *trans, float phi, float theta);
+t_hit_point             new_hit_point(t_vect vect, float dist_to_cam, t_vect normal, int form);
+t_ray                   new_ray(t_vect orig, t_vect dir, float fl, t_vect color);
+
+
+
+t_vect               *find_color(t_light *light, t_hit_point *hp, t_mater *mat);
+
+void                  render(t_env *env);
+
+
+
+
+
+
+
+
+
 int                    registering(int to, char *line, t_env *env, int fd);
-int                    read_scene(int fd, char *line, t_env *env);
+
 int                    lecture(int fd, t_env *env);
 void                  display_scene(t_env *env);
 int                 read_objects(int fd, char *line, t_env *env);
 t_vect               *center_average(t_env *env);
-float                 distance_with_cam(t_env *env, t_hit_point *hp);
+
 void                 set_virtual_screen(t_env *env);
-void                  raytrace(t_env *env);
+
 
 int                   colin(t_vect *v, t_vect *w);
 float                 calcul(t_env *env, t_hit_point *hp);
 
-t_vect          *origin(int to, void *o);
-t_vect           *normal(int to, void *o);
+t_vect                  *origin(int to, void *o);
+t_vect                   *normal(int to, void *o);
 
 
 
 
 void                SDL_render(t_env *env);
-void                refresh(t_env *env, t_arg *arg);
+
 void                  find_angle(t_env *env, t_ray *ray);
-float               distance_with_next_intersection(t_env *env, t_vect *v, t_obj **colore);
-int                     is_light_reached(t_light *light, t_env *env, t_hit_point *mem, t_obj *colore);
-void                   put_on_light(t_env *env,t_hit_point *mem, t_obj *colore, int p, int q);
+
 void                  choose_color(t_env *env, t_hit_point *mem, t_obj *colore);
 
 t_vect                 *vect_central(t_env *env);
@@ -179,8 +275,7 @@ float                       add_theta(t_env *env);
 t_vect                    change_vect(t_vect v, float phi, float theta);
 t_vect                    *center_average(t_env *env);
 
-void                    key_event(t_env *env, SDL_Event event, t_arg *arg);
-int                     key_event_bis(t_env *env, SDL_Event event);
+
 
 t_vect                  *read_origin(char *line, int fd, char *str);
 float                   read_float(char *line, int fd, char *str);
@@ -188,29 +283,14 @@ t_mater                 *read_mater(char *line, int fd, char *str);
 t_vect                  *origin0(int to, void *o);
 void		            start_reading(int fd, char *line, t_env *env, int *index);
 
-void                display_camera(t_env *env);
-
-void                 display_light(t_env *env);
-void                display_sphere(t_sphere *sp, t_mater *mat);
-void                display_mat(t_mater *mat);
-void                display_plan(t_plan *p, t_mater *mat);
-void                display_cylinder(t_cylinder *cyl, t_mater *mat);
-void                display_cone(t_cone *cone, t_mater *mat);
 void                  accord_to_form(t_obj *obj, t_mater *mat);
 
-void                raytrace_thread(t_env *env, int pi, int pf);
 
-pthread_t			**malloc_thread(int count, t_arg *arg, void *a);
-void				redraw(t_env *env, t_arg *arg);
 
-int                 ThreadFunction(void* addr);
-void                boucle(t_arg *arg, t_env *env);
-void			    fill_arg(t_arg *arg, void *a);
-t_ray		        current_ray(t_env *env, t_vect v);
-t_vect		        rotate_vector(t_env *env, t_vect ray_dir);
-void	            free_ray(t_ray *ray);
-void	            free_hit_point(t_hit_point *hp);
-void	            free_tab(char **tab);
-t_hit_point		    nearest_point(t_env *env, t_ray ray, t_obj **obj_met);
-t_hit_point			nearest_point_after_object(t_env *env, t_ray ray, t_hit_point *mem, t_obj *obj_met);
+
+
+
+
+
+
 #endif
