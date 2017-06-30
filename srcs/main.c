@@ -74,7 +74,7 @@ t_hit_point			nearest_point(t_env *env, t_ray ray, t_obj **obj_met)
 		}
 		tmp = tmp->next;
 	}
-	//free(tmp);
+	free(tmp);
 	return (nearest_hp);
 }
 
@@ -110,7 +110,7 @@ t_hit_point			nearest_point_after_object(t_env *env, t_ray ray, t_hit_point mem,
 			tmp = tmp->next;
 		
 	}
-	//free(tmp);
+	free(tmp);
 	return (nearest_hp);
 }
 
@@ -167,7 +167,7 @@ void               put_on_light(t_env *env, t_hit_point hp, t_obj *colore, int p
 	t_vect col;
 
 	light = env->light;
-	col = vect_null();
+	col = vect_col(env);
 	
 	while (light)
 	{
@@ -177,28 +177,28 @@ void               put_on_light(t_env *env, t_hit_point hp, t_obj *colore, int p
 			find_color_sha(light, hp, colore->mater, &col);
 		light = light->next;
 	}
-	SDL_SetRenderDrawColor(env->win->rend, (int)(col.x / (255 * env->nb_of_lights)), (int)(col.y / (255 * env->nb_of_lights)), (int)(col.z / (255 * env->nb_of_lights)), 255);
+	SDL_SetRenderDrawColor(env->win->rend, (int)(col.x / (255 * (env->nb_of_lights + 0.4))), (int)(col.y / (255 * (env->nb_of_lights + 0.4))), (int)(col.z / (255 * (env->nb_of_lights + 0.4))), 255);
 	SDL_RenderDrawPoint(env->win->rend, p, q);
 }
 
 void        		raytrace_thread(t_env *env, int pi, int pf)
 {
 	t_vect v;
-	t_hit_point nearest_hp;
-	t_hit_point hp_0;
 	t_ray r;
+	t_hit_point nearest_hp;
+	t_hit_point	hp_0;
+	t_vect v_0;
 	t_obj *obj_met;
     int p;
 	int q;
 	float min;
-	
-	v = vect_null();
-	nearest_hp = hp_null();
+
 	hp_0 = hp_null();
-	obj_met = NULL;
-	hp_0 = hp_null();
+	v_0 = vect_null();
+	v = v_0;
+	nearest_hp = hp_0;
+	r = new_ray(v_0, v_0, 0.0, v_0);
 	p = pi;
-	
 	while (p < pf)
 	{
 		q = 0;
@@ -212,7 +212,7 @@ void        		raytrace_thread(t_env *env, int pi, int pf)
 			r = current_ray(env, v);
 			nearest_hp = nearest_point(env, r, &obj_met);
 			
-			if (min < INFINI && equals_hp(nearest_hp, hp_0) != 0)
+			if (min < INFINI && equals_hp(nearest_hp, hp_0) == 0)
 				put_on_light(env, nearest_hp, obj_met, p, q);
 			q++;
 		}
@@ -270,11 +270,14 @@ int              main(int argc, char **argv)
 
 	if (!(arg = (t_arg*)malloc(sizeof(t_arg) * NB_THREAD + 1)))
 		return (0);
-			
+	if (!(arg->env = (t_env*)malloc(sizeof(t_env) * NB_THREAD + 1)))
+		return (0);
+
 	if (!(env = init_env(arg)))
 		return (0);
 	win = env->win;
-
+	if (!(env->thread = malloc_thread(NB_THREAD, arg,(void*)env)))
+		return (0);
 	if (argc != 2)
 	{
 		error_param();
@@ -302,12 +305,11 @@ int              main(int argc, char **argv)
 	SDL_SetRenderDrawColor(env->win->rend, 0, 0, 0, 0);
 	SDL_RenderClear(env->win->rend);
 
-	ft_putnbr(ft_atoi("-1"));
-	raytrace(env);
+	//raytrace(env);
 	
 	//boucle(arg, env);
 	
-	//redraw(env, arg);
+	redraw(env, arg);
 	
 	SDL_RenderPresent(env->win->rend);
 	while(!env->boucle)

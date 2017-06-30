@@ -73,9 +73,9 @@ void		find_color_sha(t_light *light, t_hit_point hp, t_mater *mat, t_vect *v)
 
 	lambert = 0.0;
 	lambert = coef_lambert(light, hp);
-	v->x += lambert * mat->ir * (light->red / 2.0);
-	v->y += lambert * mat->ig * (light->green / 2.0);
-	v->z += lambert * mat->ib * (light->blue / 2.0);
+	v->x += lambert * mat->ir * (light->red / 2);
+	v->y += lambert * mat->ig * (light->green / 2);
+	v->z += lambert * mat->ib * (light->blue / 2);
 }
 
 int         numberoflights(t_env *env)

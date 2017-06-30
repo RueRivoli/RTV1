@@ -30,7 +30,7 @@
 
 #define INFINI 100000000.0
 #define PI 3.14159
-#define NB_THREAD 16
+#define NB_THREAD 8
 
 typedef struct s_cam
 {
@@ -285,7 +285,7 @@ void                  accord_to_form(t_obj *obj, t_mater *mat);
 
 int		                 equals_hp(t_hit_point h1, t_hit_point h2);  
 
-
+t_vect 		            vect_col(t_env *env);
 
 
 

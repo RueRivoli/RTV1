@@ -61,6 +61,20 @@ t_vect 		vect_null(void)
 	return (v);
 }
 
+
+t_vect 		vect_col(t_env *env)
+{
+	t_light *light;
+	t_vect v;
+	light = env->light;
+
+	v.x = 0.2 * light->red;
+	v.y = 0.2 * light->green;
+	v.z = 0.2 * light->blue;
+	return (v);
+}
+
+
 t_hit_point 		hp_null(void)
 {
 	t_hit_point hp;
