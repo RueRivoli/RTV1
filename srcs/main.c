@@ -18,15 +18,14 @@
 # include <math.h>
 
 
-t_vect		rotate_vector(t_env *env, t_vect ray_dir)
+void		rotate_vector(t_env *env, t_vect *ray_dir)
 {
 	float plus_phi;
 	float plus_theta;
 
 	plus_phi = env->cam->add_phi;
 	plus_theta = env->cam->add_theta;
-	ray_dir = change_vect(ray_dir, plus_phi, plus_theta);
-	return (ray_dir);
+	change_vect(ray_dir, plus_phi, plus_theta);
 }
 
 t_ray			current_ray(t_env *env, t_vect v)
@@ -42,9 +41,9 @@ t_ray			current_ray(t_env *env, t_vect v)
 	w = new_vect(0.0, 0.0, 0.0);
 	ray_dir = mini;
 
-	ray_dir = rotate_vector(env, ray_dir);
-    ray_dir = normed(ray_dir);
-	r = new_ray(new_pos_cam, ray_dir, norm(mini), w);
+	rotate_vector(env, &ray_dir);
+    normed(&ray_dir);
+	r = new_ray(new_pos_cam, ray_dir, norm(&mini), w);
 	return (r);
 }
 
@@ -59,6 +58,7 @@ t_hit_point			nearest_point(t_env *env, t_ray ray, t_obj **obj_met)
 	tmp = env->obj;
 	minimum = INFINI;
 	hp_0 = hp_null();
+	nearest_hp = hp_null();
 	while (tmp)
 	{
 		hp = tmp->is_hit(tmp->type, ray);
@@ -74,7 +74,7 @@ t_hit_point			nearest_point(t_env *env, t_ray ray, t_obj **obj_met)
 		}
 		tmp = tmp->next;
 	}
-	free(tmp);
+	//free(tmp);
 	return (nearest_hp);
 }
 
@@ -110,7 +110,7 @@ t_hit_point			nearest_point_after_object(t_env *env, t_ray ray, t_hit_point mem,
 			tmp = tmp->next;
 		
 	}
-	free(tmp);
+	//free(tmp);
 	return (nearest_hp);
 }
 
@@ -120,15 +120,19 @@ float            distance_with_next_intersection(t_env *env, t_vect v, t_obj **o
 	t_obj *tmp;
 	t_hit_point nearest_hp;
 	t_hit_point hp_0;
+	t_vect v_0;
 	float distance;
 
-	r = new_ray(vect_null(), vect_null(), 0.0, vect_null());
-	tmp = env->obj;
-	nearest_hp = hp_null();
+	v_0 = vect_null();
 	hp_0 = hp_null();
+	r = new_ray(v_0, v_0, 0.0, v_0);
+	tmp = env->obj;
+	nearest_hp = hp_0;
+	
 	distance = INFINI;
 	
 	r = current_ray(env, v);
+	
 	nearest_hp = nearest_point(env, r, obj_met);
 	 if (equals_hp(nearest_hp, hp_0) == 0)
 	 	distance = nearest_hp.distance_to_cam;
@@ -145,7 +149,7 @@ int        is_light_reached(t_light *light, t_env *env, t_hit_point mem, t_obj *
 
 	nearest_pt = hp_null();
 	mini = min_vect(light->pos, mem.vect);
-	mini = normed(mini);
+	normed(&mini);
 	w = vect_null();
 	diff = 0.0;
 	r = new_ray(mem.vect, mini, 0.0, w);
@@ -168,16 +172,16 @@ void               put_on_light(t_env *env, t_hit_point hp, t_obj *colore, int p
 	while (light)
 	{
 		if (is_light_reached(light, env, hp, colore))
-			col = find_color_light(light, hp, colore->mater, col);
+			find_color_light(light, hp, colore->mater, &col);
 		else
-			col = find_color_sha(light, hp, colore->mater, col);
+			find_color_sha(light, hp, colore->mater, &col);
 		light = light->next;
 	}
 	SDL_SetRenderDrawColor(env->win->rend, (int)(col.x / (255 * env->nb_of_lights)), (int)(col.y / (255 * env->nb_of_lights)), (int)(col.z / (255 * env->nb_of_lights)), 255);
 	SDL_RenderDrawPoint(env->win->rend, p, q);
 }
 
-void        raytrace_thread(t_env *env, int pi, int pf)
+void        		raytrace_thread(t_env *env, int pi, int pf)
 {
 	t_vect v;
 	t_hit_point nearest_hp;
@@ -202,7 +206,9 @@ void        raytrace_thread(t_env *env, int pi, int pf)
 		{   
 			min = INFINI;
 			v = new_vect(p + env->cam->trans.x, q + env->cam->trans.y, env->cam->trans.z);
+			
 			min = distance_with_next_intersection(env, v, &obj_met);
+			
 			r = current_ray(env, v);
 			nearest_hp = nearest_point(env, r, &obj_met);
 			
@@ -220,19 +226,19 @@ void        raytrace(t_env *env)
 	t_ray r;
 	t_hit_point nearest_hp;
 	t_hit_point	hp_0;
+	t_vect v_0;
 	t_obj *obj_met;
     int p;
 	int q;
 	float min;
 
-	
-	obj_met = NULL;
+	//obj_met = NULL;
 	hp_0 = hp_null();
 	p = 0;
-	v = vect_null();
-	nearest_hp = hp_null();
-	r = new_ray(vect_null(), vect_null(), 0.0, vect_null());
-	
+	v_0 = vect_null();
+	nearest_hp = hp_0;
+	r = new_ray(v_0, v_0, 0.0, v_0);
+	//obj_null(obj_met);
 	while (p < 1200)
 	{
 		q = 0;
@@ -240,9 +246,7 @@ void        raytrace(t_env *env)
 		{   
 			
 			min = INFINI;
-			ft_putnbr(p + env->cam->trans.x);
 			v = new_vect(p + env->cam->trans.x, q + env->cam->trans.y, env->cam->trans.z);
-			
 			min = distance_with_next_intersection(env, v, &obj_met);
 			r = current_ray(env, v);
 			
@@ -250,7 +254,6 @@ void        raytrace(t_env *env)
 			
 			if (min < INFINI && equals_hp(nearest_hp, hp_0) == 0)
 				put_on_light(env, nearest_hp, obj_met, p, q);
-			ft_putstr("CHAMPION");
 			q++;
 		}
 		p++;    
@@ -299,6 +302,7 @@ int              main(int argc, char **argv)
 	SDL_SetRenderDrawColor(env->win->rend, 0, 0, 0, 0);
 	SDL_RenderClear(env->win->rend);
 
+	ft_putnbr(ft_atoi("-1"));
 	raytrace(env);
 	
 	//boucle(arg, env);
@@ -316,10 +320,10 @@ int              main(int argc, char **argv)
 	SDL_DestroyWindow(env->win->handle);
 	SDL_DestroyRenderer(env->win->rend);
 
-	free(arg);
+	//free(arg);
 	/*free(env->cam);
-	free(env->win);
-	 free(env->obj);
+	/free(env->win);
+	 fre(env->obj);
     free(env->title);
     free(env->background);
 	free(env);*/

@@ -26,7 +26,7 @@ t_vect              normal_sphere(t_sphere *sp, t_vect p)
 {
 	t_vect min;
 	min = min_vect(p, sp->origin);
-	min = normed(min);
+	normed(&min);
 	return (min);
 }
 

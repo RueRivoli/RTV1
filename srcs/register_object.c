@@ -41,7 +41,6 @@ int         register_plan(char *line, t_env *env, int fd)
 	t_vect norm;
 	t_mater *mat;
 	t_plan *p;
-	t_vect norme;
 
 	vect = read_origin(line, fd, "origin");
 	if (equals_vect(vect, vect_null()))
@@ -51,9 +50,7 @@ int         register_plan(char *line, t_env *env, int fd)
 		return (0);
 	if (!(mat = read_mater(line, fd, "color")))
 		return (0);
-	norme = normed(norm);
-	//free(norm);
-	p = new_plan(vect, norme);
+	p = new_plan(vect, norm);
 	modify((void*)p, line, fd, 2);
 	env->obj = add_obj(env->obj, 2, mat, (void*)p);
 	return (1);
@@ -70,8 +67,10 @@ int         register_cylinder(char *line, t_env *env, int fd)
 	if (equals_vect(vect, vect_null()))
 		return (0);
 	norm = read_origin(line, fd, "normal");
+	
 	if (equals_vect(norm, vect_null()))
 		return (0);
+	
 	if (!(rad = read_float(line, fd, "radius")))
 		return (0);
 	if (!(mat = read_mater(line, fd, "color")))

@@ -13,24 +13,24 @@ void    translation(char *line, void *o, int to)
 			tab = ft_strsplit(line, ' ');
 			if (tab[1])
 				v.x += ft_atoi(tab[1]);
-				free(tab);
-				free(st);
+				////free(tab);
+				//free(st);
 		}
 		if ((st = ft_strstr(line, "translationY")))
 		{
 			tab = ft_strsplit(line, ' ');
 			if (tab[1])
 				v.y += ft_atoi(tab[1]);
-				free(tab);
-				free(st);
+				//free(tab);
+				//free(st);
 		}
 		if ((st = ft_strstr(line, "translationZ")))
 		{
 			tab = ft_strsplit(line, ' ');
 			if (tab[1])
 				v.z += ft_atoi(tab[1]);
-			free(tab);
-			free(st);
+			//free(tab);
+			//free(st);
 		}
 }
 
@@ -52,10 +52,10 @@ void    rotation(char *line, void *o, int to)
 				mem = n.y;
 				n.y = cos(theta) * n.y + sin(theta) * n.z;
 				n.z = -sin(theta) * mem + cos(theta) * n.z;
-				n = normed(n);
+				normed(&n);
 			}
-			free(tab);
-			free(st);
+			//free(tab);
+			//free(st);
 		}
 		rotation_Y(line, o, to);
         rotation_Z(line, o, to);
@@ -79,10 +79,10 @@ void        rotation_Y(char *line, void *o, int to)
 				mem = n.x;
 				n.x = cos(theta) * n.x + sin(theta) * n.z;
 				n.z = -sin(theta) * mem + cos(theta) * n.z;
-				normed(n);
+				normed(&n);
 			}
-			free(tab);
-			free(st);
+			//free(tab);
+			//free(st);
 	}
 }
 
@@ -104,10 +104,10 @@ void        rotation_Z(char *line, void *o, int to)
 				mem = n.x;
 				n.x = cos(theta) * n.x + sin(theta) * n.y;
 				n.y = -sin(theta) * mem + cos(theta) * n.y;
-				n = normed(n);
+				normed(&n);
 			}
-			free(tab);
-			free(st);
+			//free(tab);
+			//free(st);
 		}
 }
 

@@ -18,12 +18,12 @@ t_vect              normal_cone(t_cone *cone, t_vect p)
 	t_vect v;
 	t_vect min;
 	t_vect add;
-	cone->axis = normed(cone->axis);
+	normed(&cone->axis);
 	min = min_vect(p, cone->summit);
 	h = multiply_scalar(cone->axis, scalar_product(min, cone->axis));
 	add = add_vect(cone->summit, h);
 	v = min_vect(p, add);
-	v = normed(v);
+	normed(&v);
 	return (v);
 }
 
@@ -73,7 +73,7 @@ t_hit_point         hit_cone(void *o, t_ray r)
 
 	cone = (t_cone *)o;
 	//t_vect *traj;
-	cone->axis = normed(cone->axis);
+	normed(&cone->axis);
 	expr = cone->axis.x * r.direction.x + cone->axis.y * r.direction.y + cone->axis.z * r.direction.z;
 	expr2 = (r.origin.x - cone->summit.x) * cone->axis.x + (r.origin.y - cone->summit.y) * cone->axis.y +\
 			(r.origin.z - cone->summit.z) * cone->axis.z;

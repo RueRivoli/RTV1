@@ -19,21 +19,20 @@ int     colin(t_vect v, t_vect w)
 	return (0);
 }
 
-t_vect        normed(t_vect v)
+void        normed(t_vect *v)
 {
     float nor;
     nor = norm(v);
-    v.x = v.x / nor;
-    v.y = v.y / nor;
-    v.z = v.z / nor;
-	return (v);
+    v->x = v->x / nor;
+    v->y = v->y / nor;
+    v->z = v->z / nor;
 }
 
-t_vect      normed_vect(t_vect v1)
+t_vect      normed_vect(t_vect *v1)
 {
 	float nor;
 	nor = norm(v1);
-	return (new_vect(v1.x / (float)nor, v1.y / (float)nor, v1.z / (float)nor));
+	return (new_vect(v1->x / (float)nor, v1->y / (float)nor, v1->z / (float)nor));
 }
 
 float   distance(t_vect v1, t_vect v2)

@@ -20,11 +20,8 @@ int        read_scene(int fd, char *line, t_env *env)
     int ret;
 	
 	ret = read_name(fd, line, env);
-	
     ret += read_camera(fd, line, env);
-	
 	ret += read_render(fd, line, env);
-	
     ret += read_spot(fd, line, env);
 	
     return (ret);

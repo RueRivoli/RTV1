@@ -112,9 +112,9 @@ int        lecture(int fd, t_env *env)
 				error_param();
 				return (0);
 			}
-			free(st);
+			//free(st);
 		}
-		free(line);
+		//free(line);
 	}
 	if (index < 2)
 	{

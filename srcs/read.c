@@ -18,9 +18,9 @@ int         read_objects(int fd, char *line, t_env *env)
 			if (to < 1 || to > 4)
 				return (0);
 			ret = registering(to, line, env, fd);
-			free(str);
-			free(tab);
-			free(st);
+			//free(str);
+			//free(tab);
+			//free(st);
 		}
 	}
 	return (ret);
@@ -45,9 +45,9 @@ int        read_name(int fd, char *line, t_env *env)
 			env->title = str;
 			ret++;
 		}
-		free(str);
-		free(tab);
-		free(st);
+		//free(str);
+		//free(tab);
+		//free(st);
 		
 	}
     return (ret);
@@ -60,6 +60,7 @@ int         read_camera(int fd, char *line, t_env *env)
     t_vect 		v;
 	t_vect 		trans;
 	char *st;
+
     ret = 0;
     v = vect_null();
     tab = NULL;
@@ -74,8 +75,8 @@ int         read_camera(int fd, char *line, t_env *env)
 		}
 		env->cam = new_cam(v, trans, 0.0, 0.0);
         ret++;
-		free_tab(tab);
-		free(st);
+		//free(tab);
+		//free(st);
 	}
     return (ret);
 }
@@ -99,8 +100,8 @@ int        read_render(int fd, char *line, t_env *env)
 			env->win->width = ft_atoi(tab[2]);
 			ret++;
 		}
-		free_tab(tab);
-		free(st);
+		//free_tab(tab);
+		//free(st);
 	}
     return (ret);
 }
@@ -121,8 +122,8 @@ int        read_spot(int fd, char *line, t_env *env)
             ft_atoi(tab[2]), ft_atoi(tab[3])));
 			ret++;
 		}
-		free_tab(tab);
-		free(st);
+		//free_tab(tab);
+		//free(st);
 		
 	}
 	return (ret);

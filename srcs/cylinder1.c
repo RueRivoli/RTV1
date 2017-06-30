@@ -19,7 +19,8 @@ t_cylinder  *new_cylinder(t_vect origin, t_vect normal, float radius)
 	if (!(cyl = (t_cylinder *)malloc(sizeof(t_cylinder))))
 		return (NULL);
 	cyl->origin = origin;
-	cyl->normal = normed(normal); 
+	normed(&normal); 
+	cyl->normal = normal;
 	cyl->radius = radius;
 	return (cyl);
 }
@@ -38,16 +39,17 @@ float       beta_cylinder(float expr2, float n, float a, float o)
 t_vect              normal_cylinder(t_cylinder *cyl, t_vect p)
 {
 	t_vect h;
-	t_vect v;
 	t_vect om;
 	t_vect n;
 	t_vect min;
 	t_vect ad;
-	n = normed(cyl->normal);
+
+	n = vect_null();
+	normed(&cyl->normal);
 	om = min_vect(p, cyl->origin);
 	h = multiply_scalar(n, scalar_product(om, n));
 	ad = add_vect(cyl->origin, h);
 	min = min_vect(p, ad);
-	v = normed(min);
-	return (v);
+	normed(&min);
+	return (min);
 }

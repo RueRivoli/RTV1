@@ -152,5 +152,6 @@ void 	             sum_cylinder(t_cylinder *cyl, float *x, float *y, float *z);
 void 	    	    sum_cone(t_cone* c, float *x, float *y, float *z);
 void	            add_coord1(t_obj *obj, float *x, float *y, float *z);
 void	            add_coord2(t_obj *obj, float *x, float *y, float *z);
+void		        obj_null(t_obj *obj);
 
 #endif

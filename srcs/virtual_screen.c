@@ -10,7 +10,7 @@ t_vect      vectv(t_vect n)
 	y = -n.x /n.y;
 	z = 0.0;
 	v = new_vect(x, y, z);
-	normed(v);
+	normed(&v);
 	return (v);
 }
 
@@ -20,14 +20,13 @@ t_vect      vectw(t_vect n)
 	float y;
 	float z;
 	t_vect v;
-	t_vect w;
 	y = -0.5 * n.z / (n.y + pow(n.x, 2)/ n.y);
 	x = (n.x / n.z) * y;
 	z = 0.5;
 	v = new_vect(x, y, z);
-	w = normed(v);
+	normed(&v);
 	//free(v);
-	return (w);
+	return (v);
 }
 
 void    set_virtual_screen(t_env *env)
@@ -37,10 +36,11 @@ void    set_virtual_screen(t_env *env)
 	t_vect aver;
 	t_vect w;
 
+	n = vect_null();
 	aver = center_average(env);
 	v = min_vect(aver, env->cam->pos);
 	//free(aver);
-	n = normed(v);
+	normed(&v);
 	//free(v);
 	v = multiply_scalar(n, 100);
 	//free(n);

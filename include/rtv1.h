@@ -146,12 +146,12 @@ t_env                *init_env(t_arg *arg);
 t_light             *add_light(t_light *light, t_vect pos);
 float                coef_lambert(t_light *light, t_hit_point hp);
 
-t_vect                find_color_light(t_light *light, t_hit_point hp, t_mater *mat, t_vect v);
-t_vect               find_color_sha(t_light *light, t_hit_point hp, t_mater *mat, t_vect v);
+void                find_color_light(t_light *light, t_hit_point hp, t_mater *mat, t_vect *v);
+void               find_color_sha(t_light *light, t_hit_point hp, t_mater *mat, t_vect *v);
 int                   numberoflights(t_env *env);
 
 /*main.c*/
-t_vect		        rotate_vector(t_env *env, t_vect ray_dir);
+void		        rotate_vector(t_env *env, t_vect *ray_dir);
 t_ray		        current_ray(t_env *env, t_vect v);
 void                  raytrace(t_env *env);
 
@@ -270,7 +270,7 @@ float                  phi(t_vect v);
 float                  theta(t_vect v);
 float                  add_phi(t_env *env);
 float                       add_theta(t_env *env);
-t_vect                    change_vect(t_vect v, float phi, float theta);
+void                    change_vect(t_vect *v, float phi, float theta);
 
 
 

@@ -28,7 +28,8 @@ t_hit_point			hit_ortho(t_ray r, t_plan *p, t_vect min)
 	if (scalar_product(min, p->normal) == 0.0)
 	{
 			//free(min);
-			return (new_hit_point(new_vect(r.origin.x, r.origin.y, r.origin.z), 0.0, normed(p->normal), 2));
+			normed(&p->normal);
+			return (new_hit_point(new_vect(r.origin.x, r.origin.y, r.origin.z), 0.0, p->normal, 2));
 	}
 	return (hp_null());
 }
@@ -50,11 +51,12 @@ t_hit_point         hit_plan(void *o, t_ray r)
 	else if (fabsf(den) > 1e-6)
 	{
 		res /= den;
+		normed(&p->normal);
 		//free(min);
 		//traj = multiply_scalar(r.direction, res);
 		if (res > 0.0)
 			 return (new_hit_point(new_vect(r.origin.x + res * r.direction.x, r.origin.y + res * r.direction.y, r.origin.z + res * r.direction.z)\
-			, 0.0, normed(p->normal), 2));
+			, 0.0, p->normal, 2));
 	}
 	return (hp_null());
 }

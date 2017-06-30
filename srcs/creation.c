@@ -15,7 +15,8 @@
 t_cam           *new_cam(t_vect v1, t_vect v2, float phi, float theta)
 {
 	t_cam *c;
-	if (!(c = (t_cam *)malloc(sizeof(t_cam*))))
+	if (!(c = (t_cam *)malloc(sizeof(t_cam))))
+		return (NULL);
 	c->pos = v1;
 	c->trans = v2;
 	c->add_phi = phi;
@@ -26,7 +27,7 @@ t_cam           *new_cam(t_vect v1, t_vect v2, float phi, float theta)
 t_mater         *new_mater(float f, int r, int g, int b)
 {
 	t_mater *mat;
-	if (!(mat = (t_mater *)malloc(sizeof(t_mater*))))
+	if (!(mat = (t_mater *)malloc(sizeof(t_mater))))
 		return (NULL);
 	mat->alpha = f;
 	mat->ir = r;

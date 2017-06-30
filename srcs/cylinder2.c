@@ -49,14 +49,13 @@ t_hit_point         inter_colin(t_cylinder *cyl, t_ray r)
     t_vect w;
     t_hit_point hp;
     float oh;
-    float oa;
 
     w = min_vect(r.origin, cyl->origin);
 	oh = scalar_product(w, cyl->normal);
-	oa = norm(w);
+	
 	//free(w);
 
-	if (sqrt(pow(oa, 2) - pow(oh, 2)) <= cyl->radius)
+	if (sqrt(pow(norm(&w), 2) - pow(oh, 2)) <= cyl->radius)
 	{
 		hp = new_hit_point(new_vect (INFINI - 1, INFINI - 1, INFINI - 1), -1.0, new_vect(0,0,0), 3);
 		return (hp);

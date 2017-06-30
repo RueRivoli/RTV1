@@ -17,10 +17,10 @@ void		refresh(t_env *env, t_arg *arg)
 {
 	SDL_SetRenderDrawColor(env->win->rend, 0, 0, 0, 0);
 	SDL_RenderClear(env->win->rend);
-	//raytrace(env);
+	raytrace(env);
 	//redraw(env, arg);
-	//(void)arg;
-	boucle(arg, env);
+	(void)arg;
+	//boucle(arg, env);
 	SDL_RenderPresent(env->win->rend);
 }
 
@@ -53,7 +53,7 @@ void     key_event(t_env *env, SDL_Event event, t_arg *arg)
 {
     int b;
     b = 1;
-    ft_putnbr(event.key.keysym.scancode);
+    //ft_putnbr(event.key.keysym.scancode);
 	if (event.key.keysym.scancode == RIGHT)
 		env->cam->trans.x += 125.0;
 	else if (event.key.keysym.scancode == LEFT)

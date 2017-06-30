@@ -36,7 +36,7 @@ void    find_angle(t_env *env, t_ray ray)
 	float add_phi;
 	float add_theta;
 	float n;
-	n = norm(ray.direction);
+	n = norm(&ray.direction);
 	add_phi = env->cam->add_phi;
 	add_theta = env->cam->add_theta;
 	//printf("add_PHI %f\n", add_phi);
@@ -69,6 +69,15 @@ t_hit_point 		hp_null(void)
 	hp.normal = vect_null();
 	hp.form = 0;
 	return (hp);
+}
+
+void		obj_null(t_obj *obj)
+{
+	(void)obj;
+	//obj->is_hit = get_obj_collider(1);
+	//obj->type = NULL;
+	//obj->form = 1;
+	//obj->mater = NULL;
 }
 
 int		equals_vect(t_vect v1, t_vect v2)
