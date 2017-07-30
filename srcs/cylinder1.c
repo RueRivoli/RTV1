@@ -40,14 +40,12 @@ t_vect              normal_cylinder(t_cylinder *cyl, t_vect p)
 {
 	t_vect h;
 	t_vect om;
-	t_vect n;
 	t_vect min;
 	t_vect ad;
 
-	n = vect_null();
 	normed(&cyl->normal);
 	om = min_vect(p, cyl->origin);
-	h = multiply_scalar(n, scalar_product(om, n));
+	h = multiply_scalar(cyl->normal, scalar_product(om, cyl->normal));
 	ad = add_vect(cyl->origin, h);
 	min = min_vect(p, ad);
 	normed(&min);

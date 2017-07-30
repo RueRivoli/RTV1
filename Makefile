@@ -12,7 +12,7 @@
 
 NAME = rtv1
 CC = gcc
-OPTI = -g -O0
+OPTI = -O3 -c -O1
 CFLAGS_DEBUG = -g3 -O0
 CFLAGS = -c -Wall -Werror -Wextra -pedantic $(OPTI)
 

@@ -1,9 +1,6 @@
 #include "rtv1.h"
 #include <pthread.h>
  
-
-
-
 pthread_t			**malloc_thread(int count, t_arg *arg, void *a)
 {
 	pthread_t		**thread;
@@ -54,10 +51,7 @@ void				redraw(t_env *env, t_arg *arg)
 	void	*ret;
 
 	i = -1;
-
-	
 	create_thread(env->thread, env->thread_cnt, arg);
-	
 	while (env->thread[++i])
 	{
 		pthread_join(*env->thread[i], &ret);

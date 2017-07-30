@@ -108,7 +108,6 @@ t_hit_point			nearest_point_after_object(t_env *env, t_ray ray, t_hit_point mem,
 		}
 		else
 			tmp = tmp->next;
-		
 	}
 	free(tmp);
 	return (nearest_hp);
@@ -307,9 +306,9 @@ int              main(int argc, char **argv)
 
 	//raytrace(env);
 	
-	//boucle(arg, env);
+	boucle(arg, env);
 	
-	redraw(env, arg);
+	//redraw(env, arg);
 	
 	SDL_RenderPresent(env->win->rend);
 	while(!env->boucle)
