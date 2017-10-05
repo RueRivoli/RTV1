@@ -70,7 +70,7 @@ int         read_camera(int fd, char *line, t_env *env)
 		tab = ft_strsplit(line, ' ');
 		if (tab[2] != NULL && tab[3]!= NULL && tab[4] != NULL)
 		{
-			v = new_vect(ft_atoi(tab[2]),ft_atoi(tab[3]), ft_atoi(tab[4]));
+			v = new_vect(ft_atof(tab[2]),ft_atof(tab[3]), ft_atof(tab[4]));
 			ret++;
 		}
 		env->cam = new_cam(v, trans, 0.0, 0.0);

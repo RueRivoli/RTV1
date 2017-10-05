@@ -47,6 +47,20 @@ t_ray			current_ray(t_env *env, t_vect v)
 	return (r);
 }
 
+t_vec				gen_ray_direction(int p, int q, t_screen scr)
+{
+	float			x;
+	float			y;
+	t_vec			direction;
+
+	x = (2 * (i + 0.5) / scr.nx - 1);
+	y = (1 - 2 * (j + 0.5) / scr.ny) * 1 / (600/500));
+	direction = vec_sub_stack(vec_stack(x, y, -1), vec_stack(0, 0, 0));
+	vec_normalize(&direction);
+
+	return (direction);
+}
+
 t_hit_point			nearest_point(t_env *env, t_ray ray, t_obj **obj_met)
 {
 	t_obj	*tmp;
@@ -204,6 +218,7 @@ void        		raytrace_thread(t_env *env, int pi, int pf)
 		while (q < env->size_y)
 		{   
 			min = INFINI;
+			direction1 = gen_ray_direction(x, y, e->scr), 0);
 			v = new_vect(p + env->cam->trans.x, q + env->cam->trans.y, env->cam->trans.z);
 			
 			min = distance_with_next_intersection(env, v, &obj_met);
@@ -215,7 +230,7 @@ void        		raytrace_thread(t_env *env, int pi, int pf)
 				put_on_light(env, nearest_hp, obj_met, p, q);
 			q++;
 		}
-		p++;    
+		p++;
 	}
 }
 
@@ -243,7 +258,6 @@ void        raytrace(t_env *env)
 		q = 0;
 		while (q < env->size_y)
 		{   
-			
 			min = INFINI;
 			v = new_vect(p + env->cam->trans.x, q + env->cam->trans.y, env->cam->trans.z);
 			min = distance_with_next_intersection(env, v, &obj_met);
@@ -257,7 +271,6 @@ void        raytrace(t_env *env)
 		}
 		p++;    
 	}
-	
 }
 
 int              main(int argc, char **argv)
@@ -284,7 +297,6 @@ int              main(int argc, char **argv)
 	}
 		
 	fd = open(argv[1], O_RDONLY);
-	
 	/*Lecture et affichage de la scene*/
 	
 	if (fd > 0 && lecture(fd, env) != 0)

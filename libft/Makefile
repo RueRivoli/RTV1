@@ -41,6 +41,7 @@ SRC_NAME=	ft_lstadd.c \
 			ft_strchr.c \
 			ft_strrchr.c \
 			ft_atoi.c \
+			ft_atof.c \
 			ft_isalpha.c \
 			ft_isdigit.c \
 			ft_isalnum.c \
