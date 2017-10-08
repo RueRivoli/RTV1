@@ -23,11 +23,13 @@ t_env   *init_env(t_arg *arg)
 		return (NULL);
 	if (!(env->cam = malloc(sizeof(t_cam))))
 		return (NULL);	
+	if (!(env->screen = malloc(sizeof(t_screen))))
+		return (NULL);
 	env->thread_cnt = NB_THREAD;
 	(void)arg;
 	env->obj = NULL;
 	env->light = NULL;
-	env->screen = NULL;
+	//env->screen = NULL;
 	win = env->win;
 	win->width = 0;
 	win->height = 0;

@@ -56,17 +56,17 @@ void     key_event(t_env *env, SDL_Event event, t_arg *arg)
     b = 1;
     //ft_putnbr(event.key.keysym.scancode);
 	if (event.key.keysym.scancode == RIGHT)
-		env->cam->trans.x += 25.0;
+		env->cam->trans.x += 0.02;
 	else if (event.key.keysym.scancode == LEFT)
-		env->cam->trans.x -= 25.0;
+		env->cam->trans.x -= 0.02;
 	else if (event.key.keysym.scancode == UP)
-		env->cam->trans.y -= 25.0;
+		env->cam->trans.y -= 0.02;
 	else if (event.key.keysym.scancode == DOWN)
-		env->cam->trans.y += 25.0;
+		env->cam->trans.y += 0.02;
 	else if (event.key.keysym.scancode == Z_PLUS)
-		env->cam->trans.z += 25.0;
+		env->cam->trans.z += 0.01;
 	else if (event.key.keysym.scancode == Z_LESS)
-		env->cam->trans.z -= 25.0;
+		env->cam->trans.z -= 0.01;
     else if (!key_event_bis(env, event))
         b = 0;
     if (b == 1)

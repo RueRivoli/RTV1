@@ -9,8 +9,8 @@ int         ThreadFunction(void* addr)
 	int pmax;
 
     arg = (t_arg *)addr;
-    pmin = (int) (arg->i * (arg->env->size_x / NB_THREAD));
-	pmax = (int) ((arg->i + 1) * (arg->env->size_x / NB_THREAD));
+    pmin = (int) (arg->i * (arg->env->screen->nx / NB_THREAD));
+	pmax = (int) ((arg->i + 1) * (arg->env->screen->nx / NB_THREAD));
     raytrace_thread(arg->env, pmin, pmax);
     return (1);
 }

@@ -94,8 +94,8 @@ int        read_render(int fd, char *line, t_env *env)
 		tab = ft_strsplit(line, ' ');
 		if (tab[2] != NULL && tab[3] != NULL)
 		{
-			env->size_x = ft_atoi(tab[2]);
-			env->size_y = ft_atoi(tab[3]);
+			env->screen->nx = ft_atoi(tab[2]);
+			env->screen->ny = ft_atoi(tab[3]);
 			env->win->height = ft_atoi(tab[3]);
 			env->win->width = ft_atoi(tab[2]);
 			ret++;

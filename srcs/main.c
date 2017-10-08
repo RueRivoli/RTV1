@@ -47,7 +47,7 @@ t_ray			current_ray(t_env *env, t_vect v)
 	return (r);
 }
 
-t_vec				gen_ray_direction(int p, int q, t_screen scr)
+/*t_vec				gen_ray_direction(int p, int q, t_screen scr)
 {
 	float			x;
 	float			y;
@@ -59,7 +59,7 @@ t_vec				gen_ray_direction(int p, int q, t_screen scr)
 	vec_normalize(&direction);
 
 	return (direction);
-}
+}*/
 
 t_hit_point			nearest_point(t_env *env, t_ray ray, t_obj **obj_met)
 {
@@ -190,7 +190,7 @@ void               put_on_light(t_env *env, t_hit_point hp, t_obj *colore, int p
 			find_color_sha(light, hp, colore->mater, &col);
 		light = light->next;
 	}
-	SDL_SetRenderDrawColor(env->win->rend, (int)(col.x / (255 * (env->nb_of_lights + 0.4))), (int)(col.y / (255 * (env->nb_of_lights + 0.4))), (int)(col.z / (255 * (env->nb_of_lights + 0.4))), 255);
+	SDL_SetRenderDrawColor(env->win->rend, (int)(col.x / (255 * (env->nb_of_lights))), (int)(col.y / (255 * (env->nb_of_lights))), (int)(col.z / (255 * (env->nb_of_lights))), 255);
 	SDL_RenderDrawPoint(env->win->rend, p, q);
 }
 
@@ -202,8 +202,10 @@ void        		raytrace_thread(t_env *env, int pi, int pf)
 	t_hit_point	hp_0;
 	t_vect v_0;
 	t_obj *obj_met;
-    int p;
-	int q;
+    float p;
+	float pr;
+	float qr;
+	float q;
 	float min;
 
 	hp_0 = hp_null();
@@ -211,15 +213,19 @@ void        		raytrace_thread(t_env *env, int pi, int pf)
 	v = v_0;
 	nearest_hp = hp_0;
 	r = new_ray(v_0, v_0, 0.0, v_0);
-	p = pi;
+	p = (float)pi;
+	
 	while (p < pf)
 	{
-		q = 0;
-		while (q < env->size_y)
+		
+		q = 0.0;
+		
+		while (q < env->screen->ny)
 		{   
 			min = INFINI;
-			direction1 = gen_ray_direction(x, y, e->scr), 0);
-			v = new_vect(p + env->cam->trans.x, q + env->cam->trans.y, env->cam->trans.z);
+			pr = ((p + 0.5) / env->screen->nx) + env->cam->pos.x - 0.5 + env->cam->trans.x;
+			qr = ((q + 0.5) / env->screen->ny) + env->cam->pos.y - 0.5 + env->cam->trans.y;
+			v = new_vect(pr, qr, env->cam->pos.z + env->cam->trans.z + 1);
 			
 			min = distance_with_next_intersection(env, v, &obj_met);
 			
@@ -310,8 +316,7 @@ int              main(int argc, char **argv)
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS) != 0)
 		return (0);
 	
-
-	win->handle = SDL_CreateWindow("RTV1", 650, 300, env->size_x, env->size_y, 0);
+	win->handle = SDL_CreateWindow("RTV1", 300, 200, env->screen->nx, env->screen->ny, 0);
 	win->rend = SDL_CreateRenderer(env->win->handle, 1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_SOFTWARE);
 	SDL_SetRenderDrawColor(env->win->rend, 0, 0, 0, 0);
 	SDL_RenderClear(env->win->rend);
