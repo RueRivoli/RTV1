@@ -2,8 +2,8 @@
 
 name Scene_1
 camera origin 0.5 0.5 -1.0
-render size 600 500
-spot 0.5 0.5 -0.5
+render size 1200 900
+spot 0.8 0.5 -0.5
 
 # Objects
 

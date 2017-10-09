@@ -62,9 +62,12 @@ void		find_color_light(t_light *light, t_hit_point hp, t_mater *mat, t_vect *v)
 
 	lambert = 0.0;
 	lambert = coef_lambert(light, hp);
-	v->x += lambert * mat->ir * light->red;
-	v->y += lambert * mat->ig * light->green;
-	v->z += lambert * mat->ib * light->blue;
+	if (lambert >= 0.0)
+	{
+		v->x += lambert * mat->ir * light->red;
+		v->y += lambert * mat->ig * light->green;
+		v->z += lambert * mat->ib * light->blue;
+	}
 }
 
 void		find_color_sha(t_light *light, t_hit_point hp, t_mater *mat, t_vect *v)

@@ -79,7 +79,7 @@ t_mater      *read_mater(char *line, int fd, char *str)
 	if (get_next_line(fd, &line) && (st = ft_strstr(line, str)))
 	{
 		tab = ft_strsplit(line, ' ');
-		if (tab[1] && tab[2] && tab[3] && tab[4] && ft_atof(tab[1]) > -1 && ft_atof(tab[2]) > -1 && ft_atof(tab[1]) > -1 && ft_atoi(tab[4]) > -1)
+		if (tab[1] && tab[2] && tab[3] && tab[4] && ft_atof(tab[1]) > -1 && ft_atof(tab[2]) > -1 && ft_atof(tab[1]) > -1 && ft_atof(tab[4]) > -1)
 			mat = new_mater(ft_atof(tab[1]), ft_atof(tab[2]), ft_atof(tab[3]), ft_atof(tab[4]));
 		else
 			return (NULL);

@@ -47,19 +47,6 @@ t_ray			current_ray(t_env *env, t_vect v)
 	return (r);
 }
 
-/*t_vec				gen_ray_direction(int p, int q, t_screen scr)
-{
-	float			x;
-	float			y;
-	t_vec			direction;
-
-	x = (2 * (i + 0.5) / scr.nx - 1);
-	y = (1 - 2 * (j + 0.5) / scr.ny) * 1 / (600/500));
-	direction = vec_sub_stack(vec_stack(x, y, -1), vec_stack(0, 0, 0));
-	vec_normalize(&direction);
-
-	return (direction);
-}*/
 
 t_hit_point			nearest_point(t_env *env, t_ray ray, t_obj **obj_met)
 {
@@ -162,13 +149,16 @@ int        is_light_reached(t_light *light, t_env *env, t_hit_point mem, t_obj *
 
 	nearest_pt = hp_null();
 	mini = min_vect(light->pos, mem.vect);
+	
 	normed(&mini);
 	w = vect_null();
 	diff = 0.0;
 	r = new_ray(mem.vect, mini, 0.0, w);
-	
 	nearest_pt = nearest_point_after_object(env, r, mem, obj_met);
-	diff = distance(mem.vect, light->pos) - distance(mem.vect, nearest_pt.vect);
+	if (nearest_pt.vect.x != 0.0 || nearest_pt.vect.y != 0.0 || nearest_pt.vect.z != 0.0)
+		diff = distance(mem.vect, light->pos) - distance(mem.vect, nearest_pt.vect);
+	else
+		return (1);
 	if (diff > 0)
 		return (0);
 	return (1);
@@ -181,6 +171,7 @@ void               put_on_light(t_env *env, t_hit_point hp, t_obj *colore, int p
 
 	light = env->light;
 	col = vect_col(env);
+	
 	
 	while (light)
 	{
@@ -211,6 +202,7 @@ void        		raytrace_thread(t_env *env, int pi, int pf)
 	hp_0 = hp_null();
 	v_0 = vect_null();
 	v = v_0;
+	obj_met = NULL;
 	nearest_hp = hp_0;
 	r = new_ray(v_0, v_0, 0.0, v_0);
 	p = (float)pi;
@@ -258,7 +250,6 @@ void        raytrace(t_env *env)
 	v_0 = vect_null();
 	nearest_hp = hp_0;
 	r = new_ray(v_0, v_0, 0.0, v_0);
-	//obj_null(obj_met);
 	while (p < 1200)
 	{
 		q = 0;
@@ -312,6 +303,7 @@ int              main(int argc, char **argv)
 		error_param();
 		return (0);
 	}
+	printf("Light %f %f %f\n", env->light->pos.x, env->light->pos.y, env->light->pos.z);
 	env->nb_of_lights = numberoflights(env);
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS) != 0)
 		return (0);

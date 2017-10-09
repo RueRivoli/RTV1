@@ -118,8 +118,8 @@ int        read_spot(int fd, char *line, t_env *env)
 		tab = ft_strsplit(line, ' ');
 		if (tab[1] && tab[2] && tab[3])
 		{
-			env->light = add_light(env->light, new_vect(ft_atoi(tab[1]), \
-            ft_atoi(tab[2]), ft_atoi(tab[3])));
+			env->light = add_light(env->light, new_vect(ft_atof(tab[1]), \
+            ft_atof(tab[2]), ft_atof(tab[3])));
 			ret++;
 		}
 		//free_tab(tab);
