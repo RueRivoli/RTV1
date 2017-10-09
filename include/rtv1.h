@@ -179,7 +179,7 @@ float               distance_with_cam(t_env *env, t_hit_point hp);
 t_vect 				origin0(int to, void *o);
 t_vect      		origin(int to, void *o);
 t_vect     	    	 normal(int to, void *o);
-void	        	start_reading(int fd, char *line, t_env *env, int *index);
+int 	        	start_reading(int fd, char *line, t_env *env, int *index);
 int                  lecture(int fd, t_env *env);
 
 
@@ -278,7 +278,7 @@ t_vect                  read_origin(char *line, int fd, char *str);
 float                   read_float(char *line, int fd, char *str);
 t_mater                 *read_mater(char *line, int fd, char *str);
 t_vect                  origin0(int to, void *o);
-void		            start_reading(int fd, char *line, t_env *env, int *index);
+int		            start_reading(int fd, char *line, t_env *env, int *index);
 
 void                  accord_to_form(t_obj *obj, t_mater *mat);
 

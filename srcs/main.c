@@ -303,7 +303,6 @@ int              main(int argc, char **argv)
 		error_param();
 		return (0);
 	}
-	printf("Light %f %f %f\n", env->light->pos.x, env->light->pos.y, env->light->pos.z);
 	env->nb_of_lights = numberoflights(env);
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS) != 0)
 		return (0);
