@@ -77,21 +77,24 @@ t_vect     		 normal(int to, void *o)
 int		start_reading(int fd, char *line, t_env *env, int *index)
 {
 	char *st;
+	ft_putstr("ENTREE");	
 	if ((st = ft_strstr(line, "# Scene")))
 	{
 			*index += *index + 1;
-			ft_putstr("KO");
+			ft_putstr("AAA");
 			get_next_line(fd, &line);
 			
 			if (*index != 1 || read_scene(fd, line, env) < 3)
 			{
 				error_param();
-				ft_putstr("YOUPI");
+				ft_putstr("BBB");
 				return (0);
 			}
+		
 		return (1);	
 			//free(st);
 	}
+	
 	return (0);
 }	
 
@@ -104,26 +107,26 @@ int        lecture(int fd, t_env *env)
 	
 	while (get_next_line(fd, &line))
 	{	
-		if (start_reading(fd, line, env, &index) != 0)
-		{
-			st = ft_strstr(line, "# Objects");
-			ft_putstr("AHBON");
-			if (st != NULL)
-			{
-				index++;
-				
-				get_next_line(fd, &line);
-				if (index != 2 || read_objects(fd, line, env) == 0)
+			if (index == 0 && start_reading(fd, line, env, &index) == 0)
+				return (0);
+			else
+			{	
+				st = ft_strstr(line, "# Objects");
+				ft_putstr("AHBON");
+				if (st != NULL)
 				{
-					error_param();
-					return (0);
+					index++; 
+					get_next_line(fd, &line);
+					if (index != 2 || read_objects(fd, line, env) == 0)
+					{
+						ft_putstr("BABAER");
+						error_param();
+						return (0);
+					}
 				}
 				//free(st);
-			}
+			} 
 			//free(line);
-		}
-		else
-			return (0);
 	}
 	if (index < 2)
 	{
