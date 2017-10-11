@@ -6,7 +6,7 @@
 /*   By: fgallois <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/11 14:23:34 by fgallois          #+#    #+#             */
-/*   Updated: 2017/05/12 11:11:22 by fgallois         ###   ########.fr       */
+/*   Updated: 2017/10/11 17:49:17 by fgallois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,69 +34,69 @@
 
 typedef struct s_cam
 {
-    t_vect      pos;
-    t_vect      trans;
-    float       add_phi;
-    float       add_theta;
+	t_vect      pos;
+	t_vect      trans;
+	float       add_phi;
+	float       add_theta;
 }               t_cam;
 
 typedef struct s_screen 
 {
-    t_vect      center;
-    t_vect      v;
-    t_vect      w;
-    int         nx;
-    int         ny;
+	t_vect      center;
+	t_vect      v;
+	t_vect      w;
+	int         nx;
+	int         ny;
 
 }               t_screen;
 
 typedef struct s_light 
 {
-    t_vect          pos;
-    float           red;
-    float           green;
-     float           blue;
-     struct s_light *next;
+	t_vect          pos;
+	float           red;
+	float           green;
+	float           blue;
+	struct s_light *next;
 }               t_light;
 
 
 typedef struct s_win
 {
-    SDL_Window  *handle;
-    SDL_Renderer *rend;
-    int         width;
-    int         height;
+	SDL_Window  *handle;
+	SDL_Renderer *rend;
+	int         width;
+	int         height;
 }               t_win;
 
 typedef struct s_env
 {
-    t_win           *win;
-    t_screen        *screen;
-    t_cam           *cam;
-    t_light         *light;
-    t_obj            *obj;
-    int             boucle;
-    SDL_Surface     *background;
-    pthread_t       **thread;
-    int             thread_cnt;
-    char            *title;
-    int             size_x;
-    int             size_y;
-    int             nb_of_lights;
-    int             x;
-    int             y;
-    int             z;
+	t_win           *win;
+	t_screen        *screen;
+	t_cam           *cam;
+	t_light         *light;
+	t_obj            *obj;
+	int             boucle;
+	SDL_Surface     *background;
+	pthread_t       **thread;
+	int             thread_cnt;
+	char            *title;
+	int             size_x;
+	int             size_y;
+	int             nb_of_lights;
+	int             x;
+	int             y;
+	int             z;
 }               t_env;
 
 
 typedef struct s_arg {
-       t_env *env;
-        int     i;
+	t_env *env;
+	int     i;
 }               t_arg;
 
 typedef struct data {
-    t_env *env ;
-    pthread_mutex_t mutex;
+	t_env *env ;
+	pthread_mutex_t mutex;
 } data;
 
 
@@ -167,8 +167,8 @@ void                raytrace_thread(t_env *env, int pi, int pf);
 
 void                  translation(char *line, void *o, int to);
 void                rotation(char *line, void *o, int to);
-void                rotation_Y(char *line, void *o, int to);
-void                rotation_Z(char *line, void *o, int to);
+void                rotation_y(char *line, void *o, int to);
+void                rotation_z(char *line, void *o, int to);
 void               modify(void *o, char *line, int fd, int to);
 
 /*object.c*/
@@ -211,7 +211,7 @@ void				redraw(t_env *env, t_arg *arg);
 
 /*thread1.c*/
 
-int                 ThreadFunction(void* addr);
+int                 thread_function(void* addr);
 void			    fill_arg(t_arg *arg, void *a);
 void                boucle(t_arg *arg, t_env *env);
 

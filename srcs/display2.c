@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   display2.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fgallois <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/11 15:44:42 by fgallois          #+#    #+#             */
+/*   Updated: 2017/10/11 15:54:11 by fgallois         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "rtv1.h"
 
-void        display_cylinder(t_cylinder *cyl, t_mater *mat)
+void		display_cylinder(t_cylinder *cyl, t_mater *mat)
 {
-    ft_putstr("Cylinder \n");
+	ft_putstr("Cylinder \n");
 	ft_putstr("Origin : ");
 	ft_putnbr(cyl->origin.x);
 	ft_putstr(", ");
@@ -20,16 +32,16 @@ void        display_cylinder(t_cylinder *cyl, t_mater *mat)
 	ft_putstr("Radius : ");
 	ft_putnbr(cyl->radius);
 	ft_putstr("\n");
-    display_mat(mat);
+	display_mat(mat);
 }
 
-void        display_cone(t_cone *cone, t_mater *mat)
+void		display_cone(t_cone *cone, t_mater *mat)
 {
-    ft_putstr("Cone \n");
+	ft_putstr("Cone \n");
 	ft_putstr("Summit : ");
 	ft_putnbr(cone->summit.x);
 	ft_putstr(", ");
-    ft_putnbr(cone->summit.y);
+	ft_putnbr(cone->summit.y);
 	ft_putstr(", ");
 	ft_putnbr(cone->summit.z);
 	ft_putstr("\n");
@@ -46,42 +58,43 @@ void        display_cone(t_cone *cone, t_mater *mat)
 	display_mat(mat);
 }
 
-void        accord_to_form(t_obj *obj, t_mater *mat)
+void		accord_to_form(t_obj *obj, t_mater *mat)
 {
-    t_sphere *sp;
-	t_plan *p;
-    t_cylinder *cyl;
-	t_cone *cone;
-    if (obj->form == 1)
-	{   
+	t_sphere	*sp;
+	t_plan		*p;
+	t_cylinder	*cyl;
+	t_cone		*cone;
+
+	if (obj->form == 1)
+	{
 		sp = (t_sphere*)(obj->type);
 		display_sphere(sp, mat);
 	}
 	if (obj->form == 2)
-	{  
+	{
 		p = (t_plan*)(obj->type);
 		display_plan(p, mat);
 	}
 	if (obj->form == 3)
-	{  
+	{
 		cyl = (t_cylinder*)(obj->type);
-          display_cylinder(cyl, mat);
+		display_cylinder(cyl, mat);
 	}
 	if (obj->form == 4)
-	{  
+	{
 		cone = (t_cone*)(obj->type);
-      display_cone(cone, mat);
+		display_cone(cone, mat);
 	}
 }
 
-void        display_scene(t_env *env)
+void		display_scene(t_env *env)
 {
-	t_obj *obj;
-	t_mater *mat;
+	t_obj	*obj;
+	t_mater	*mat;
 
 	obj = env->obj;
 	display_camera(env);
-    display_light(env);
+	display_light(env);
 	ft_putstr("Objects \n\n");
 	while (obj)
 	{
@@ -91,4 +104,3 @@ void        display_scene(t_env *env)
 		ft_putchar('\n');
 	}
 }
-

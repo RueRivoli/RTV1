@@ -6,13 +6,13 @@
 /*   By: fgallois <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/11 15:55:31 by fgallois          #+#    #+#             */
-/*   Updated: 2017/06/09 11:50:59 by fgallois         ###   ########.fr       */
+/*   Updated: 2017/10/11 16:26:28 by fgallois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
-t_hit_point         (*get_obj_collider(int id))(void *o, t_ray r)
+t_hit_point			(*get_obj_collider(int id))(void *o, t_ray r)
 {
 	if (id == 1)
 		return (*hit_sphere);
@@ -25,10 +25,11 @@ t_hit_point         (*get_obj_collider(int id))(void *o, t_ray r)
 	return (NULL);
 }
 
-float       distance_with_cam(t_env *env, t_hit_point hp)
+float				distance_with_cam(t_env *env, t_hit_point hp)
 {
-	t_vect diff;
-	float dis;
+	t_vect		diff;
+	float		dis;
+
 	if (equals_hp(hp, hp_null()) == 1)
 		return (INFINI);
 	if (hp.distance_to_cam == -1.0)

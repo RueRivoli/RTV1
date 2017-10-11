@@ -1,19 +1,32 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fgallois <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/11 17:18:02 by fgallois          #+#    #+#             */
+/*   Updated: 2017/10/11 17:26:17 by fgallois         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "rtv1.h"
 #include <stdio.h>
 
-t_vect 				origin0(int to, void *o)
+t_vect			origin0(int to, void *o)
 {
-	t_vect v;
+	t_vect		v;
+	t_sphere	*sp;
+	t_plan		*p;
+
 	if (to == 1)
-	{   
-		t_sphere *sp;
+	{
 		sp = (t_sphere*)o;
 		v = sp->origin;
 		return (v);
 	}
 	if (to == 2)
-	{   
-		t_plan *p;
+	{
 		p = (t_plan*)o;
 		v = p->origin;
 		return (v);
@@ -21,118 +34,100 @@ t_vect 				origin0(int to, void *o)
 	return (vect_null());
 }
 
-t_vect      		origin(int to, void *o)
+t_vect			origin(int to, void *o)
 {
-	t_vect v;
-	t_vect w;
+	t_vect		v;
+	t_vect		w;
+	t_cylinder	*cyl;
+	t_cone		*c;
+
 	w = origin0(to, o);
 	if (equals_vect(w, vect_null()))
 	{
 		if (to == 3)
-		{   
-			t_cylinder *cyl;
+		{
 			cyl = (t_cylinder*)o;
 			v = cyl->origin;
 		}
 		if (to == 4)
-		{   
-			t_cone *c;
+		{
 			c = (t_cone*)o;
 			v = c->summit;
 		}
-	
 		return (v);
 	}
 	else
 		return (w);
 }
 
-t_vect     		 normal(int to, void *o)
+t_vect			normal(int to, void *o)
 {
-	t_vect n;
+	t_vect		n;
+	t_plan		*p;
+	t_cylinder	*cyl;
+	t_cone		*c;
+
 	n = vect_null();
 	if (to == 2)
-	{   
-		t_plan *p;
+	{
 		p = (t_plan*)o;
 		n = p->normal;
 	}
 	if (to == 3)
-	{   
-		t_cylinder *cyl;
+	{
 		cyl = (t_cylinder*)o;
 		n = cyl->normal;
 	}
 	if (to == 4)
-	{   
-		t_cone *c;
+	{
 		c = (t_cone*)o;
 		n = c->axis;
 	}
 	return (n);
 }
 
-
-
-int		start_reading(int fd, char *line, t_env *env, int *index)
+int				start_reading(int fd, char *line, t_env *env, int *index)
 {
-	char *st;
-	ft_putstr("ENTREE");	
+	char	*st;
+
 	if ((st = ft_strstr(line, "# Scene")))
 	{
-			*index += *index + 1;
-			ft_putstr("AAA");
-			get_next_line(fd, &line);
-			
-			if (*index != 1 || read_scene(fd, line, env) < 3)
-			{
-				error_param();
-				ft_putstr("BBB");
-				return (0);
-			}
-		
-		return (1);	
-			//free(st);
+		*index += *index + 1;
+		get_next_line(fd, &line);
+		if (*index != 1 || read_scene(fd, line, env) < 3)
+			return (0);
+		return (1);
+		//free(st);
 	}
-	
 	return (0);
-}	
+}
 
-int        lecture(int fd, t_env *env)
+int				lecture(int fd, t_env *env)
 {
-	char *line;
-	char *st;
-	int index;
+	char	*line;
+	char	*st;
+	int		index;
+
 	index = 0;
-	
 	while (get_next_line(fd, &line))
-	{	
-			if (index == 0 && start_reading(fd, line, env, &index) == 0)
-				return (0);
-			else
-			{	
-				st = ft_strstr(line, "# Objects");
-				ft_putstr("AHBON");
-				if (st != NULL)
-				{
-					index++; 
-					get_next_line(fd, &line);
-					if (index != 2 || read_objects(fd, line, env) == 0)
-					{
-						ft_putstr("BABAER");
-						error_param();
-						return (0);
-					}
-				}
-				//free(st);
-			} 
-			//free(line);
+	{
+		if (index == 0 && start_reading(fd, line, env, &index) == 0)
+			return (0);
+		else
+		{
+			st = ft_strstr(line, "# Objects");
+			if (st != NULL)
+			{
+				index++;
+				get_next_line(fd, &line);
+				if (index != 2 || read_objects(fd, line, env) == 0)
+					return (0);
+			}
+			//free(st);
+		}
+		//free(line);
 	}
 	if (index < 2)
-	{
-		//ft_putstr("AHBON");
-		error_param();
 		return (0);
-	}
 	return (1);
 }

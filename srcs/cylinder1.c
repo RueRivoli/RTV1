@@ -6,37 +6,36 @@
 /*   By: fgallois <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/09 11:50:29 by fgallois          #+#    #+#             */
-/*   Updated: 2017/06/09 11:51:42 by fgallois         ###   ########.fr       */
+/*   Updated: 2017/10/11 15:27:52 by fgallois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
-t_cylinder  *new_cylinder(t_vect origin, t_vect normal, float radius)
+t_cylinder	*new_cylinder(t_vect origin, t_vect normal, float radius)
 {
-	t_cylinder      *cyl;
+	t_cylinder		*cyl;
 
 	if (!(cyl = (t_cylinder *)malloc(sizeof(t_cylinder))))
 		return (NULL);
 	cyl->origin = origin;
-	normed(&normal); 
+	normed(&normal);
 	cyl->normal = normal;
 	cyl->radius = radius;
 	return (cyl);
 }
 
-
-float       alpha_cylinder(float expr, float n, float dir)
+float		alpha_cylinder(float expr, float n, float dir)
 {
 	return (n * expr - dir);
 }
 
-float       beta_cylinder(float expr2, float n, float a, float o)
+float		beta_cylinder(float expr2, float n, float a, float o)
 {
 	return (n * expr2 + o - a);
 }
 
-t_vect              normal_cylinder(t_cylinder *cyl, t_vect p)
+t_vect		normal_cylinder(t_cylinder *cyl, t_vect p)
 {
 	t_vect h;
 	t_vect om;

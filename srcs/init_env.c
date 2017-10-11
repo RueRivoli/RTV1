@@ -6,30 +6,29 @@
 /*   By: fgallois <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/15 14:10:26 by fgallois          #+#    #+#             */
-/*   Updated: 2017/06/09 11:51:48 by fgallois         ###   ########.fr       */
+/*   Updated: 2017/10/11 16:02:58 by fgallois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/rtv1.h"
 
-t_env   *init_env(t_arg *arg)
+t_env	*init_env(t_arg *arg)
 {
-	t_env   *env;
-	t_win   *win;
+	t_env	*env;
+	t_win	*win;
 
 	if (!(env = malloc(sizeof(t_env))))
 		return (NULL);
 	if (!(env->win = malloc(sizeof(t_win))))
 		return (NULL);
 	if (!(env->cam = malloc(sizeof(t_cam))))
-		return (NULL);	
+		return (NULL);
 	if (!(env->screen = malloc(sizeof(t_screen))))
 		return (NULL);
 	env->thread_cnt = NB_THREAD;
 	(void)arg;
 	env->obj = NULL;
 	env->light = NULL;
-	//env->screen = NULL;
 	win = env->win;
 	win->width = 0;
 	win->height = 0;
