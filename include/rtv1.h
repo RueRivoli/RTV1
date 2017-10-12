@@ -181,6 +181,7 @@ t_vect      		origin(int to, void *o);
 t_vect     	    	 normal(int to, void *o);
 int 	        	start_reading(int fd, char *line, t_env *env, int *index);
 int                  lecture(int fd, t_env *env);
+void				class(int to, void *o, float f, int n);
 
 
 /*read_object.c*/

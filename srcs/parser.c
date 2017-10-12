@@ -34,6 +34,35 @@ t_vect			origin0(int to, void *o)
 	return (vect_null());
 }
 
+void			class(int to, void *o, float f, int n)
+{
+	t_sphere	*sp;
+	t_plan		*p;
+	t_cylinder *cyl;
+	t_cone *c;
+
+	if (to == 1)
+	{
+		sp = (t_sphere*)o;
+		sp->origin = add_vect_float(sp->origin, f, n);
+	}
+	if (to == 2)
+	{
+		p = (t_plan*)o;
+		p->origin = add_vect_float(p->origin, f, n);
+	}
+	if (to == 3)
+	{
+		cyl = (t_cylinder*)o;
+		cyl->origin = add_vect_float(cyl->origin, f, n);
+	}
+	if (to == 4)
+	{
+		c = (t_cone*)o;
+		c->summit = add_vect_float(c->summit, f, n);
+	}	
+}
+
 t_vect			origin(int to, void *o)
 {
 	t_vect		v;

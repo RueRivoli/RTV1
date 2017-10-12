@@ -104,3 +104,40 @@ int					equals_hp(t_hit_point h1, t_hit_point h2)
 	else
 		return (0);
 }
+
+t_vect			add_vect_float(t_vect v, float f, int n)
+{
+	if (n == 1)
+		v.x += f;
+	else if (n == 2)
+		v.y += f;
+	else if (n == 3)
+		v.z += f;
+	return (v);
+}
+
+t_vect 			add_vect_rotation(t_vect v, float theta, int n)
+{
+	float mem;
+
+	if (n == 1)
+	{
+		mem = v.y;
+		v.y = cos(theta) * v.y + sin(theta) * v.z;
+		v.z = -sin(theta) * mem + cos(theta) * v.z;
+	}
+	else if (n == 2)
+	{
+		mem = v.y;
+		v.x = cos(theta) * v.x + sin(theta) * v.z;
+		v.z = -sin(theta) * mem + cos(theta) * v.z;
+	}	
+	else if (n == 3)
+	{
+		mem = v.z; 
+		v.x = cos(theta) * v.x + sin(theta) * v.y;
+		v.y = -sin(theta) * mem + cos(theta) * v.y;
+	}
+	normed(&v);
+	return (v);
+}

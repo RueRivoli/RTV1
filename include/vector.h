@@ -38,5 +38,7 @@ t_vect  		vect_null(void);
 
 int		    equals_vect(t_vect v1, t_vect v2);
 
+t_vect			add_vect_float(t_vect v, float f, int n);
+t_vect 			add_vect_rotation(t_vect v, float theta, int n);
 
 #endif
