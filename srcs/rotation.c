@@ -22,7 +22,7 @@ void			rotate_vector(t_env *env, t_vect *ray_dir)
 	change_vect(ray_dir, plus_phi, plus_theta);
 }
 
-void			class(int to, void *o, float f, int n)
+void			apply_trans(int to, void *o, float f, int n)
 {
 	t_sphere	*sp;
 	t_plan		*p;
@@ -71,6 +71,5 @@ void			apply_rotate(int to, void *o, float f, int n)
 	{
 		c = (t_cone*)o;
 		c->axis = add_vect_rotation(c->axis, f, n);
-		printf("X %f Y %f Z %f\n", c->axis.x, c->axis.y, c->axis.z);
 	}
 }

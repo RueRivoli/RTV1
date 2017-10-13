@@ -22,19 +22,19 @@ void		translation(char *line, void *o, int to)
 	{
 		tab = ft_strsplit(line, ' ');
 		if (tab[1])
-			class(to, o, ft_atof(tab[1]), 1);
+			apply_trans(to, o, ft_atof(tab[1]), 1);
 	}
 	if ((st = ft_strstr(line, "translationY")))
 	{
 		tab = ft_strsplit(line, ' ');
 		if (tab[1])
-			class(to, o, ft_atof(tab[1]), 2);
+			apply_trans(to, o, ft_atof(tab[1]), 2);
 	}
 	if ((st = ft_strstr(line, "translationZ")))
 	{
 		tab = ft_strsplit(line, ' ');
 		if (tab[1])
-			class(to, o, ft_atof(tab[1]), 3);
+			apply_trans(to, o, ft_atof(tab[1]), 3);
 	}
 }
 

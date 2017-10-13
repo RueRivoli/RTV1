@@ -30,7 +30,6 @@ int			register_sphere(char *line, t_env *env, int fd)
 		return (0);
 	sp = new_sphere(vect, rad);
 	modify((void*)sp, line, fd, 1);
-	printf("%f\n", sp->origin.x);
 	env->obj = add_obj(env->obj, 1, mat, (void*)sp);
 	return (1);
 }
