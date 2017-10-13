@@ -6,13 +6,14 @@
 /*   By: fgallois <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/09 11:50:51 by fgallois          #+#    #+#             */
-/*   Updated: 2017/10/13 17:46:59 by fgallois         ###   ########.fr       */
+/*   Updated: 2017/10/13 19:54:57 by fgallois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
-t_hit_point			resolution_cone(t_cone *cone, t_ray r, float expr, float expr2)
+t_hit_point			resolution_cone(t_cone *cone, t_ray r, \
+		float expr, float expr2)
 {
 	t_vect			v;
 	t_hit_point		hp;
