@@ -67,11 +67,8 @@ t_hit_point		inter_colin(t_cylinder *cyl, t_ray r)
 t_hit_point		hit_cylinder(void *o, t_ray r)
 {
 	t_cylinder	*cyl;
-	t_hit_point	hp;
 	float		expr;
 	float		expr2;
-	float		delta;
-	float		res;
 
 	cyl = (t_cylinder*)o;
 	expr = cyl->normal.x * r.direction.x + cyl->normal.y * r.direction.y + \
@@ -79,29 +76,7 @@ t_hit_point		hit_cylinder(void *o, t_ray r)
 	expr2 = (r.origin.x - cyl->origin.x) * cyl->normal.x + (r.origin.y - \
 	cyl->origin.y) * cyl->normal.y +\
 	(r.origin.z - cyl->origin.z) * cyl->normal.z;
-	delta = pow(cylinder_term_b(expr, expr2, cyl, r), 2) - 4 * \
-	cylinder_term_a(expr, cyl, r) * cylinder_term_c(expr2, cyl, r);
 	if (colin(r.direction, cyl->normal) == 1)
 		return (inter_colin(cyl, r));
-	else if (delta >= 0.0)
-	{
-		res = min_positiv_s((-cylinder_term_b(expr, expr2, cyl, r) - \
-					sqrt(delta)) / (2 * cylinder_term_a(expr, cyl, r)), \
-				(-cylinder_term_b(expr, expr2, cyl, r) + sqrt(delta)) / (2 * \
-					cylinder_term_a(expr, cyl, r)), 0);
-		if (res > 0)
-		{
-			hp = new_hit_point(new_vect(r.origin.x + res * r.direction.x, \
-			r.origin.y + res * r.direction.y, r.origin.z + res * \
-			r.direction.z), INFINI, \
-			normal_cylinder(cyl, new_vect(r.origin.x + res * r.direction.x, \
-			r.origin.y + res * r.direction.y, r.origin.z + res * \
-			r.direction.z)),\
-			3);
-			return (hp);
-		}
-		else
-			return (hp_null());
-	}
-	return (hp_null());
+	return (resolution_cyl(cyl, r, expr, expr2));
 }

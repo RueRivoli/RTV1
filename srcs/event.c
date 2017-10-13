@@ -6,7 +6,7 @@
 /*   By: fgallois <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/11 15:54:51 by fgallois          #+#    #+#             */
-/*   Updated: 2017/10/11 16:01:19 by fgallois         ###   ########.fr       */
+/*   Updated: 2017/10/13 18:05:39 by fgallois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,12 +94,10 @@ int		event(t_env *env, t_arg *arg)
 		SDL_RenderClear(env->win->rend);
 	else if (event.type == SDL_KEYUP)
 		key_event(env, event, arg);
-	//else if (event.type == SDLK_DOWN)
-		//ft_putnbr(event.key.keysym.scancode);
 	return (1);
 }
 
-void	quit_SDL(t_env *env)
+void	quit_sdl(t_env *env)
 {
 	SDL_DestroyRenderer(env->win->rend);
 	SDL_DestroyWindow(env->win->handle);

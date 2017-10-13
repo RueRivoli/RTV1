@@ -6,7 +6,7 @@
 /*   By: fgallois <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/09 11:51:54 by fgallois          #+#    #+#             */
-/*   Updated: 2017/10/11 17:42:29 by fgallois         ###   ########.fr       */
+/*   Updated: 2017/10/13 18:36:35 by fgallois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,23 +32,12 @@ t_vect			normal_sphere(t_sphere *sp, t_vect p)
 	return (min);
 }
 
-t_hit_point		hit_sphere(void *o, t_ray r)
+t_hit_point		resolution_sphere(t_sphere *sp, t_ray r, float delta, float b)
 {
-	t_sphere		*sp;
-	t_vect			t;
 	t_hit_point		hp;
-	float			delta;
-	float			b;
-	float			c;
+	t_vect			t;
 	float			res;
 
-	sp = (void *)o;
-	b = 2 * ((r.origin.x - sp->origin.x) * r.direction.x + (r.origin.y - \
-				sp->origin.y) * r.direction.y + (r.origin.z - sp->origin.z) * \
-			r.direction.z);
-	c = pow(r.origin.x - sp->origin.x, 2) + pow(r.origin.y - sp->origin.y, \
-			2) + pow(r.origin.z - sp->origin.z, 2) - pow(sp->radius, 2);
-	delta = pow(b, 2) - 4 * 1.0 * c;
 	if (delta >= 0.0)
 	{
 		res = min_positiv((-b - sqrt(delta)) / (2 * 1.0), (-b + \
@@ -66,4 +55,21 @@ t_hit_point		hit_sphere(void *o, t_ray r)
 		}
 	}
 	return (hp_null());
+}
+
+t_hit_point		hit_sphere(void *o, t_ray r)
+{
+	t_sphere		*sp;
+	float			delta;
+	float			b;
+	float			c;
+
+	sp = (void *)o;
+	b = 2 * ((r.origin.x - sp->origin.x) * r.direction.x + (r.origin.y - \
+				sp->origin.y) * r.direction.y + (r.origin.z - sp->origin.z) * \
+			r.direction.z);
+	c = pow(r.origin.x - sp->origin.x, 2) + pow(r.origin.y - sp->origin.y, \
+			2) + pow(r.origin.z - sp->origin.z, 2) - pow(sp->radius, 2);
+	delta = pow(b, 2) - 4 * 1.0 * c;
+	return (resolution_sphere(sp, r, delta, b));
 }

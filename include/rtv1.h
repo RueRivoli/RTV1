@@ -131,7 +131,7 @@ int                    event(t_env *env, t_arg *arg);
 void                     refresh(t_env *env, t_arg *arg);
 int                     key_event_bis(t_env *env, SDL_Event event);
 void                    key_event(t_env *env, SDL_Event event, t_arg *arg);
-void                    quit_SDL(t_env *env);
+void                    quit_sdl(t_env *env);
 
 /*free.c*/
 
@@ -141,7 +141,7 @@ void                     free_tab(char **tab);
 
 t_env                *init_env(t_arg *arg);
 
-/*light.c*/
+/*light1.c*/
 
 t_light             *add_light(t_light *light, t_vect pos);
 float                coef_lambert(t_light *light, t_hit_point hp);
@@ -160,9 +160,12 @@ t_hit_point			nearest_point_after_object(t_env *env, t_ray ray, t_hit_point mem,
 
 float               distance_with_next_intersection(t_env *env, t_vect v, t_obj **colore);
 int                     is_light_reached(t_light *light, t_env *env, t_hit_point mem, t_obj *colore);
-void                   put_on_light(t_env *env, t_hit_point mem, t_obj *colore, int p, int q);
-void                raytrace_thread(t_env *env, int pi, int pf);
-
+void                   put_on_light(t_env *env, t_hit_point mem, t_obj *colore);
+void                	raytrace_thread(t_env *env, int pi, int pf);
+t_hit_point			compare_distance(t_hit_point mem, t_hit_point hp, float *minimum, t_hit_point nearest_hp);
+void				throw_ray(t_env *env, t_obj *obj_met, float p, float q);
+int					parsing(t_env *env, int argc, char **argv);
+void				close_main(t_env *env, t_arg *arg);
 /*modify.c*/
 
 void                  translation(char *line, void *o, int to);
@@ -182,7 +185,7 @@ t_vect     	    	 normal(int to, void *o);
 int 	        	start_reading(int fd, char *line, t_env *env, int *index);
 int                  lecture(int fd, t_env *env);
 void				class(int to, void *o, float f, int n);
-
+void				apply_rotate(int to, void *o, float f, int n);
 
 /*read_object.c*/
 

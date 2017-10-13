@@ -6,7 +6,7 @@
 #    By: fgallois <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/04/11 16:35:34 by fgallois          #+#    #+#              #
-#    Updated: 2017/05/11 17:32:33 by fgallois         ###   ########.fr        #
+#    Updated: 2017/10/13 14:31:41 by fgallois         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,9 +30,9 @@ CFLAGS += $(addprefix -I, $(INC_PATH) $(LIBFT_INC_PATH))
 SRC_PATH = srcs/
 vpath %.c $(SRC_PATH)
 
-SOURCES = average1.c average2.c change_view1.c change_view2.c cone1.c cone2.c creation.c cylinder1.c cylinder2.c \
-display1.c display2.c error.c event.c free.c init_env.c light.c main.c modify.c object.c parser.c plan.c read_object.c read.c register_object.c sphere.c \
-thread.c thread1.c vector1.c vector2.c vector3.c vector4.c \
+SOURCES = average1.c average2.c change_view1.c change_view2.c cone1.c cone2.c cone3.c creation.c cylinder1.c cylinder2.c \
+display1.c display2.c error.c event.c free.c init_env.c light1.c light2.c main1.c main2.c modify.c object.c parser.c plan.c read_object.c read.c register_object.c rotation.c sphere.c \
+thread.c thread1.c vector1.c vector2.c vector3.c vector4.c vector5.c \
 virtual_screen.c
 SRCS = $(addprefix srcs/, $(SOURCES))
 
@@ -57,9 +57,9 @@ $(NAME): $(OBJECTS)
 	make -C ./libft
 	$(CC) $(CFLAGS) $(SRCS) $(INCS)
 	mkdir objs
-	mv average1.o average2.o change_view1.o change_view2.o cone1.o cone2.o creation.o cylinder1.o cylinder2.o \
-	display1.o display2.o error.o event.o free.o init_env.o light.o main.o modify.o object.o parser.o plan.o read_object.o read.o register_object.o  \
-	sphere.o thread.o thread1.o vector1.o vector2.o vector3.o vector4.o virtual_screen.o $(DIR_OBJ)
+	mv average1.o average2.o change_view1.o change_view2.o cone1.o cone2.o cone3.o creation.o cylinder1.o cylinder2.o \
+	display1.o display2.o error.o event.o free.o init_env.o light1.o light2.o main1.o main2.o modify.o object.o parser.o plan.o read_object.o read.o register_object.o  rotation.o \
+	sphere.o thread.o thread1.o vector1.o vector2.o vector3.o vector4.o vector5.o virtual_screen.o $(DIR_OBJ)
 	$(CC) $(LIB_PATH) $(LIB) $(LIBFT) -o $(NAME) $(OBJECT)
 
 	@echo "\n-----------------------------------------"

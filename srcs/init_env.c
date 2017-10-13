@@ -6,7 +6,7 @@
 /*   By: fgallois <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/15 14:10:26 by fgallois          #+#    #+#             */
-/*   Updated: 2017/10/11 16:02:58 by fgallois         ###   ########.fr       */
+/*   Updated: 2017/10/13 18:06:03 by fgallois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,5 @@ t_env	*init_env(t_arg *arg)
 	env->y = 0;
 	env->z = 0;
 	env->nb_of_lights = 0;
-	//env->cam = NULL;
 	return (env);
 }

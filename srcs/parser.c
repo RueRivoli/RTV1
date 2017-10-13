@@ -6,7 +6,7 @@
 /*   By: fgallois <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:18:02 by fgallois          #+#    #+#             */
-/*   Updated: 2017/10/11 17:26:17 by fgallois         ###   ########.fr       */
+/*   Updated: 2017/10/13 18:25:20 by fgallois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,35 +32,6 @@ t_vect			origin0(int to, void *o)
 		return (v);
 	}
 	return (vect_null());
-}
-
-void			class(int to, void *o, float f, int n)
-{
-	t_sphere	*sp;
-	t_plan		*p;
-	t_cylinder *cyl;
-	t_cone *c;
-
-	if (to == 1)
-	{
-		sp = (t_sphere*)o;
-		sp->origin = add_vect_float(sp->origin, f, n);
-	}
-	if (to == 2)
-	{
-		p = (t_plan*)o;
-		p->origin = add_vect_float(p->origin, f, n);
-	}
-	if (to == 3)
-	{
-		cyl = (t_cylinder*)o;
-		cyl->origin = add_vect_float(cyl->origin, f, n);
-	}
-	if (to == 4)
-	{
-		c = (t_cone*)o;
-		c->summit = add_vect_float(c->summit, f, n);
-	}	
 }
 
 t_vect			origin(int to, void *o)
@@ -126,7 +97,6 @@ int				start_reading(int fd, char *line, t_env *env, int *index)
 		if (*index != 1 || read_scene(fd, line, env) < 3)
 			return (0);
 		return (1);
-		//free(st);
 	}
 	return (0);
 }
@@ -152,9 +122,7 @@ int				lecture(int fd, t_env *env)
 				if (index != 2 || read_objects(fd, line, env) == 0)
 					return (0);
 			}
-			//free(st);
 		}
-		//free(line);
 	}
 	if (index < 2)
 		return (0);

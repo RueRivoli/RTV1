@@ -6,13 +6,13 @@
 /*   By: fgallois <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/09 11:51:15 by fgallois          #+#    #+#             */
-/*   Updated: 2017/10/11 15:26:37 by fgallois         ###   ########.fr       */
+/*   Updated: 2017/10/13 17:47:37 by fgallois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
-t_cam		*new_cam(t_vect v1, t_vect v2, float phi, float theta)
+t_cam			*new_cam(t_vect v1, t_vect v2, float phi, float theta)
 {
 	t_cam	*c;
 
@@ -25,7 +25,7 @@ t_cam		*new_cam(t_vect v1, t_vect v2, float phi, float theta)
 	return (c);
 }
 
-t_mater		*new_mater(float f, int r, int g, int b)
+t_mater			*new_mater(float f, int r, int g, int b)
 {
 	t_mater		*mat;
 
@@ -61,7 +61,7 @@ t_ray			new_ray(t_vect orig, t_vect dir, float fl, t_vect color)
 	return (r);
 }
 
-t_obj		*add_obj(t_obj *obj, int obj_type, t_mater *mater, void *type)
+t_obj			*add_obj(t_obj *obj, int obj_type, t_mater *mater, void *type)
 {
 	t_obj	*tmp;
 	t_obj	*new;
