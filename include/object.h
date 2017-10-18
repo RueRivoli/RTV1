@@ -114,7 +114,7 @@ t_hit_point			resolution_sphere(t_sphere *sp, t_ray r, float delta, \
 t_hit_point			hit_sphere(void *o, t_ray r);
 t_vect				vectv(t_vect n);
 t_vect				vectw(t_vect n);
-t_hit_point			(*get_obj_collider(int id))(void *o, t_ray r);
+t_hit_point			(*g_get_obj_collider(int id))(void *o, t_ray r);
 void				build_obj(t_obj *obj, int obj_type, t_mater *mater, void \
 		*type);
 void				sum_sphere(t_sphere *sp, float *x, float *y, float *z);

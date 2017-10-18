@@ -19,7 +19,7 @@ void		error_param(void)
 
 void		build_obj(t_obj *obj, int obj_type, t_mater *mater, void *type)
 {
-	obj->is_hit = get_obj_collider(obj_type);
+	obj->is_hit = g_get_obj_collider(obj_type);
 	obj->type = type;
 	obj->form = obj_type;
 	obj->mater = mater;

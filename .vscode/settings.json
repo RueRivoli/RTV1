@@ -18,6 +18,7 @@
         "sdl_messagebox.h": "c",
         "sdl_pixels.h": "c",
         "sdl_sysrender.h": "c",
-        "sdl_blit.h": "c"
+        "sdl_blit.h": "c",
+        "sstream": "c"
     }
 }

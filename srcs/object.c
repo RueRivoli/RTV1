@@ -12,7 +12,7 @@
 
 #include "rtv1.h"
 
-t_hit_point			(*get_obj_collider(int id))(void *o, t_ray r)
+t_hit_point			(*g_get_obj_collider(int id))(void *o, t_ray r)
 {
 	if (id == 1)
 		return (*hit_sphere);

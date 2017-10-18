@@ -13,30 +13,31 @@
 #include "libft.h"
 #include <stdlib.h>
 
-float	ft_atof(char *str)
+float		ft_atof(char *str)
 {
-	float	rez;
-	float	fact;
-	int		dot_seen;
+	float	n;
+	int		i;
+	int		k;
+	int		signe;
 
-	rez = 0;
-	fact = 1;
-	dot_seen = 0;
-	while (*str == ' ')
-		str++;
-	if (*str == '-' || *str == '+')
-		fact = *str == '-' ? (str++, -1) : (str++, 1);
-	while ((ft_isdigit(*str) || *str == '.') && *str != '\0')
+	i = 0;
+	n = 0;
+	k = 0;
+	signe = 1;
+	if (!str)
+		return (0);
+	while (str[i] == ' ' || str[i] == '\v' || str[i] == '\t' || str[i] == '\r'
+			|| str[i] == '\f' || str[i] == '\n')
+		i++;
+	signe = (str[i] == '-') ? -signe : signe;
+	i = (str[i] == '-' || str[i] == '+') ? i + 1 : i;
+	while (str[i] > 47 && str[i] < 58)
 	{
-		if (dot_seen == 0 && *str == '.')
-			dot_seen = 1;
-		else if (ft_isdigit(*str))
-		{
-			if (dot_seen)
-				fact /= 10.0f;
-			rez = rez * 10.0f + (float)(*str - '0');
-		}
-		str++;
+		n = n * 10 + (str[i++] - 48);
+		if (str[i] == '.')
+			k = i++;
 	}
-	return (rez * fact);
+	while (k != 0 && str[++k])
+		signe = signe * 10;
+	return (n / signe);
 }

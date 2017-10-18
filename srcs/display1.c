@@ -19,7 +19,6 @@ void		display_camera(t_env *env)
 	camera = env->cam->pos;
 	ft_putstr("Cadre \n\n");
 	ft_putstr(env->title);
-	ft_putstr("HOLLywood");
 	ft_putstr("\n");
 	ft_putstr("Camera : ");
 	ft_putnbr(camera.x);
