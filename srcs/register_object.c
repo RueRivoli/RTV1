@@ -22,8 +22,6 @@ int			register_sphere(char *line, t_env *env, int fd)
 
 	mat = NULL;
 	vect = read_origin(line, fd, "origin");
-	if (equals_vect(vect, vect_null()))
-		return (0);
 	if (!(rad = read_float(line, fd, "radius")))
 		return (0);
 	if (!(mat = read_mater(line, fd, "color")))
@@ -42,8 +40,6 @@ int			register_plan(char *line, t_env *env, int fd)
 	t_plan		*p;
 
 	vect = read_origin(line, fd, "origin");
-	if (equals_vect(vect, vect_null()))
-		return (0);
 	norm = read_origin(line, fd, "normal");
 	if (equals_vect(norm, vect_null()))
 		return (0);
@@ -59,13 +55,11 @@ int			register_cylinder(char *line, t_env *env, int fd)
 {
 	t_vect		vect;
 	t_vect		norm;
-	float		rad;
 	t_mater		*mat;
 	t_cylinder	*cyl;
+	float		rad;
 
 	vect = read_origin(line, fd, "origin");
-	if (equals_vect(vect, vect_null()))
-		return (0);
 	norm = read_origin(line, fd, "normal");
 	if (equals_vect(norm, vect_null()))
 		return (0);

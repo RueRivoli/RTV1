@@ -1,0 +1,32 @@
+# Scene
+
+name Scene_1
+camera origin 0.5 0.5 -1.0
+render size 600 500
+spot 0.5 0.5 -0.5
+
+# Objects
+
+name sphere 
+origin 0.5 0.5 0.5 
+radius 0.2
+color 0 255 0 0
+
+name sphere 
+origin 0.5 0.5 0.5 
+radius 0.2
+color 0 255 0 0
+translationX 0.2
+
+name sphere 
+origin 0.5 0.5 0.5 
+radius 0.2
+color 0 255 0 0
+translationY 0.2
+
+name sphere 
+origin 0.5 0.5 0.5 
+radius 0.2
+color 0 255 0 0
+translationY 0.2
+translationX 0.2
