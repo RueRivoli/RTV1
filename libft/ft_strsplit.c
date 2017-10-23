@@ -68,3 +68,4 @@ char			**ft_strsplit(char const *s, char c)
 	ft_bzero(tab, (ft_nbremots(s, c) + 1));
 	return (ft_remplissage(s, c, tab));
 }
+

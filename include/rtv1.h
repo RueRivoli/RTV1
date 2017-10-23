@@ -110,7 +110,7 @@ int					key_event_bis(t_env *env, SDL_Event event);
 void				key_event(t_env *env, SDL_Event event, t_arg *arg);
 void				quit_sdl(t_env *env);
 void				free_tab(char **tab);
-t_env				*init_env(t_arg *arg);
+t_env				*init_env(t_env *env);
 t_light				*add_light(t_light *light, t_vect pos);
 float				coef_lambert(t_light *light, t_hit_point hp);
 void				find_color_light(t_light *light, t_hit_point hp, \
@@ -192,5 +192,9 @@ int					start_reading(int fd, char *line, t_env *env, int *index);
 void				accord_to_form(t_obj *obj, t_mater *mat);
 int					equals_hp(t_hit_point h1, t_hit_point h2);
 t_vect				vect_col(t_env *env);
-
+void				free_mult(char *st, char *st2);
+void				free_env(t_env *env);
+void				free_light(t_light *light);
+void				free_obj(t_obj *obj);
+void				free_sin(char *s);
 #endif

@@ -7,7 +7,7 @@
 			"type": "cppdbg",
 			"request": "launch",
 			"program": "${workspaceRoot}/rtv1",
-			"args": [ "scenes/big_screen/pdf_scene1" ],
+			"args": [ "scenes/small_screen/pdf1" ],
 			"stopAtEntry": false,
 			"cwd": "${workspaceRoot}",
 			"environment": [],

@@ -51,12 +51,12 @@ t_vect		read_origin(char *line, int fd, char *str)
 			vect = new_vect(ft_atof(tab[1]), ft_atof(tab[2]), ft_atof(tab[3]));
 		else
 			return (vect_null());
-		free(tab);
+		free_tab(tab);
 		free(st);
 	}
 	else
 		return (vect_null());
-	return (vect);
+		return (vect);
 }
 
 float		read_float(char *line, int fd, char *str)
@@ -73,7 +73,7 @@ float		read_float(char *line, int fd, char *str)
 			res = ft_atof(tab[1]);
 		else
 			return (0);
-		free(tab);
+		free_tab(tab);
 		free(st);
 	}
 	else
@@ -98,7 +98,7 @@ t_mater		*read_mater(char *line, int fd, char *str)
 					ft_atof(tab[3]), ft_atof(tab[4]));
 		else
 			return (NULL);
-		free(tab);
+		free_tab(tab);
 		free(st);
 	}
 	else

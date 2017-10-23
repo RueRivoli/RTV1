@@ -66,6 +66,7 @@ t_obj			*add_obj(t_obj *obj, int obj_type, t_mater *mater, void *type)
 	t_obj	*tmp;
 	t_obj	*new;
 
+	new = NULL;
 	if (!obj)
 	{
 		if (!(obj = (t_obj*)malloc(sizeof(t_obj))))
@@ -77,7 +78,7 @@ t_obj			*add_obj(t_obj *obj, int obj_type, t_mater *mater, void *type)
 		tmp = obj;
 		while (tmp->next)
 			tmp = tmp->next;
-		new = (t_obj*)malloc(sizeof(t_obj));
+		//new = (t_obj*)malloc(sizeof(t_obj));
 		build_obj(new, obj_type, mater, type);
 		tmp->next = new;
 	}
