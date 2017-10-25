@@ -122,6 +122,7 @@ int			read_render(int fd, char *line, t_env *env)
 		free_tab(tab);
 		free(st);
 	}
+	//free(line);
 	return (ret);
 }
 
@@ -133,9 +134,11 @@ int			read_spot(int fd, char *line, t_env *env)
 
 	tab = NULL;
 	ret = 0;
+	ft_putstr("couronne");
 	while (get_next_line(fd, &line) && (st = ft_strstr(line, "spot")))
 	{
 		tab = ft_strsplit(line, ' ');
+		
 		if (tab[1] && tab[2] && tab[3])
 		{
 			env->light = add_light(env->light, new_vect(ft_atof(tab[1]), \
@@ -145,5 +148,6 @@ int			read_spot(int fd, char *line, t_env *env)
 		free_tab(tab);
 		free(st);
 	}
+	//free(line);
 	return (ret);
 }

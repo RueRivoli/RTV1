@@ -29,9 +29,11 @@ int					parsing(t_env *env, int argc, char **argv)
 		return (0);
 	}
 	fd = open(argv[1], O_RDONLY);
+	
 	if (fd > 0 && lecture(fd, env) != 0)
 		display_scene(env);
-	else
+		
+		else
 	{
 		error_param();
 		return (0);

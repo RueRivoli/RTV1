@@ -29,7 +29,7 @@ t_light		*add_light(t_light *light, t_vect pos)
 		tmp = light;
 		while (tmp->next)
 			tmp = tmp->next;
-		//new = (t_light*)malloc(sizeof(t_light));
+		new = (t_light*)malloc(sizeof(t_light));
 		build_light(new, pos);
 		tmp->next = new;
 	}

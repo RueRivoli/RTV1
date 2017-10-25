@@ -135,12 +135,14 @@ void		modify(void *o, char *line, int fd, int to)
 	{
 		/*free_mult(st, st1);
 		free_mult(st2, st3);*/
+		
 		if (to)
 		{
 			translation(line, o, to);
 			rotation(line, o, to);
 		}
+		
 	}
-	
-	
+	free(line);
+		
 }

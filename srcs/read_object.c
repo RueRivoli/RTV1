@@ -32,8 +32,12 @@ int			read_scene(int fd, char *line, t_env *env)
 
 	ret = read_name(fd, line, env);
 	ret += read_camera(fd, line, env);
+	
 	ret += read_render(fd, line, env);
+	
 	ret += read_spot(fd, line, env);
+	ft_putstr("pl");
+	//while (1);
 	return (ret);
 }
 
@@ -56,7 +60,7 @@ t_vect		read_origin(char *line, int fd, char *str)
 	}
 	else
 		return (vect_null());
-		return (vect);
+	return (vect);
 }
 
 float		read_float(char *line, int fd, char *str)
