@@ -1,8 +1,13 @@
-# Scene
-g7r5eger653g
-g7r5eger653ge64g5er
-rg
-eG®´G
+# Scene 54564
 
-g7r5eger653ge64g5erreg
+name Scene_1 1241 5132
+camera origin 0.5 0.5 -1.0
+render size 700 500
+spot 0.5 0.5 -0.5
 
+# Objects
+
+name sphere 
+origin 0.1 0P 1.0
+radius 0.8
+color 0 255 0 255
