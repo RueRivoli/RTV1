@@ -45,13 +45,13 @@ t_vect				add_vect_rotation(t_vect v, float theta, int n)
 	}
 	else if (n == 2)
 	{
-		mem = v.y;
+		mem = v.x;
 		v.x = cos(theta) * v.x + sin(theta) * v.z;
 		v.z = -sin(theta) * mem + cos(theta) * v.z;
 	}
 	else if (n == 3)
 	{
-		mem = v.z;
+		mem = v.x;
 		v.x = cos(theta) * v.x + sin(theta) * v.y;
 		v.y = -sin(theta) * mem + cos(theta) * v.y;
 	}
