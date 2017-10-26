@@ -117,7 +117,7 @@ int			read_spot(int fd, t_env *env)
 
 	ret = 0;
 	line = NULL;
-	if (get_next_line(fd, &line) && (ft_strncmp(line, "spot", 4) == 0))
+	while (get_next_line(fd, &line) && (ft_strncmp(line, "spot", 4) == 0))
 		ret += ft_norm2(env, line);
 	free(line);
 	return (ret);
