@@ -24,6 +24,7 @@ int					ft_norm(t_env *env, char *str, char *line, int fd)
 	int			ret;
 
 	ret = 0;
+	tab = NULL;
 	tab = ft_strsplit(line, ' ');
 	if ((ft_strncmp(line, "name", 4) == 0) && \
 			(str = tab[1]))
@@ -32,13 +33,11 @@ int					ft_norm(t_env *env, char *str, char *line, int fd)
 		if (to < 1 || to > 4)
 		{
 			free_tab(tab);
-			free(line);
 			return (0);
 		}
 		ret = registering(to, env, fd);
 	}
 	free_tab(tab);
-	free(line);
 	return (ret);
 }
 

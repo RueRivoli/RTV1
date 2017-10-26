@@ -19,6 +19,7 @@ int				ft_norm2(t_env *env, char *line)
 	int			ret;
 
 	ret = 0;
+	tab = NULL;
 	tab = ft_strsplit(line, ' ');
 	if (tab[1] && tab[2] && tab[3])
 	{
@@ -27,7 +28,6 @@ int				ft_norm2(t_env *env, char *line)
 		ret++;
 	}
 	free_tab(tab);
-	free(line);
 	return (ret);
 }
 

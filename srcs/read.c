@@ -16,19 +16,21 @@ int			read_objects(int fd, t_env *env)
 {
 	int		to;
 	char	*str;
-	char	**tab;
 	char	*line;
 	int		ret;
 
-	ret = 1;
+	ret = 0;
 	to = 0;
-	tab = NULL;
 	line = NULL;
 	str = NULL;
 	while (get_next_line(fd, &line))
 	{
 		ret += ft_norm(env, str, line, fd);
+		free(line);
+		line = NULL;
 	}
+	if (line)
+		free(line);
 	return (ret);
 }
 
@@ -79,7 +81,6 @@ int			read_camera(int fd, t_env *env)
 		}
 		free_tab(tab);
 		env->cam = new_cam(v, trans, 0.0, 0.0);
-		ret++;
 	}
 	free(line);
 	return (ret);
@@ -116,15 +117,8 @@ int			read_spot(int fd, t_env *env)
 
 	ret = 0;
 	line = NULL;
-	while (get_next_line(fd, &line))
-	{
-		if (ft_strncmp(line, "spot", 4) == 0)
-			ret += ft_norm2(env, line);
-		else
-		{
-			free(line);
-			break ;
-		}
-	}
+	if (get_next_line(fd, &line) && (ft_strncmp(line, "spot", 4) == 0))
+		ret += ft_norm2(env, line);
+	free(line);
 	return (ret);
 }

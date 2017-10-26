@@ -30,6 +30,7 @@ int			read_scene(int fd, t_env *env)
 {
 	int		ret;
 
+	ret = 0;
 	ret = read_name(fd, env);
 	ret += read_camera(fd, env);
 	ret += read_render(fd, env);
@@ -44,6 +45,7 @@ t_vect		read_origin(int fd, char *str)
 	char		*line;
 
 	line = NULL;
+	tab = NULL;
 	if (get_next_line(fd, &line) && \
 		(ft_strncmp(line, str, ft_strlen(str)) == 0))
 	{
@@ -56,7 +58,10 @@ t_vect		read_origin(int fd, char *str)
 		free(line);
 	}
 	else
+	{
+		free(line);
 		return (vect_null());
+	}
 	return (vect);
 }
 
@@ -67,6 +72,7 @@ float		read_float(int fd, char *str)
 	char		*line;
 
 	line = NULL;
+	tab = NULL;
 	if (get_next_line(fd, &line) && \
 		(ft_strncmp(line, str, ft_strlen(str)) == 0))
 	{
@@ -74,15 +80,15 @@ float		read_float(int fd, char *str)
 		if (tab[1])
 			res = ft_atof(tab[1]);
 		else
-		{
-			free(line);
 			return (0);
-		}
 		free_tab(tab);
 		free(line);
 	}
 	else
+	{
+		free(line);
 		return (0);
+	}
 	return (res);
 }
 
@@ -108,6 +114,9 @@ t_mater		*read_mater(int fd, char *str)
 		free(line);
 	}
 	else
+	{
+		free(line);
 		return (NULL);
+	}
 	return (mat);
 }

@@ -107,17 +107,12 @@ void		rotation_z(char *line, void *o, int to)
 
 void		modify(void *o, int fd, int to)
 {
-	char *line;
+	char	*line;
 
 	line = NULL;
 	while (get_next_line(fd, &line))
 	{
-		if ((ft_strncmp(line, "translationX", 12) == 0) || \
-			(ft_strncmp(line, "translationY", 12) == 0) || \
-			(ft_strncmp(line, "translationZ", 12) == 0) || \
-			(ft_strncmp(line, "rotationX", 9) == 0) || \
-			(ft_strncmp(line, "rotationY", 9) == 0) || \
-			(ft_strncmp(line, "rotationZ", 9) == 0))
+		if (is_transform(line) == 1)
 		{
 			if (to)
 			{
@@ -125,11 +120,15 @@ void		modify(void *o, int fd, int to)
 				rotation(line, o, to);
 			}
 			free(line);
+			line = NULL;
 		}
 		else
 		{
 			free(line);
+			line = NULL;
 			break ;
 		}
 	}
+	if (line)
+		free(line);
 }

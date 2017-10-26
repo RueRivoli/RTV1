@@ -32,7 +32,7 @@ typedef struct		s_gnl
 	long			ret;
 	long			lenght;
 	long			char_lu;
-} 					t_gnl;
+}					t_gnl;
 
 typedef struct		s_list
 {

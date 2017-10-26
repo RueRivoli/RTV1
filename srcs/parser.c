@@ -88,15 +88,15 @@ t_vect			normal(int to, void *o)
 
 int				start_reading(int fd, char *filip, t_env *env, int *index)
 {
-	char *line;
+	char	*line;
 
 	line = NULL;
 	if (ft_strncmp(filip, "# Scene", 7) == 0)
 	{
-		*index += *index + 1;
+		(*index)++;
 		get_next_line(fd, &line);
 		free(line);
-		if (*index != 1 || read_scene(fd, env) < 3)
+		if (*index != 1 || read_scene(fd, env) < 4)
 			return (0);
 		return (1);
 	}
@@ -106,34 +106,22 @@ int				start_reading(int fd, char *filip, t_env *env, int *index)
 int				lecture(int fd, t_env *env)
 {
 	char	*line;
-	char	*line2;
 	int		index;
 
 	index = 0;
 	line = NULL;
-	line2 = NULL;
 	while (get_next_line(fd, &line))
 	{
-		if (index == 0 && start_reading(fd, line, env, &index) == 0)
+		if (index == 0 && (start_reading(fd, line, env, &index) == 1))
 		{
 			free(line);
-			return (0);
+			return (ft_norm3(env, fd, &index));
 		}
-		else
-		{
-			if (ft_strncmp(line, "# Objects", 9) == 0)
-			{
-				index++;
-				get_next_line(fd, &line2);
-				free(line2);
-				free(line);
-				if (index != 2 || read_objects(fd, env) == 0)
-					return (0);
-			}
-			else
-				free(line);
-		}
+		free(line);
+		line = NULL;
 	}
+	if (line)
+		free(line);
 	if (index < 2)
 		return (0);
 	return (1);

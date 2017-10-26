@@ -197,4 +197,6 @@ void				free_light(t_light *light);
 void				free_obj(t_obj *obj);
 int					ft_norm(t_env *env, char *str, char *line, int fd);
 int					ft_norm2(t_env *env, char *line);
+int					is_transform(char *line);
+int					ft_norm3(t_env *env, int fd, int *index);
 #endif

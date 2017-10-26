@@ -12,7 +12,48 @@
 
 #include "../include/rtv1.h"
 
-t_env	*init_env(t_env *env)
+int				is_transform(char *line)
+{
+	if ((ft_strncmp(line, "translationX", 12) == 0) || \
+		(ft_strncmp(line, "translationY", 12) == 0) || \
+		(ft_strncmp(line, "translationZ", 12) == 0) || \
+		(ft_strncmp(line, "rotationX", 9) == 0) || \
+		(ft_strncmp(line, "rotationY", 9) == 0) || \
+		(ft_strncmp(line, "rotationZ", 9) == 0))
+		return (1);
+	else
+		return (0);
+}
+
+int				ft_norm3(t_env *env, int fd, int *index)
+{
+	char	*line;
+
+	line = NULL;
+	while (get_next_line(fd, &line))
+	{
+		if (ft_strncmp(line, "# Objects", 9) == 0)
+		{
+			(*index)++;
+			free(line);
+			get_next_line(fd, &line);
+			if (*index != 2 || read_objects(fd, env) == 0)
+			{
+				free(line);
+				return (0);
+			}
+		}
+		free(line);
+		line = NULL;
+	}
+	if (line)
+		free(line);
+	if (*index != 2)
+		return (0);
+	return (1);
+}
+
+t_env			*init_env(t_env *env)
 {
 	t_win	*win;
 
