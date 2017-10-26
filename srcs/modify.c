@@ -15,32 +15,28 @@
 void		translation(char *line, void *o, int to)
 {
 	char			**tab;
-	char			*st;
 
 	tab = NULL;
-	if ((st = ft_strstr(line, "translationX")))
+	if ((ft_strncmp(line, "translationX", 12) == 0))
 	{
 		tab = ft_strsplit(line, ' ');
 		if (tab[1])
 			apply_trans(to, o, ft_atof(tab[1]), 1);
 		free_tab(tab);
-		free(st);
 	}
-	if ((st = ft_strstr(line, "translationY")))
+	if ((ft_strncmp(line, "translationY", 12) == 0))
 	{
 		tab = ft_strsplit(line, ' ');
 		if (tab[1])
 			apply_trans(to, o, ft_atof(tab[1]), 2);
 		free_tab(tab);
-		free(st);
 	}
-	if ((st = ft_strstr(line, "translationZ")))
+	if ((ft_strncmp(line, "translationZ", 12) == 0))
 	{
 		tab = ft_strsplit(line, ' ');
 		if (tab[1])
 			apply_trans(to, o, ft_atof(tab[1]), 3);
 		free_tab(tab);
-		free(st);
 	}
 }
 
@@ -48,13 +44,11 @@ void		rotation(char *line, void *o, int to)
 {
 	char		**tab;
 	t_vect		n;
-	char		*st;
 	float		theta;
 
 	n = normal(to, o);
 	tab = NULL;
-	
-	if ((st = ft_strstr(line, "rotationX")) && to != 1)
+	if ((ft_strncmp(line, "rotationX", 9) == 0) && to != 1)
 	{
 		tab = ft_strsplit(line, ' ');
 		if (tab[1])
@@ -64,8 +58,6 @@ void		rotation(char *line, void *o, int to)
 			apply_rotate(to, o, theta, 1);
 		}
 		free_tab(tab);
-		free(st);
-		
 	}
 	rotation_y(line, o, to);
 	rotation_z(line, o, to);
@@ -75,12 +67,11 @@ void		rotation_y(char *line, void *o, int to)
 {
 	char		**tab;
 	t_vect		n;
-	char		*st;
 	float		theta;
 
 	n = normal(to, o);
 	tab = NULL;
-	if ((st = ft_strstr(line, "rotationY")) && to != 1)
+	if ((ft_strncmp(line, "rotationY", 9) == 0) && to != 1)
 	{
 		tab = ft_strsplit(line, ' ');
 		if (tab[1])
@@ -90,21 +81,18 @@ void		rotation_y(char *line, void *o, int to)
 			apply_rotate(to, o, theta, 2);
 		}
 		free_tab(tab);
-		free(st);
 	}
-	
 }
 
 void		rotation_z(char *line, void *o, int to)
 {
 	char		**tab;
 	t_vect		n;
-	char		*st;
 	float		theta;
 
 	n = normal(to, o);
 	tab = NULL;
-	if ((st = ft_strstr(line, "rotationZ")) && to != 1)
+	if ((ft_strncmp(line, "rotationZ", 9) == 0) && to != 1)
 	{
 		tab = ft_strsplit(line, ' ');
 		if (tab[1])
@@ -114,35 +102,34 @@ void		rotation_z(char *line, void *o, int to)
 			apply_rotate(to, o, theta, 3);
 		}
 		free_tab(tab);
-		free(st);
 	}
 }
 
-void		modify(void *o, char *line, int fd, int to)
+void		modify(void *o, int fd, int to)
 {
-	char		*st;
-	char		*st1;
-	char		*st2;
-	char		*st3;
-	char		*st4;
+	char *line;
 
-	while (get_next_line(fd, &line) && ((st = ft_strstr(line, \
-			"translationX")) || (st1 = ft_strstr(line, "translationY")) || \
-				(st2 = ft_strstr(line, "translationZ")) || \
-				(st3 = ft_strstr(line, \
-				"rotationX")) || (st4 = ft_strstr(line, "rotationY")) || \
-				(ft_strstr(line, "rotationZ"))))
+	line = NULL;
+	while (get_next_line(fd, &line))
 	{
-		/*free_mult(st, st1);
-		free_mult(st2, st3);*/
-		
-		if (to)
+		if ((ft_strncmp(line, "translationX", 12) == 0) || \
+			(ft_strncmp(line, "translationY", 12) == 0) || \
+			(ft_strncmp(line, "translationZ", 12) == 0) || \
+			(ft_strncmp(line, "rotationX", 9) == 0) || \
+			(ft_strncmp(line, "rotationY", 9) == 0) || \
+			(ft_strncmp(line, "rotationZ", 9) == 0))
 		{
-			translation(line, o, to);
-			rotation(line, o, to);
+			if (to)
+			{
+				translation(line, o, to);
+				rotation(line, o, to);
+			}
+			free(line);
 		}
-		
+		else
+		{
+			free(line);
+			break ;
+		}
 	}
-	free(line);
-		
 }

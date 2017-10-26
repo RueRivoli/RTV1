@@ -12,102 +12,78 @@
 
 #include "libft.h"
 
-static t_line		*init_list(const int fd)
+static void	realloc_str(t_gnl *gnl)
 {
-	t_line	*new;
-
-	if (!(new = (t_line *)malloc(sizeof(t_line))))
-		return (NULL);
-	new->fd = fd;
-	new->line = ft_strnew(0);
-	new->next = NULL;
-	return (new);
-}
-
-static void			add_elem(t_line *list, t_line *new)
-{
-	while (list->next != NULL)
-	{
-		list = list->next;
-	}
-	list->next = new;
-	new->next = NULL;
-}
-
-static char			*get_first_line(t_line *list, char **line)
-{
-	char	*text;
-	int		i;
 	char	*tmp;
 
-	tmp = NULL;
-	i = 0;
-	text = list->line;
-	while (text[i])
-	{
-		if (text[i] == EOL)
-		{
-			*line = ft_strsub(text, 0, i);
-			tmp = text;
-			text = ft_strdup(text + (i + 1));
-			free(tmp);
-			return (text);
-		}
-		i++;
-	}
-	*line = ft_strdup(text);
-	ft_strclr(text);
-	ft_strclr(list->line);
-	return (text);
+	tmp = ft_strnew(gnl->lenght + BUFF_SIZE);
+	tmp = ft_strcpy(tmp, gnl->str);
+	tmp[gnl->lenght + BUFF_SIZE] = '\0';
+	gnl->eol = tmp + (gnl->eol - gnl->str);
+	free(gnl->str);
+	gnl->str = tmp;
+	gnl->lenght += BUFF_SIZE;
 }
 
-static int			read_file(int fd, t_line *list)
+static void	init_struct(t_gnl **gnl)
 {
-	int		ret;
-	char	buf[BUFF_SIZE + 1];
-	char	*tmp;
-
-	tmp = NULL;
-	ret = -42;
-	while (!ft_strchr(list->line, EOL))
-	{
-		if ((ret = read(fd, buf, BUFF_SIZE)) < 0)
-			return (-1);
-		else if (ret == 0)
-			return (0);
-		buf[ret] = 0;
-		tmp = list->line;
-		if (!(list->line = ft_strjoin(list->line, buf)))
-			return (-1);
-		free(tmp);
-		ft_bzero(buf, BUFF_SIZE + 1);
-	}
-	return (1);
+	*gnl = malloc(sizeof(t_gnl));
+	(*gnl)->lenght = BUFF_SIZE;
+	(*gnl)->str = malloc(((*gnl)->lenght + 1) * sizeof(char));
+	(*gnl)->str[(*gnl)->lenght] = '\0';
+	(*gnl)->eol = (*gnl)->str;
+	(*gnl)->ret = 1;
+	(*gnl)->char_lu = 0;
 }
 
-int					get_next_line(int fd, char **line)
+static int	is_newline(t_gnl *gnl)
 {
-	static	t_line		*file;
-	int					ret;
-	t_line				*tmp;
+	while (gnl->eol - gnl->str < gnl->char_lu && *(gnl->eol) != '\n')
+		gnl->eol++;
+	if (*(gnl->eol) == '\n' && gnl->char_lu > gnl->eol - gnl->str)
+		return (1);
+	return (0);
+}
 
-	if (!file)
-		file = init_list(fd);
-	tmp = file;
-	if (fd < 0 || !line)
+static int	return_line(t_gnl **ptr_gnl, t_gnl *gnl, char **line)
+{
+	if (gnl->ret < 0)
 		return (-1);
-	while (tmp)
+	*line = ft_strsub(gnl->str, 0, gnl->eol - gnl->str);
+	if (gnl->ret <= 0 && gnl->char_lu <= 0)
 	{
-		if (tmp->fd == fd)
-			break ;
-		if (tmp->next == NULL)
-			add_elem(tmp, init_list(fd));
-		tmp = tmp->next;
-	}
-	if ((ret = read_file(fd, tmp)) < 0)
-		return (-1);
-	tmp->line = get_first_line(tmp, line);
-	if (!ft_strlen(tmp->line) && !ft_strlen(*line) && !ret)
+		if (gnl->str)
+			free(gnl->str);
+		free(gnl);
+		*ptr_gnl = NULL;
 		return (0);
+	}
+	gnl->char_lu += gnl->str - gnl->eol
+		- (*(gnl->eol) == '\n' && gnl->ret > 0
+			&& gnl->char_lu != gnl->eol - gnl->str);
+	ft_memcpy(gnl->str, gnl->eol + 1, gnl->char_lu);
+	gnl->eol = gnl->str;
 	return (1);
+}
+
+int			get_next_line(const int fd, char **line)
+{
+	static t_gnl	*gnl[4096];
+
+	if (!line || BUFF_SIZE <= 0 || fd < 0 || fd > 4096)
+		return (-1);
+	if (!gnl[fd])
+		init_struct(&gnl[fd]);
+	if (gnl[fd]->ret == 0)
+		return (0);
+	if (gnl[fd]->ret == -1)
+		return (-1);
+	while (gnl[fd]->ret > 0 && is_newline(gnl[fd]) == 0)
+	{
+		while (gnl[fd]->lenght < gnl[fd]->char_lu + BUFF_SIZE)
+			realloc_str(gnl[fd]);
+		gnl[fd]->ret = read(fd, gnl[fd]->str + gnl[fd]->char_lu, BUFF_SIZE);
+		gnl[fd]->char_lu += gnl[fd]->ret;
+	}
+	return (return_line(&gnl[fd], gnl[fd], line));
 }

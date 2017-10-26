@@ -25,24 +25,11 @@ void	free_tab(char **tab)
 	free(tab);
 }
 
-void	free_sin(char *s)
-{
-	if (s != NULL)
-		free(s);
-}
-
-void	free_mult(char *st, char *st2)
-{
-	if (st != NULL)
-		free(st);
-	if (st2 != NULL)
-		free(st2);
-}
-
 void	free_light(t_light *light)
 {
 	t_light *l;
 	t_light *tmp;
+
 	l = light;
 	while (l)
 	{
@@ -71,15 +58,15 @@ void	free_env(t_env *env)
 	if (env)
 	{
 		if (env->win)
-		 	free(env->win);
+			free(env->win);
 		if (env->screen)
-		 	free(env->screen);
+			free(env->screen);
 		if (env->cam)
 			free(env->cam);
 		if (env->light)
-		  	free_light(env->light);
+			free_light(env->light);
 		if (env->obj)
-			 free(env->obj);
+			free(env->obj);
 		if (env->thread)
 			free(env->thread);
 		free(env);

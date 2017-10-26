@@ -6,7 +6,7 @@
 /*   By: fgallois <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/11 15:54:51 by fgallois          #+#    #+#             */
-/*   Updated: 2017/10/13 18:21:51 by fgallois         ###   ########.fr       */
+/*   Updated: 2017/10/26 13:31:57 by fgallois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,31 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+
+int					ft_norm(t_env *env, char *str, char *line, int fd)
+{
+	char		**tab;
+	int			to;
+	int			ret;
+
+	ret = 0;
+	tab = ft_strsplit(line, ' ');
+	if ((ft_strncmp(line, "name", 4) == 0) && \
+			(str = tab[1]))
+	{
+		to = type_objects(str);
+		if (to < 1 || to > 4)
+		{
+			free_tab(tab);
+			free(line);
+			return (0);
+		}
+		ret = registering(to, env, fd);
+	}
+	free_tab(tab);
+	free(line);
+	return (ret);
+}
 
 int					parsing(t_env *env, int argc, char **argv)
 {
@@ -29,11 +54,9 @@ int					parsing(t_env *env, int argc, char **argv)
 		return (0);
 	}
 	fd = open(argv[1], O_RDONLY);
-	
 	if (fd > 0 && lecture(fd, env) != 0)
 		display_scene(env);
-		
-		else
+	else
 	{
 		error_param();
 		return (0);

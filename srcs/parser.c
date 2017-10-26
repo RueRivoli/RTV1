@@ -6,7 +6,7 @@
 /*   By: fgallois <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:18:02 by fgallois          #+#    #+#             */
-/*   Updated: 2017/10/13 18:25:20 by fgallois         ###   ########.fr       */
+/*   Updated: 2017/10/26 13:30:28 by fgallois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,61 +86,54 @@ t_vect			normal(int to, void *o)
 	return (n);
 }
 
-int				start_reading(int fd, char *line, t_env *env, int *index)
+int				start_reading(int fd, char *filip, t_env *env, int *index)
 {
-	char	*st;
-	
-	if ((st = ft_strstr(line, "# Scene")))
+	char *line;
+
+	line = NULL;
+	if (ft_strncmp(filip, "# Scene", 7) == 0)
 	{
-		
 		*index += *index + 1;
 		get_next_line(fd, &line);
-		//free(st);
-		
-		if (*index != 1 || read_scene(fd, line, env) < 3)
+		free(line);
+		if (*index != 1 || read_scene(fd, env) < 3)
 			return (0);
-			//free(line);
-		
 		return (1);
 	}
-	else
-	{
-		//free(st);
-		//free(line);
-	}
-	
 	return (0);
 }
 
 int				lecture(int fd, t_env *env)
 {
 	char	*line;
-	char	*st;
+	char	*line2;
 	int		index;
 
 	index = 0;
+	line = NULL;
+	line2 = NULL;
 	while (get_next_line(fd, &line))
 	{
 		if (index == 0 && start_reading(fd, line, env, &index) == 0)
+		{
+			free(line);
 			return (0);
+		}
 		else
 		{
-			// while (1);
-			
-			st = ft_strstr(line, "# Objects");
-			if (st != NULL)
+			if (ft_strncmp(line, "# Objects", 9) == 0)
 			{
 				index++;
-				get_next_line(fd, &line);
-				//free(st);
-				if (index != 2 || read_objects(fd, line, env) == 0)
+				get_next_line(fd, &line2);
+				free(line2);
+				free(line);
+				if (index != 2 || read_objects(fd, env) == 0)
 					return (0);
 			}
+			else
+				free(line);
 		}
-		//free(line);
 	}
-	//free(line);
-	//free(st);
 	if (index < 2)
 		return (0);
 	return (1);

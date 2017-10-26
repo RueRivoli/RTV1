@@ -26,29 +26,26 @@ int			type_objects(char *str)
 	return (0);
 }
 
-int			read_scene(int fd, char *line, t_env *env)
+int			read_scene(int fd, t_env *env)
 {
 	int		ret;
 
-	ret = read_name(fd, line, env);
-	ret += read_camera(fd, line, env);
-	
-	ret += read_render(fd, line, env);
-	
-	ret += read_spot(fd, line, env);
-	ft_putstr("pl");
-	//while (1);
+	ret = read_name(fd, env);
+	ret += read_camera(fd, env);
+	ret += read_render(fd, env);
+	ret += read_spot(fd, env);
 	return (ret);
 }
 
-t_vect		read_origin(char *line, int fd, char *str)
+t_vect		read_origin(int fd, char *str)
 {
 	t_vect		vect;
 	char		**tab;
-	char		*st;
+	char		*line;
 
-	st = ft_strstr(line, str);
-	if (get_next_line(fd, &line) && (st = ft_strstr(line, str)))
+	line = NULL;
+	if (get_next_line(fd, &line) && \
+		(ft_strncmp(line, str, ft_strlen(str)) == 0))
 	{
 		tab = ft_strsplit(line, ' ');
 		if (tab[1] && tab[2] && tab[3])
@@ -56,43 +53,48 @@ t_vect		read_origin(char *line, int fd, char *str)
 		else
 			return (vect_null());
 		free_tab(tab);
-		free(st);
+		free(line);
 	}
 	else
 		return (vect_null());
 	return (vect);
 }
 
-float		read_float(char *line, int fd, char *str)
+float		read_float(int fd, char *str)
 {
 	char		**tab;
 	float		res;
-	char		*st;
+	char		*line;
 
-	st = ft_strstr(line, str);
-	if (get_next_line(fd, &line) && (st = ft_strstr(line, str)))
+	line = NULL;
+	if (get_next_line(fd, &line) && \
+		(ft_strncmp(line, str, ft_strlen(str)) == 0))
 	{
 		tab = ft_strsplit(line, ' ');
 		if (tab[1])
 			res = ft_atof(tab[1]);
 		else
+		{
+			free(line);
 			return (0);
+		}
 		free_tab(tab);
-		free(st);
+		free(line);
 	}
 	else
 		return (0);
 	return (res);
 }
 
-t_mater		*read_mater(char *line, int fd, char *str)
+t_mater		*read_mater(int fd, char *str)
 {
 	t_mater		*mat;
 	char		**tab;
-	char		*st;
+	char		*line;
 
-	st = ft_strstr(line, str);
-	if (get_next_line(fd, &line) && (st = ft_strstr(line, str)))
+	line = NULL;
+	if (get_next_line(fd, &line) && \
+		(ft_strncmp(line, str, ft_strlen(str)) == 0))
 	{
 		tab = ft_strsplit(line, ' ');
 		if (tab[1] && tab[2] && tab[3] && tab[4] && ft_atof(tab[1]) > -1 \
@@ -103,7 +105,7 @@ t_mater		*read_mater(char *line, int fd, char *str)
 		else
 			return (NULL);
 		free_tab(tab);
-		free(st);
+		free(line);
 	}
 	else
 		return (NULL);

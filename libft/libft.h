@@ -22,8 +22,17 @@
 # include <stdio.h>
 # include <stdlib.h>
 
-# define BUFF_SIZE 8
-# define EOL '\n'
+# define BUFF_SIZE 30
+# define ENDL '\n'
+
+typedef struct		s_gnl
+{
+	char			*str;
+	char			*eol;
+	long			ret;
+	long			lenght;
+	long			char_lu;
+} 					t_gnl;
 
 typedef struct		s_list
 {

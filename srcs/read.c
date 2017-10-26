@@ -12,52 +12,37 @@
 
 #include "rtv1.h"
 
-int			read_objects(int fd, char *line, t_env *env)
+int			read_objects(int fd, t_env *env)
 {
 	int		to;
 	char	*str;
 	char	**tab;
-	char	*st;
+	char	*line;
 	int		ret;
 
 	ret = 1;
 	to = 0;
-	while (get_next_line(fd, &line) && ret)
+	tab = NULL;
+	line = NULL;
+	str = NULL;
+	while (get_next_line(fd, &line))
 	{
-		tab = ft_strsplit(line, ' ');
-		if ((st = ft_strstr(line, "name")) && \
-				(str = tab[1]))
-		{
-			
-			to = type_objects(str);
-			if (to < 1 || to > 4)
-			{
-				free_tab(tab);
-				free(st);
-				return (0);
-			}
-			free_tab(tab);
-			if (st)
-				free(st);
-			ret = registering(to, line, env, fd);
-		}
-		
-		
+		ret += ft_norm(env, str, line, fd);
 	}
-	
 	return (ret);
 }
 
-int			read_name(int fd, char *line, t_env *env)
+int			read_name(int fd, t_env *env)
 {
 	char		*str;
 	char		**tab;
-	char		*st;
+	char		*line;
 	int			ret;
 
 	ret = 0;
 	tab = NULL;
-	if (get_next_line(fd, &line) && (st = ft_strstr(line, "name")))
+	line = NULL;
+	if (get_next_line(fd, &line) && (ft_strncmp(line, "name", 4) == 0))
 	{
 		tab = ft_strsplit(line, ' ');
 		if ((str = tab[1]))
@@ -66,88 +51,80 @@ int			read_name(int fd, char *line, t_env *env)
 			ret++;
 		}
 		free_tab(tab);
-		free(st);
 	}
+	free(line);
 	return (ret);
 }
 
-int			read_camera(int fd, char *line, t_env *env)
+int			read_camera(int fd, t_env *env)
 {
 	int			ret;
 	char		**tab;
 	t_vect		v;
 	t_vect		trans;
-	char		*st;
+	char		*line;
 
 	ret = 0;
 	v = vect_null();
 	tab = NULL;
 	trans = vect_null();
-	if (get_next_line(fd, &line) && (st = ft_strstr(line, "camera")))
+	line = NULL;
+	if (get_next_line(fd, &line) && (ft_strncmp(line, "camera", 6) == 0))
 	{
 		tab = ft_strsplit(line, ' ');
-		
 		if (tab[2] != NULL && tab[3] != NULL && tab[4] != NULL)
 		{
 			v = new_vect(ft_atof(tab[2]), ft_atof(tab[3]), ft_atof(tab[4]));
 			ret++;
 		}
 		free_tab(tab);
-		free(st);
 		env->cam = new_cam(v, trans, 0.0, 0.0);
 		ret++;
-		
 	}
+	free(line);
 	return (ret);
 }
 
-int			read_render(int fd, char *line, t_env *env)
+int			read_render(int fd, t_env *env)
 {
 	int		ret;
 	char	**tab;
-	char	*st;
+	char	*line;
 
 	ret = 0;
-	if (get_next_line(fd, &line) && (st = ft_strstr(line, "render")))
+	line = NULL;
+	tab = NULL;
+	if (get_next_line(fd, &line) && (ft_strncmp(line, "render", 6) == 0))
 	{
 		tab = ft_strsplit(line, ' ');
 		if (tab[2] != NULL && tab[3] != NULL)
 		{
 			env->screen->nx = ft_atoi(tab[2]);
 			env->screen->ny = ft_atoi(tab[3]);
-			//env->win->height = ft_atoi(tab[3]);
-			//env->win->width = ft_atoi(tab[2]);
 			ret++;
 		}
 		free_tab(tab);
-		free(st);
 	}
-	//free(line);
+	free(line);
 	return (ret);
 }
 
-int			read_spot(int fd, char *line, t_env *env)
+int			read_spot(int fd, t_env *env)
 {
 	int		ret;
-	char	**tab;
-	char	*st;
+	char	*line;
 
-	tab = NULL;
 	ret = 0;
-	ft_putstr("couronne");
-	while (get_next_line(fd, &line) && (st = ft_strstr(line, "spot")))
+	line = NULL;
+	while (get_next_line(fd, &line))
 	{
-		tab = ft_strsplit(line, ' ');
-		
-		if (tab[1] && tab[2] && tab[3])
+		if (ft_strncmp(line, "spot", 4) == 0)
+			ret += ft_norm2(env, line);
+		else
 		{
-			env->light = add_light(env->light, new_vect(ft_atof(tab[1]), \
-			ft_atof(tab[2]), ft_atof(tab[3])));
-			ret++;
+			free(line);
+			break ;
 		}
-		free_tab(tab);
-		free(st);
 	}
-	//free(line);
 	return (ret);
 }

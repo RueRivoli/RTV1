@@ -6,12 +6,30 @@
 /*   By: fgallois <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/11 17:47:32 by fgallois          #+#    #+#             */
-/*   Updated: 2017/10/11 17:51:25 by fgallois         ###   ########.fr       */
+/*   Updated: 2017/10/26 13:31:32 by fgallois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 #include <pthread.h>
+
+int				ft_norm2(t_env *env, char *line)
+{
+	char		**tab;
+	int			ret;
+
+	ret = 0;
+	tab = ft_strsplit(line, ' ');
+	if (tab[1] && tab[2] && tab[3])
+	{
+		env->light = add_light(env->light, new_vect(ft_atof(tab[1]), \
+		ft_atof(tab[2]), ft_atof(tab[3])));
+		ret++;
+	}
+	free_tab(tab);
+	free(line);
+	return (ret);
+}
 
 int				thread_function(void *addr)
 {

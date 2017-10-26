@@ -125,18 +125,17 @@ int					main(int argc, char **argv)
 
 	if (!(arg = (t_arg*)malloc(sizeof(t_arg) * NB_THREAD + 1)))
 		return (0);
-	if (!(arg->env = (t_env*)malloc(sizeof(t_env) /** NB_THREAD + 1*/)))
+	if (!(arg->env = (t_env*)malloc(sizeof(t_env))))
 		return (0);
 	env = arg->env;
 	if (!(env = init_env(env)))
 		return (0);
 	if (!(env->thread = malloc_thread(NB_THREAD, arg, (void*)env)))
 		return (0);
-	
 	if (parsing(env, argc, argv) == 0)
 		return (0);
 	SDL_SetRenderDrawColor(env->win->rend, 0, 0, 0, 0);
-	SDL_RenderClear(env->win->rend); 
+	SDL_RenderClear(env->win->rend);
 	boucle(arg, env);
 	close_main(env, arg);
 	free_env(env);
