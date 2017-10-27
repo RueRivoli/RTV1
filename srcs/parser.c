@@ -112,6 +112,8 @@ int				lecture(int fd, t_env *env)
 	line = NULL;
 	while (get_next_line(fd, &line))
 	{
+		if (!line && index == 0)
+			return (0);
 		if (index == 0 && (start_reading(fd, line, env, &index) == 1))
 		{
 			free(line);
