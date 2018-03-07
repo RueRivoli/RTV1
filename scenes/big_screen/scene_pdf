@@ -1,0 +1,93 @@
+# Scene
+
+name Scene_1
+camera origin 0.5 0.5 -1.0
+render size 1200 900
+spot 0.7 0.5 -0.5
+spot 0.3 0.5 -0.5
+
+# Objects
+
+name plan 
+origin 0.5 0.9 1
+normal 0.0 25.0 1.0
+color 0 145 145 145
+
+name plan 
+origin 0.8 0.2 1
+normal 0.0 10.0 1.0
+color 0 145 145 145
+
+name plan 
+origin 0.5 0.5 1.5
+normal 0.0 0.0 1.0
+color 0 30 70 174
+
+name sphere 
+origin 0.50 0.87 0.23
+radius 0.045
+color 0 255 0 0
+
+name cylinder
+origin 0.15 0.5 0.80
+normal 0.0 1.0 0.0
+radius 0.05
+color 0 140 140 140
+
+name cylinder
+origin 0.85 0.5 0.80
+normal 0.0 1.0 0.0
+radius 0.05
+color 0 140 140 140
+
+name cylinder
+origin 0.15 0.5 0.10
+normal 0.0 1.0 0.0
+radius 0.05
+color 0 140 140 140
+
+name cylinder
+origin 0.85 0.5 0.10
+normal 0.0 1.0 0.0
+radius 0.05
+color 0 140 140 140
+
+name sphere 
+origin 0.15 0.28 0.1
+radius 0.1
+color 0 140 140 140
+
+name sphere 
+origin 0.15 0.95 0.1
+radius 0.1
+color 0 140 140 140
+
+name sphere 
+origin 0.15 0.23 0.80
+radius 0.1
+color 0 140 140 140
+
+name sphere 
+origin 0.15 0.90 0.80
+radius 0.1
+color 0 140 140 140
+
+name sphere 
+origin 0.85 0.28 0.1
+radius 0.1
+color 0 140 140 140
+
+name sphere 
+origin 0.85 0.95 0.1
+radius 0.1
+color 0 140 140 140
+
+name sphere 
+origin 0.85 0.23 0.80
+radius 0.1
+color 0 140 140 140
+
+name sphere 
+origin 0.85 0.90 0.80
+radius 0.1
+color 0 140 140 140

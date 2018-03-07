@@ -1,0 +1,24 @@
+# Scene
+
+name Scene_1
+camera origin 500.0 250.0 -200.0
+render size 600 500
+spot 600.0 450.0 -150.0
+
+# Objects
+
+name cylinder
+origin 100.0 450.0 100.0
+normal 1.0 1.0 0.0
+radius 50.0
+color 0 80 160 80
+
+name plan
+origin 1550.0 250.0 350.0
+normal 1.0 1.0 1.0
+color 0 0 255 255
+
+name sphere 
+origin 400.0 150.0 200.0 
+radius 150.0
+color 0 255 0 0 
