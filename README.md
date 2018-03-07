@@ -19,7 +19,6 @@ Afin de s'entraîner à créer des images de synthèse, nous allons créer un hu
 
 * ./rtv1 scenes/[big_screen | small_screen]/[name_map]
 
-## Illustration
 
 ## Illustration
 [![Alt text for your video](https://img.youtube.com/vi/cWJjDaerV5s/0.jpg)](https://www.youtube.com/watch?v=cWJjDaerV5s)
